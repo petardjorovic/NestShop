@@ -14,25 +14,119 @@ datasource db {
 }
 
 model Administrator {
-  administratorId       Int         @id @default(autoincrement()) @map("administrator_id")
-  username              String      @db.VarChar(32) @unique
-  passwordHash          String      @db.VarChar(128) @map("password_hash")
-  createdAt             DateTime    @default(now()) @map("created_at")
-  updatedAt             DateTime    @updatedAt @map("updated_at")
+  administratorId       Int                 @id @default(autoincrement()) @map("administrator_id")
+  username              String              @db.VarChar(32) @unique
+  passwordHash          String              @db.VarChar(128) @map("password_hash")
+        
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
 
   @@map("administrator")
 }
 
 model User {
-  userId                Int         @id @default(autoincrement()) @map("user_id")
-  email                 String      @db.VarChar(255) @unique
-  passwordHash          String      @db.VarChar(128) @map("password_hash")
-  forename              String      @db.VarChar(64)
-  surname               String      @db.VarChar(64)
-  phoneNumber           String      @db.VarChar(24) @unique @map("phone_number")
-  postalAddress         String      @db.Text @map("postal_address")
-  createdAt             DateTime    @default(now()) @map("created_at")
-  updatedAt             DateTime    @updatedAt @map("updated_at")
+  userId                Int                 @id @default(autoincrement()) @map("user_id")
+  email                 String              @db.VarChar(255) @unique
+  passwordHash          String              @db.VarChar(128) @map("password_hash")
+  forename              String              @db.VarChar(64)
+  surname               String              @db.VarChar(64)
+  phoneNumber           String              @db.VarChar(24) @unique @map("phone_number")
+  postalAddress         String              @db.Text @map("postal_address")
+
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
 
   @@map("user")
+}
+
+model Category {
+  categoryId            Int                 @id @default(autoincrement()) @map("category_id")
+  name                  String              @db.VarChar(50) @unique
+  imagePath             String              @db.VarChar(128)  @unique @map("image_path")
+
+  parentCategoryId      Int?                @map("parent__category_id")
+  parentCategory        Category?           @relation("CategoryHierarchy", fields: [parentCategoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+  subcategories         Category[]          @relation("CategoryHierarchy")
+
+  articles              Article[]
+
+  features              Feature[]
+
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  @@map("category")
+}
+
+enum ArticleStatus {
+  AVAILABLE
+  VISIBLE
+  HIDDEN
+}
+
+model Article {
+  articleId             Int                 @id @default(autoincrement()) @map("article_id")
+  name                  String              @db.VarChar(128)
+
+  excerpt               String              @db.VarChar(255)
+  description           String              @db.Text
+  status                ArticleStatus       @default(AVAILABLE)
+  isPromoted            Boolean             @default(false) @map("is_promoted")
+
+  categoryId            Int                 @map("category_id")
+  category              Category            @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+
+  features              ArticleFeature[]
+  articlePrices         ArticlePrice[]
+  
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  @@map("article")
+}
+
+model Feature {
+  featureId             Int                 @id @default(autoincrement()) @map("feature_id")
+  name                  String              @db.VarChar(32)
+
+  categoryId            Int                 @map("category_id")
+  category              Category            @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+
+  articles              ArticleFeature[]
+
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  @@unique([name, categoryId])
+  @@map("feature")
+}
+
+model ArticleFeature {
+  articleFeatureId     Int                 @id @default(autoincrement()) @map("article_feature_id")
+  value                String              @db.VarChar(255)
+
+  article              Article             @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade)
+  articleId            Int                 @map("article_id")
+
+  feature              Feature             @relation(fields: [featureId], references: [featureId], onDelete: Restrict, onUpdate: Cascade)
+  featureId            Int                 @map("feature_id")
+
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+
+  @@unique([articleId, featureId])
+  @@map("article_feature")
+}
+
+model ArticlePrice {
+  articlePriceId       Int                 @id @default(autoincrement()) @map("article_price_id")
+  price                Decimal             @db.Decimal(10,2)
+
+  articleId            Int                 @map("article_id")
+  article              Article             @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade)
+
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+
+  @@map("article_price")
 }
