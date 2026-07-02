@@ -4,9 +4,9 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-  moduleFormat    = "cjs"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -14,47 +14,50 @@ datasource db {
 }
 
 model Administrator {
-  administratorId       Int                 @id @default(autoincrement()) @map("administrator_id")
-  username              String              @db.VarChar(32) @unique
-  passwordHash          String              @db.VarChar(128) @map("password_hash")
-        
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
+  administratorId Int    @id @default(autoincrement()) @map("administrator_id")
+  username        String @unique @db.VarChar(32)
+  passwordHash    String @map("password_hash") @db.VarChar(128)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("administrator")
 }
 
 model User {
-  userId                Int                 @id @default(autoincrement()) @map("user_id")
-  email                 String              @db.VarChar(255) @unique
-  passwordHash          String              @db.VarChar(128) @map("password_hash")
-  forename              String              @db.VarChar(64)
-  surname               String              @db.VarChar(64)
-  phoneNumber           String              @db.VarChar(24) @unique @map("phone_number")
-  postalAddress         String              @db.Text @map("postal_address")
+  userId        Int    @id @default(autoincrement()) @map("user_id")
+  email         String @unique @db.VarChar(255)
+  passwordHash  String @map("password_hash") @db.VarChar(128)
+  forename      String @db.VarChar(64)
+  surname       String @db.VarChar(64)
+  phoneNumber   String @unique @map("phone_number") @db.VarChar(24)
+  postalAddress String @map("postal_address") @db.Text
 
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
+  carts Cart[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user")
 }
 
 model Category {
-  categoryId            Int                 @id @default(autoincrement()) @map("category_id")
-  name                  String              @db.VarChar(50) @unique
-  imagePath             String              @db.VarChar(128)  @unique @map("image_path")
+  categoryId Int    @id @default(autoincrement()) @map("category_id")
+  name       String @unique @db.VarChar(50)
+  imagePath  String @unique @map("image_path") @db.VarChar(128)
 
-  parentCategoryId      Int?                @map("parent__category_id")
-  parentCategory        Category?           @relation("CategoryHierarchy", fields: [parentCategoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
-  subcategories         Category[]          @relation("CategoryHierarchy")
+  parentCategoryId Int?       @map("parent__category_id")
+  parentCategory   Category?  @relation("CategoryHierarchy", fields: [parentCategoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+  subcategories    Category[] @relation("CategoryHierarchy")
 
-  articles              Article[]
+  articles Article[]
 
-  features              Feature[]
+  features Feature[]
 
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
+  @@index([parentCategoryId])
   @@map("category")
 }
 
@@ -65,68 +68,145 @@ enum ArticleStatus {
 }
 
 model Article {
-  articleId             Int                 @id @default(autoincrement()) @map("article_id")
-  name                  String              @db.VarChar(128)
+  articleId Int    @id @default(autoincrement()) @map("article_id")
+  name      String @db.VarChar(128)
 
-  excerpt               String              @db.VarChar(255)
-  description           String              @db.Text
-  status                ArticleStatus       @default(AVAILABLE)
-  isPromoted            Boolean             @default(false) @map("is_promoted")
+  excerpt     String        @db.VarChar(255)
+  description String        @db.Text
+  status      ArticleStatus @default(AVAILABLE)
+  isPromoted  Boolean       @default(false) @map("is_promoted")
 
-  categoryId            Int                 @map("category_id")
-  category              Category            @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
 
-  features              ArticleFeature[]
-  articlePrices         ArticlePrice[]
-  
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
+  features      ArticleFeature[]
+  articlePrices ArticlePrice[]
+  photos        Photo[]
+  carts         CartArticle[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([categoryId])
   @@map("article")
 }
 
 model Feature {
-  featureId             Int                 @id @default(autoincrement()) @map("feature_id")
-  name                  String              @db.VarChar(32)
+  featureId Int    @id @default(autoincrement()) @map("feature_id")
+  name      String @db.VarChar(32)
 
-  categoryId            Int                 @map("category_id")
-  category              Category            @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [categoryId], onDelete: Restrict, onUpdate: Cascade)
 
-  articles              ArticleFeature[]
+  articles ArticleFeature[]
 
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([name, categoryId])
+  @@index([categoryId])
   @@map("feature")
 }
 
 model ArticleFeature {
-  articleFeatureId     Int                 @id @default(autoincrement()) @map("article_feature_id")
-  value                String              @db.VarChar(255)
+  articleFeatureId Int    @id @default(autoincrement()) @map("article_feature_id")
+  value            String @db.VarChar(255)
 
-  article              Article             @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade)
-  articleId            Int                 @map("article_id")
+  article   Article @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
+  articleId Int     @map("article_id")
 
-  feature              Feature             @relation(fields: [featureId], references: [featureId], onDelete: Restrict, onUpdate: Cascade)
-  featureId            Int                 @map("feature_id")
+  feature   Feature @relation(fields: [featureId], references: [featureId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
+  featureId Int     @map("feature_id")
 
-  createdAt            DateTime            @default(now()) @map("created_at")
-  updatedAt            DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([articleId, featureId])
   @@map("article_feature")
 }
 
 model ArticlePrice {
-  articlePriceId       Int                 @id @default(autoincrement()) @map("article_price_id")
-  price                Decimal             @db.Decimal(10,2)
+  articlePriceId Int     @id @default(autoincrement()) @map("article_price_id")
+  price          Decimal @db.Decimal(10, 2)
 
-  articleId            Int                 @map("article_id")
-  article              Article             @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade)
+  articleId Int     @map("article_id")
+  article   Article @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
 
-  createdAt            DateTime            @default(now()) @map("created_at")
-  updatedAt            DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
+  @@index([articleId])
   @@map("article_price")
+}
+
+model Photo {
+  photoId Int @id @default(autoincrement()) @map("photo_id")
+
+  articleId Int     @map("article_id")
+  article   Article @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
+
+  imagePath String @unique @map("image_path") @db.VarChar(128)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([articleId])
+  @@map("photo")
+}
+
+model Cart {
+  cartId Int @id @default(autoincrement()) @map("cart_id")
+
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [userId], onDelete: Restrict, onUpdate: Cascade)
+
+  articles CartArticle[]
+
+  orderLog OrderLog?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("cart")
+}
+
+model CartArticle {
+  cartArticleId Int @id @default(autoincrement()) @map("cart_article_id")
+
+  cartId Int  @map("cart_id")
+  cart   Cart @relation(fields: [cartId], references: [cartId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
+
+  articleId Int     @map("article_id")
+  article   Article @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
+
+  quantity Int
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([cartId, articleId])
+  @@index([cartId])
+  @@index([articleId])
+  @@map("cart_article")
+}
+
+enum OrderStatus {
+  REJECTED
+  ACCEPTED
+  SHIPPED
+  PENDING
+}
+
+model OrderLog {
+  orderLogId Int         @id @default(autoincrement()) @map("order_log_id")
+  status     OrderStatus @default(PENDING)
+
+  cartId Int  @unique @map("cart_id")
+  cart   Cart @relation(fields: [cartId], references: [cartId], onDelete: Restrict, onUpdate: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("order_log")
 }

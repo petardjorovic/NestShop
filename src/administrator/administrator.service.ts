@@ -18,7 +18,7 @@ export class AdministratorService {
       where: { administratorId },
     });
     if (!admin) {
-      return new ApiResponse('Not Found', 10001);
+      return new ApiResponse('error', 10001);
     }
     return admin;
   }
