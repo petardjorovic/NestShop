@@ -52,7 +52,16 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Administrator: 'Administrator',
-  User: 'User'
+  User: 'User',
+  Category: 'Category',
+  Article: 'Article',
+  Feature: 'Feature',
+  ArticleFeature: 'ArticleFeature',
+  ArticlePrice: 'ArticlePrice',
+  Photo: 'Photo',
+  Cart: 'Cart',
+  CartArticle: 'CartArticle',
+  OrderLog: 'OrderLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -97,6 +106,111 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const CategoryScalarFieldEnum = {
+  categoryId: 'categoryId',
+  name: 'name',
+  imagePath: 'imagePath',
+  parentCategoryId: 'parentCategoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const ArticleScalarFieldEnum = {
+  articleId: 'articleId',
+  name: 'name',
+  excerpt: 'excerpt',
+  description: 'description',
+  status: 'status',
+  isPromoted: 'isPromoted',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+export const FeatureScalarFieldEnum = {
+  featureId: 'featureId',
+  name: 'name',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeatureScalarFieldEnum = (typeof FeatureScalarFieldEnum)[keyof typeof FeatureScalarFieldEnum]
+
+
+export const ArticleFeatureScalarFieldEnum = {
+  articleFeatureId: 'articleFeatureId',
+  value: 'value',
+  articleId: 'articleId',
+  featureId: 'featureId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ArticleFeatureScalarFieldEnum = (typeof ArticleFeatureScalarFieldEnum)[keyof typeof ArticleFeatureScalarFieldEnum]
+
+
+export const ArticlePriceScalarFieldEnum = {
+  articlePriceId: 'articlePriceId',
+  price: 'price',
+  articleId: 'articleId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ArticlePriceScalarFieldEnum = (typeof ArticlePriceScalarFieldEnum)[keyof typeof ArticlePriceScalarFieldEnum]
+
+
+export const PhotoScalarFieldEnum = {
+  photoId: 'photoId',
+  articleId: 'articleId',
+  imagePath: 'imagePath',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PhotoScalarFieldEnum = (typeof PhotoScalarFieldEnum)[keyof typeof PhotoScalarFieldEnum]
+
+
+export const CartScalarFieldEnum = {
+  cartId: 'cartId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
+
+
+export const CartArticleScalarFieldEnum = {
+  cartArticleId: 'cartArticleId',
+  cartId: 'cartId',
+  articleId: 'articleId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CartArticleScalarFieldEnum = (typeof CartArticleScalarFieldEnum)[keyof typeof CartArticleScalarFieldEnum]
+
+
+export const OrderLogScalarFieldEnum = {
+  orderLogId: 'orderLogId',
+  status: 'status',
+  cartId: 'cartId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderLogScalarFieldEnum = (typeof OrderLogScalarFieldEnum)[keyof typeof OrderLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -111,4 +225,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

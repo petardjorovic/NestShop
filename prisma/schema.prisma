@@ -3,6 +3,18 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+//* Kako ja obično radim
+
+//* Posle svake izmene schema.prisma:
+
+//* npx prisma format
+//* npx prisma validate
+//* npx prisma migrate dev --name ...
+
+//* Ako iz bilo kog razloga ne vidim nove modele u IntelliSense-u, odmah pokrenem:
+
+//* npx prisma generate
+
 generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"

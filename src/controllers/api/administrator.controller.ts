@@ -8,24 +8,26 @@ import {
   Post,
 } from '@nestjs/common';
 
-import { Serialize } from 'src/decorators/serialize.decorators';
-import { AdministratorDto } from './dtos/administrator.dto';
-import { AdministratorService } from './administrator.service';
+// import { Serialize } from 'src/decorators/serialize.decorators';
+// import { AdministratorDto } from './dtos/administrator.dto';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { CreateAdministratorDto } from './dtos/create-administrator.dto';
-import { EditAdministratorDto } from './dtos/edit-administrator.dto';
+import { CreateAdministratorDto } from '../../dtos/administrator/create.administrator.dto';
+import { EditAdministratorDto } from '../../dtos/administrator/edit.administrator.dto';
+import { AdministratorService } from 'src/services/administrator/administrator.service';
 
 // @Serialize(AdministratorDto)
 @Controller('api/administrator')
 export class AdministratorController {
   constructor(private readonly administratorService: AdministratorService) {}
 
+  // GET http://localhost:3000/api/administrator
   @Get()
   getAll(): Promise<Administrator[]> {
     return this.administratorService.findAll();
   }
 
+  // GET http://localhost:3000/api/administrator/1
   @Get(':id')
   getById(
     @Param('id', ParseIntPipe) id: number,
@@ -33,6 +35,7 @@ export class AdministratorController {
     return this.administratorService.findById(id);
   }
 
+  // POST http://localhost:3000/api/administrator
   @Post()
   add(
     @Body() createAdministratorDto: CreateAdministratorDto,
@@ -40,14 +43,12 @@ export class AdministratorController {
     return this.administratorService.addAdministrator(createAdministratorDto);
   }
 
+  // PATCH http://localhost:3000/api/administrator/4
   @Patch(':id')
   edit(
     @Param('id', ParseIntPipe) id: number,
     @Body() editAdministratorDto: EditAdministratorDto,
   ): Promise<Administrator | ApiResponse> {
-    return this.administratorService.editAdministrator(
-      id,
-      editAdministratorDto,
-    );
+    return this.administratorService.editById(id, editAdministratorDto);
   }
 }

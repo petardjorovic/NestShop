@@ -27,3 +27,48 @@ export type Administrator = Prisma.AdministratorModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Article
+ * 
+ */
+export type Article = Prisma.ArticleModel
+/**
+ * Model Feature
+ * 
+ */
+export type Feature = Prisma.FeatureModel
+/**
+ * Model ArticleFeature
+ * 
+ */
+export type ArticleFeature = Prisma.ArticleFeatureModel
+/**
+ * Model ArticlePrice
+ * 
+ */
+export type ArticlePrice = Prisma.ArticlePriceModel
+/**
+ * Model Photo
+ * 
+ */
+export type Photo = Prisma.PhotoModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartArticle
+ * 
+ */
+export type CartArticle = Prisma.CartArticleModel
+/**
+ * Model OrderLog
+ * 
+ */
+export type OrderLog = Prisma.OrderLogModel

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { PrismaService } from 'src/prisma.service';
-import { CreateAdministratorDto } from './dtos/create-administrator.dto';
-import { EditAdministratorDto } from './dtos/edit-administrator.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateAdministratorDto } from 'src/dtos/administrator/create.administrator.dto';
+import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
 
 @Injectable()
 export class AdministratorService {
@@ -20,9 +20,11 @@ export class AdministratorService {
     const admin = await this.prisma.administrator.findUnique({
       where: { administratorId },
     });
+
     if (!admin) {
-      return new ApiResponse('error', 10001);
+      return new ApiResponse('error', -1001);
     }
+
     return admin;
   }
 
@@ -35,15 +37,16 @@ export class AdministratorService {
     });
 
     if (existingAdministrator) {
-      return new ApiResponse('error', 10002);
+      return new ApiResponse('error', -1002);
     }
 
     let passwordHash: string;
+
     try {
       passwordHash = await argon2.hash(password);
     } catch (error) {
       console.error(error);
-      return new ApiResponse('error', 10003);
+      return new ApiResponse('error', -1003);
     }
 
     return this.prisma.administrator.create({
@@ -54,7 +57,7 @@ export class AdministratorService {
     });
   }
 
-  async editAdministrator(
+  async editById(
     administratorId: number,
     data: EditAdministratorDto,
   ): Promise<Administrator | ApiResponse> {
@@ -66,7 +69,7 @@ export class AdministratorService {
           passwordHash = await argon2.hash(data.password);
         } catch (error) {
           console.error(error);
-          return new ApiResponse('error', 10003);
+          return new ApiResponse('error', -1003);
         }
       }
 
@@ -79,7 +82,7 @@ export class AdministratorService {
       });
     } catch (error) {
       console.error(error);
-      return new ApiResponse('error', 10001);
+      return new ApiResponse('error', -1001);
     }
   }
 }
