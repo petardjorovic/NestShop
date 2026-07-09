@@ -12,6 +12,8 @@ import { AdministratorService } from './services/administrator/administrator.ser
 import { UserService } from './services/user/user.service';
 import { CategoryController } from './controllers/api/category.controller';
 import { CategoryService } from './services/category/category.service';
+import { ArticleController } from './controllers/api/article.controller';
+import { ArticleService } from './services/article/article.service';
 
 @Module({
   imports: [
@@ -28,6 +30,7 @@ import { CategoryService } from './services/category/category.service';
     AdministratorController,
     UserController,
     CategoryController,
+    ArticleController,
   ],
   providers: [
     {
@@ -41,6 +44,7 @@ import { CategoryService } from './services/category/category.service';
     AdministratorService,
     UserService,
     CategoryService,
+    ArticleService,
   ],
 })
 export class AppModule {}

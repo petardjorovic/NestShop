@@ -4,18 +4,35 @@ import { ApiResponse } from 'src/misc/api.response.class';
 import { CreateCategoryDto } from 'src/dtos/category/create.category.dto';
 import { Category } from 'src/generated/prisma/client';
 import { EditCategoryDto } from 'src/dtos/category/edit.category.dto';
+import { CategoryQueryDto } from 'src/dtos/category/category.query.dto';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getAll(): Promise<Category[]> {
-    return this.prisma.category.findMany();
+  getAll(query: CategoryQueryDto): Promise<Category[]> {
+    return this.prisma.category.findMany({
+      include: {
+        subcategories: query.subcategories,
+        features: query.features,
+        parentCategory: query.parentCategory,
+        articles: query.articles,
+      },
+    });
   }
 
-  async getById(categoryId: number): Promise<Category | ApiResponse> {
+  async getById(
+    categoryId: number,
+    query: CategoryQueryDto,
+  ): Promise<Category | ApiResponse> {
     const category = await this.prisma.category.findUnique({
       where: { categoryId },
+      include: {
+        subcategories: query.subcategories,
+        features: query.features,
+        parentCategory: query.parentCategory,
+        articles: query.articles,
+      },
     });
 
     if (!category) {
@@ -33,6 +50,7 @@ export class CategoryService {
     try {
       const category = await this.prisma.category.create({
         data: { name, imagePath, parentCategoryId },
+        include: { subcategories: true, features: true },
       });
 
       return category;
@@ -58,6 +76,7 @@ export class CategoryService {
             parentCategoryId: data.parentCategoryId,
           }),
         },
+        include: { subcategories: true, features: true },
       });
     } catch (error: any) {
       console.error(error);

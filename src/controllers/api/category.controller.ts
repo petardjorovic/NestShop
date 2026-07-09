@@ -6,7 +6,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
+import { CategoryQueryDto } from 'src/dtos/category/category.query.dto';
 import { CreateCategoryDto } from 'src/dtos/category/create.category.dto';
 import { EditCategoryDto } from 'src/dtos/category/edit.category.dto';
 import { Category } from 'src/generated/prisma/client';
@@ -18,15 +20,16 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  getAll(): Promise<Category[]> {
-    return this.categoryService.getAll();
+  getAll(@Query() query: CategoryQueryDto): Promise<Category[]> {
+    return this.categoryService.getAll(query);
   }
 
   @Get(':id')
   getById(
     @Param('id', ParseIntPipe) id: number,
+    @Query() query: CategoryQueryDto,
   ): Promise<Category | ApiResponse> {
-    return this.categoryService.getById(id);
+    return this.categoryService.getById(id, query);
   }
 
   @Post()
