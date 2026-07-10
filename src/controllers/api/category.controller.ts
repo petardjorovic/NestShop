@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CategoryQueryDto } from 'src/dtos/category/category.query.dto';
-import { CreateCategoryDto } from 'src/dtos/category/create.category.dto';
+import { AddCategoryDto } from 'src/dtos/category/add.category.dto';
 import { EditCategoryDto } from 'src/dtos/category/edit.category.dto';
 import { Category } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
@@ -34,7 +34,7 @@ export class CategoryController {
 
   @Post()
   add(
-    @Body() createCategoryDto: CreateCategoryDto,
+    @Body() createCategoryDto: AddCategoryDto,
   ): Promise<Category | ApiResponse> {
     return this.categoryService.add(createCategoryDto);
   }

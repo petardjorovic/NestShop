@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString, Length } from 'class-validator';
 
-export class CreateCategoryDto {
+export class AddCategoryDto {
   @IsString()
   @Length(2, 50)
   name: string;

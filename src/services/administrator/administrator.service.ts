@@ -3,7 +3,7 @@ import * as argon2 from 'argon2';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateAdministratorDto } from 'src/dtos/administrator/create.administrator.dto';
+import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
 import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class AdministratorService {
   async addAdministrator({
     username,
     password,
-  }: CreateAdministratorDto): Promise<Administrator | ApiResponse> {
+  }: AddAdministratorDto): Promise<Administrator | ApiResponse> {
     const existingAdministrator = await this.prisma.administrator.findUnique({
       where: { username },
     });

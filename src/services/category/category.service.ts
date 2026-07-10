@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { CreateCategoryDto } from 'src/dtos/category/create.category.dto';
+import { AddCategoryDto } from 'src/dtos/category/add.category.dto';
 import { Category } from 'src/generated/prisma/client';
 import { EditCategoryDto } from 'src/dtos/category/edit.category.dto';
 import { CategoryQueryDto } from 'src/dtos/category/category.query.dto';
@@ -46,7 +46,7 @@ export class CategoryService {
     name,
     imagePath,
     parentCategoryId,
-  }: CreateCategoryDto): Promise<Category | ApiResponse> {
+  }: AddCategoryDto): Promise<Category | ApiResponse> {
     try {
       const category = await this.prisma.category.create({
         data: { name, imagePath, parentCategoryId },

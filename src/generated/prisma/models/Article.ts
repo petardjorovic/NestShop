@@ -253,7 +253,7 @@ export type ArticleWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-  features?: Prisma.ArticleFeatureListRelationFilter
+  articleFeatures?: Prisma.ArticleFeatureListRelationFilter
   articlePrices?: Prisma.ArticlePriceListRelationFilter
   photos?: Prisma.PhotoListRelationFilter
   carts?: Prisma.CartArticleListRelationFilter
@@ -270,7 +270,7 @@ export type ArticleOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
-  features?: Prisma.ArticleFeatureOrderByRelationAggregateInput
+  articleFeatures?: Prisma.ArticleFeatureOrderByRelationAggregateInput
   articlePrices?: Prisma.ArticlePriceOrderByRelationAggregateInput
   photos?: Prisma.PhotoOrderByRelationAggregateInput
   carts?: Prisma.CartArticleOrderByRelationAggregateInput
@@ -290,7 +290,7 @@ export type ArticleWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-  features?: Prisma.ArticleFeatureListRelationFilter
+  articleFeatures?: Prisma.ArticleFeatureListRelationFilter
   articlePrices?: Prisma.ArticlePriceListRelationFilter
   photos?: Prisma.PhotoListRelationFilter
   carts?: Prisma.CartArticleListRelationFilter
@@ -337,7 +337,7 @@ export type ArticleCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutArticlesInput
-  features?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleCreateNestedManyWithoutArticleInput
@@ -353,7 +353,7 @@ export type ArticleUncheckedCreateInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceUncheckedCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleUncheckedCreateNestedManyWithoutArticleInput
@@ -368,7 +368,7 @@ export type ArticleUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutArticlesNestedInput
-  features?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUpdateManyWithoutArticleNestedInput
@@ -384,7 +384,7 @@ export type ArticleUncheckedUpdateInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUncheckedUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUncheckedUpdateManyWithoutArticleNestedInput
@@ -535,18 +535,18 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type ArticleCreateNestedOneWithoutFeaturesInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutFeaturesInput, Prisma.ArticleUncheckedCreateWithoutFeaturesInput>
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutFeaturesInput
+export type ArticleCreateNestedOneWithoutArticleFeaturesInput = {
+  create?: Prisma.XOR<Prisma.ArticleCreateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedCreateWithoutArticleFeaturesInput>
+  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutArticleFeaturesInput
   connect?: Prisma.ArticleWhereUniqueInput
 }
 
-export type ArticleUpdateOneRequiredWithoutFeaturesNestedInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutFeaturesInput, Prisma.ArticleUncheckedCreateWithoutFeaturesInput>
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutFeaturesInput
-  upsert?: Prisma.ArticleUpsertWithoutFeaturesInput
+export type ArticleUpdateOneRequiredWithoutArticleFeaturesNestedInput = {
+  create?: Prisma.XOR<Prisma.ArticleCreateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedCreateWithoutArticleFeaturesInput>
+  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutArticleFeaturesInput
+  upsert?: Prisma.ArticleUpsertWithoutArticleFeaturesInput
   connect?: Prisma.ArticleWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ArticleUpdateToOneWithWhereWithoutFeaturesInput, Prisma.ArticleUpdateWithoutFeaturesInput>, Prisma.ArticleUncheckedUpdateWithoutFeaturesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ArticleUpdateToOneWithWhereWithoutArticleFeaturesInput, Prisma.ArticleUpdateWithoutArticleFeaturesInput>, Prisma.ArticleUncheckedUpdateWithoutArticleFeaturesInput>
 }
 
 export type ArticleCreateNestedOneWithoutArticlePricesInput = {
@@ -599,7 +599,7 @@ export type ArticleCreateWithoutCategoryInput = {
   isPromoted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleCreateNestedManyWithoutArticleInput
@@ -614,7 +614,7 @@ export type ArticleUncheckedCreateWithoutCategoryInput = {
   isPromoted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceUncheckedCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleUncheckedCreateNestedManyWithoutArticleInput
@@ -661,7 +661,7 @@ export type ArticleScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
 }
 
-export type ArticleCreateWithoutFeaturesInput = {
+export type ArticleCreateWithoutArticleFeaturesInput = {
   name: string
   excerpt: string
   description: string
@@ -675,7 +675,7 @@ export type ArticleCreateWithoutFeaturesInput = {
   carts?: Prisma.CartArticleCreateNestedManyWithoutArticleInput
 }
 
-export type ArticleUncheckedCreateWithoutFeaturesInput = {
+export type ArticleUncheckedCreateWithoutArticleFeaturesInput = {
   articleId?: number
   name: string
   excerpt: string
@@ -690,23 +690,23 @@ export type ArticleUncheckedCreateWithoutFeaturesInput = {
   carts?: Prisma.CartArticleUncheckedCreateNestedManyWithoutArticleInput
 }
 
-export type ArticleCreateOrConnectWithoutFeaturesInput = {
+export type ArticleCreateOrConnectWithoutArticleFeaturesInput = {
   where: Prisma.ArticleWhereUniqueInput
-  create: Prisma.XOR<Prisma.ArticleCreateWithoutFeaturesInput, Prisma.ArticleUncheckedCreateWithoutFeaturesInput>
+  create: Prisma.XOR<Prisma.ArticleCreateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedCreateWithoutArticleFeaturesInput>
 }
 
-export type ArticleUpsertWithoutFeaturesInput = {
-  update: Prisma.XOR<Prisma.ArticleUpdateWithoutFeaturesInput, Prisma.ArticleUncheckedUpdateWithoutFeaturesInput>
-  create: Prisma.XOR<Prisma.ArticleCreateWithoutFeaturesInput, Prisma.ArticleUncheckedCreateWithoutFeaturesInput>
+export type ArticleUpsertWithoutArticleFeaturesInput = {
+  update: Prisma.XOR<Prisma.ArticleUpdateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedUpdateWithoutArticleFeaturesInput>
+  create: Prisma.XOR<Prisma.ArticleCreateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedCreateWithoutArticleFeaturesInput>
   where?: Prisma.ArticleWhereInput
 }
 
-export type ArticleUpdateToOneWithWhereWithoutFeaturesInput = {
+export type ArticleUpdateToOneWithWhereWithoutArticleFeaturesInput = {
   where?: Prisma.ArticleWhereInput
-  data: Prisma.XOR<Prisma.ArticleUpdateWithoutFeaturesInput, Prisma.ArticleUncheckedUpdateWithoutFeaturesInput>
+  data: Prisma.XOR<Prisma.ArticleUpdateWithoutArticleFeaturesInput, Prisma.ArticleUncheckedUpdateWithoutArticleFeaturesInput>
 }
 
-export type ArticleUpdateWithoutFeaturesInput = {
+export type ArticleUpdateWithoutArticleFeaturesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   excerpt?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -720,7 +720,7 @@ export type ArticleUpdateWithoutFeaturesInput = {
   carts?: Prisma.CartArticleUpdateManyWithoutArticleNestedInput
 }
 
-export type ArticleUncheckedUpdateWithoutFeaturesInput = {
+export type ArticleUncheckedUpdateWithoutArticleFeaturesInput = {
   articleId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   excerpt?: Prisma.StringFieldUpdateOperationsInput | string
@@ -744,7 +744,7 @@ export type ArticleCreateWithoutArticlePricesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutArticlesInput
-  features?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleCreateNestedManyWithoutArticleInput
 }
@@ -759,7 +759,7 @@ export type ArticleUncheckedCreateWithoutArticlePricesInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleUncheckedCreateNestedManyWithoutArticleInput
 }
@@ -789,7 +789,7 @@ export type ArticleUpdateWithoutArticlePricesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutArticlesNestedInput
-  features?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUpdateManyWithoutArticleNestedInput
 }
@@ -804,7 +804,7 @@ export type ArticleUncheckedUpdateWithoutArticlePricesInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUncheckedUpdateManyWithoutArticleNestedInput
 }
@@ -818,7 +818,7 @@ export type ArticleCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutArticlesInput
-  features?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleCreateNestedManyWithoutArticleInput
 }
@@ -833,7 +833,7 @@ export type ArticleUncheckedCreateWithoutPhotosInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceUncheckedCreateNestedManyWithoutArticleInput
   carts?: Prisma.CartArticleUncheckedCreateNestedManyWithoutArticleInput
 }
@@ -863,7 +863,7 @@ export type ArticleUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutArticlesNestedInput
-  features?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUpdateManyWithoutArticleNestedInput
 }
@@ -878,7 +878,7 @@ export type ArticleUncheckedUpdateWithoutPhotosInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUncheckedUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUncheckedUpdateManyWithoutArticleNestedInput
 }
@@ -892,7 +892,7 @@ export type ArticleCreateWithoutCartsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutArticlesInput
-  features?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoCreateNestedManyWithoutArticleInput
 }
@@ -907,7 +907,7 @@ export type ArticleUncheckedCreateWithoutCartsInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  features?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutArticleInput
   articlePrices?: Prisma.ArticlePriceUncheckedCreateNestedManyWithoutArticleInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutArticleInput
 }
@@ -937,7 +937,7 @@ export type ArticleUpdateWithoutCartsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutArticlesNestedInput
-  features?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutArticleNestedInput
 }
@@ -952,7 +952,7 @@ export type ArticleUncheckedUpdateWithoutCartsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUncheckedUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutArticleNestedInput
 }
@@ -976,7 +976,7 @@ export type ArticleUpdateWithoutCategoryInput = {
   isPromoted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUpdateManyWithoutArticleNestedInput
@@ -991,7 +991,7 @@ export type ArticleUncheckedUpdateWithoutCategoryInput = {
   isPromoted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  features?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutArticleNestedInput
   articlePrices?: Prisma.ArticlePriceUncheckedUpdateManyWithoutArticleNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutArticleNestedInput
   carts?: Prisma.CartArticleUncheckedUpdateManyWithoutArticleNestedInput
@@ -1014,14 +1014,14 @@ export type ArticleUncheckedUpdateManyWithoutCategoryInput = {
  */
 
 export type ArticleCountOutputType = {
-  features: number
+  articleFeatures: number
   articlePrices: number
   photos: number
   carts: number
 }
 
 export type ArticleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  features?: boolean | ArticleCountOutputTypeCountFeaturesArgs
+  articleFeatures?: boolean | ArticleCountOutputTypeCountArticleFeaturesArgs
   articlePrices?: boolean | ArticleCountOutputTypeCountArticlePricesArgs
   photos?: boolean | ArticleCountOutputTypeCountPhotosArgs
   carts?: boolean | ArticleCountOutputTypeCountCartsArgs
@@ -1040,7 +1040,7 @@ export type ArticleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * ArticleCountOutputType without action
  */
-export type ArticleCountOutputTypeCountFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ArticleCountOutputTypeCountArticleFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ArticleFeatureWhereInput
 }
 
@@ -1077,7 +1077,7 @@ export type ArticleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
-  features?: boolean | Prisma.Article$featuresArgs<ExtArgs>
+  articleFeatures?: boolean | Prisma.Article$articleFeaturesArgs<ExtArgs>
   articlePrices?: boolean | Prisma.Article$articlePricesArgs<ExtArgs>
   photos?: boolean | Prisma.Article$photosArgs<ExtArgs>
   carts?: boolean | Prisma.Article$cartsArgs<ExtArgs>
@@ -1125,7 +1125,7 @@ export type ArticleSelectScalar = {
 export type ArticleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"articleId" | "name" | "excerpt" | "description" | "status" | "isPromoted" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["article"]>
 export type ArticleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
-  features?: boolean | Prisma.Article$featuresArgs<ExtArgs>
+  articleFeatures?: boolean | Prisma.Article$articleFeaturesArgs<ExtArgs>
   articlePrices?: boolean | Prisma.Article$articlePricesArgs<ExtArgs>
   photos?: boolean | Prisma.Article$photosArgs<ExtArgs>
   carts?: boolean | Prisma.Article$cartsArgs<ExtArgs>
@@ -1142,7 +1142,7 @@ export type $ArticlePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Article"
   objects: {
     category: Prisma.$CategoryPayload<ExtArgs>
-    features: Prisma.$ArticleFeaturePayload<ExtArgs>[]
+    articleFeatures: Prisma.$ArticleFeaturePayload<ExtArgs>[]
     articlePrices: Prisma.$ArticlePricePayload<ExtArgs>[]
     photos: Prisma.$PhotoPayload<ExtArgs>[]
     carts: Prisma.$CartArticlePayload<ExtArgs>[]
@@ -1552,7 +1552,7 @@ readonly fields: ArticleFieldRefs;
 export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  features<T extends Prisma.Article$featuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$featuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articleFeatures<T extends Prisma.Article$articleFeaturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$articleFeaturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   articlePrices<T extends Prisma.Article$articlePricesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$articlePricesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticlePricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   photos<T extends Prisma.Article$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   carts<T extends Prisma.Article$cartsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$cartsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1995,9 +1995,9 @@ export type ArticleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Article.features
+ * Article.articleFeatures
  */
-export type Article$featuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Article$articleFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ArticleFeature
    */

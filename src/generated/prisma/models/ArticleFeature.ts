@@ -292,8 +292,8 @@ export type ArticleFeatureCreateInput = {
   value: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  article: Prisma.ArticleCreateNestedOneWithoutFeaturesInput
-  feature: Prisma.FeatureCreateNestedOneWithoutArticlesInput
+  article: Prisma.ArticleCreateNestedOneWithoutArticleFeaturesInput
+  feature: Prisma.FeatureCreateNestedOneWithoutArticleFeaturesInput
 }
 
 export type ArticleFeatureUncheckedCreateInput = {
@@ -309,8 +309,8 @@ export type ArticleFeatureUpdateInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  article?: Prisma.ArticleUpdateOneRequiredWithoutFeaturesNestedInput
-  feature?: Prisma.FeatureUpdateOneRequiredWithoutArticlesNestedInput
+  article?: Prisma.ArticleUpdateOneRequiredWithoutArticleFeaturesNestedInput
+  feature?: Prisma.FeatureUpdateOneRequiredWithoutArticleFeaturesNestedInput
 }
 
 export type ArticleFeatureUncheckedUpdateInput = {
@@ -488,7 +488,7 @@ export type ArticleFeatureCreateWithoutArticleInput = {
   value: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  feature: Prisma.FeatureCreateNestedOneWithoutArticlesInput
+  feature: Prisma.FeatureCreateNestedOneWithoutArticleFeaturesInput
 }
 
 export type ArticleFeatureUncheckedCreateWithoutArticleInput = {
@@ -541,7 +541,7 @@ export type ArticleFeatureCreateWithoutFeatureInput = {
   value: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  article: Prisma.ArticleCreateNestedOneWithoutFeaturesInput
+  article: Prisma.ArticleCreateNestedOneWithoutArticleFeaturesInput
 }
 
 export type ArticleFeatureUncheckedCreateWithoutFeatureInput = {
@@ -590,7 +590,7 @@ export type ArticleFeatureUpdateWithoutArticleInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  feature?: Prisma.FeatureUpdateOneRequiredWithoutArticlesNestedInput
+  feature?: Prisma.FeatureUpdateOneRequiredWithoutArticleFeaturesNestedInput
 }
 
 export type ArticleFeatureUncheckedUpdateWithoutArticleInput = {
@@ -621,7 +621,7 @@ export type ArticleFeatureUpdateWithoutFeatureInput = {
   value?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  article?: Prisma.ArticleUpdateOneRequiredWithoutFeaturesNestedInput
+  article?: Prisma.ArticleUpdateOneRequiredWithoutArticleFeaturesNestedInput
 }
 
 export type ArticleFeatureUncheckedUpdateWithoutFeatureInput = {

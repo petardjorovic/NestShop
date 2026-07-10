@@ -221,7 +221,7 @@ export type FeatureWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Feature"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Feature"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-  articles?: Prisma.ArticleFeatureListRelationFilter
+  articleFeatures?: Prisma.ArticleFeatureListRelationFilter
 }
 
 export type FeatureOrderByWithRelationInput = {
@@ -231,7 +231,7 @@ export type FeatureOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
-  articles?: Prisma.ArticleFeatureOrderByRelationAggregateInput
+  articleFeatures?: Prisma.ArticleFeatureOrderByRelationAggregateInput
 }
 
 export type FeatureWhereUniqueInput = Prisma.AtLeast<{
@@ -245,7 +245,7 @@ export type FeatureWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Feature"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Feature"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-  articles?: Prisma.ArticleFeatureListRelationFilter
+  articleFeatures?: Prisma.ArticleFeatureListRelationFilter
 }, "featureId" | "name_categoryId">
 
 export type FeatureOrderByWithAggregationInput = {
@@ -277,7 +277,7 @@ export type FeatureCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutFeaturesInput
-  articles?: Prisma.ArticleFeatureCreateNestedManyWithoutFeatureInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutFeatureInput
 }
 
 export type FeatureUncheckedCreateInput = {
@@ -286,7 +286,7 @@ export type FeatureUncheckedCreateInput = {
   categoryId: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  articles?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutFeatureInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutFeatureInput
 }
 
 export type FeatureUpdateInput = {
@@ -294,7 +294,7 @@ export type FeatureUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutFeaturesNestedInput
-  articles?: Prisma.ArticleFeatureUpdateManyWithoutFeatureNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutFeatureNestedInput
 }
 
 export type FeatureUncheckedUpdateInput = {
@@ -303,7 +303,7 @@ export type FeatureUncheckedUpdateInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  articles?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutFeatureNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutFeatureNestedInput
 }
 
 export type FeatureCreateManyInput = {
@@ -424,25 +424,25 @@ export type FeatureUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.FeatureScalarWhereInput | Prisma.FeatureScalarWhereInput[]
 }
 
-export type FeatureCreateNestedOneWithoutArticlesInput = {
-  create?: Prisma.XOR<Prisma.FeatureCreateWithoutArticlesInput, Prisma.FeatureUncheckedCreateWithoutArticlesInput>
-  connectOrCreate?: Prisma.FeatureCreateOrConnectWithoutArticlesInput
+export type FeatureCreateNestedOneWithoutArticleFeaturesInput = {
+  create?: Prisma.XOR<Prisma.FeatureCreateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedCreateWithoutArticleFeaturesInput>
+  connectOrCreate?: Prisma.FeatureCreateOrConnectWithoutArticleFeaturesInput
   connect?: Prisma.FeatureWhereUniqueInput
 }
 
-export type FeatureUpdateOneRequiredWithoutArticlesNestedInput = {
-  create?: Prisma.XOR<Prisma.FeatureCreateWithoutArticlesInput, Prisma.FeatureUncheckedCreateWithoutArticlesInput>
-  connectOrCreate?: Prisma.FeatureCreateOrConnectWithoutArticlesInput
-  upsert?: Prisma.FeatureUpsertWithoutArticlesInput
+export type FeatureUpdateOneRequiredWithoutArticleFeaturesNestedInput = {
+  create?: Prisma.XOR<Prisma.FeatureCreateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedCreateWithoutArticleFeaturesInput>
+  connectOrCreate?: Prisma.FeatureCreateOrConnectWithoutArticleFeaturesInput
+  upsert?: Prisma.FeatureUpsertWithoutArticleFeaturesInput
   connect?: Prisma.FeatureWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.FeatureUpdateToOneWithWhereWithoutArticlesInput, Prisma.FeatureUpdateWithoutArticlesInput>, Prisma.FeatureUncheckedUpdateWithoutArticlesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FeatureUpdateToOneWithWhereWithoutArticleFeaturesInput, Prisma.FeatureUpdateWithoutArticleFeaturesInput>, Prisma.FeatureUncheckedUpdateWithoutArticleFeaturesInput>
 }
 
 export type FeatureCreateWithoutCategoryInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  articles?: Prisma.ArticleFeatureCreateNestedManyWithoutFeatureInput
+  articleFeatures?: Prisma.ArticleFeatureCreateNestedManyWithoutFeatureInput
 }
 
 export type FeatureUncheckedCreateWithoutCategoryInput = {
@@ -450,7 +450,7 @@ export type FeatureUncheckedCreateWithoutCategoryInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  articles?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutFeatureInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedCreateNestedManyWithoutFeatureInput
 }
 
 export type FeatureCreateOrConnectWithoutCategoryInput = {
@@ -490,14 +490,14 @@ export type FeatureScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Feature"> | Date | string
 }
 
-export type FeatureCreateWithoutArticlesInput = {
+export type FeatureCreateWithoutArticleFeaturesInput = {
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutFeaturesInput
 }
 
-export type FeatureUncheckedCreateWithoutArticlesInput = {
+export type FeatureUncheckedCreateWithoutArticleFeaturesInput = {
   featureId?: number
   name: string
   categoryId: number
@@ -505,30 +505,30 @@ export type FeatureUncheckedCreateWithoutArticlesInput = {
   updatedAt?: Date | string
 }
 
-export type FeatureCreateOrConnectWithoutArticlesInput = {
+export type FeatureCreateOrConnectWithoutArticleFeaturesInput = {
   where: Prisma.FeatureWhereUniqueInput
-  create: Prisma.XOR<Prisma.FeatureCreateWithoutArticlesInput, Prisma.FeatureUncheckedCreateWithoutArticlesInput>
+  create: Prisma.XOR<Prisma.FeatureCreateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedCreateWithoutArticleFeaturesInput>
 }
 
-export type FeatureUpsertWithoutArticlesInput = {
-  update: Prisma.XOR<Prisma.FeatureUpdateWithoutArticlesInput, Prisma.FeatureUncheckedUpdateWithoutArticlesInput>
-  create: Prisma.XOR<Prisma.FeatureCreateWithoutArticlesInput, Prisma.FeatureUncheckedCreateWithoutArticlesInput>
+export type FeatureUpsertWithoutArticleFeaturesInput = {
+  update: Prisma.XOR<Prisma.FeatureUpdateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedUpdateWithoutArticleFeaturesInput>
+  create: Prisma.XOR<Prisma.FeatureCreateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedCreateWithoutArticleFeaturesInput>
   where?: Prisma.FeatureWhereInput
 }
 
-export type FeatureUpdateToOneWithWhereWithoutArticlesInput = {
+export type FeatureUpdateToOneWithWhereWithoutArticleFeaturesInput = {
   where?: Prisma.FeatureWhereInput
-  data: Prisma.XOR<Prisma.FeatureUpdateWithoutArticlesInput, Prisma.FeatureUncheckedUpdateWithoutArticlesInput>
+  data: Prisma.XOR<Prisma.FeatureUpdateWithoutArticleFeaturesInput, Prisma.FeatureUncheckedUpdateWithoutArticleFeaturesInput>
 }
 
-export type FeatureUpdateWithoutArticlesInput = {
+export type FeatureUpdateWithoutArticleFeaturesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutFeaturesNestedInput
 }
 
-export type FeatureUncheckedUpdateWithoutArticlesInput = {
+export type FeatureUncheckedUpdateWithoutArticleFeaturesInput = {
   featureId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -547,7 +547,7 @@ export type FeatureUpdateWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  articles?: Prisma.ArticleFeatureUpdateManyWithoutFeatureNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUpdateManyWithoutFeatureNestedInput
 }
 
 export type FeatureUncheckedUpdateWithoutCategoryInput = {
@@ -555,7 +555,7 @@ export type FeatureUncheckedUpdateWithoutCategoryInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  articles?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutFeatureNestedInput
+  articleFeatures?: Prisma.ArticleFeatureUncheckedUpdateManyWithoutFeatureNestedInput
 }
 
 export type FeatureUncheckedUpdateManyWithoutCategoryInput = {
@@ -571,11 +571,11 @@ export type FeatureUncheckedUpdateManyWithoutCategoryInput = {
  */
 
 export type FeatureCountOutputType = {
-  articles: number
+  articleFeatures: number
 }
 
 export type FeatureCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  articles?: boolean | FeatureCountOutputTypeCountArticlesArgs
+  articleFeatures?: boolean | FeatureCountOutputTypeCountArticleFeaturesArgs
 }
 
 /**
@@ -591,7 +591,7 @@ export type FeatureCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * FeatureCountOutputType without action
  */
-export type FeatureCountOutputTypeCountArticlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type FeatureCountOutputTypeCountArticleFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ArticleFeatureWhereInput
 }
 
@@ -603,7 +603,7 @@ export type FeatureSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
-  articles?: boolean | Prisma.Feature$articlesArgs<ExtArgs>
+  articleFeatures?: boolean | Prisma.Feature$articleFeaturesArgs<ExtArgs>
   _count?: boolean | Prisma.FeatureCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["feature"]>
 
@@ -636,7 +636,7 @@ export type FeatureSelectScalar = {
 export type FeatureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"featureId" | "name" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["feature"]>
 export type FeatureInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
-  articles?: boolean | Prisma.Feature$articlesArgs<ExtArgs>
+  articleFeatures?: boolean | Prisma.Feature$articleFeaturesArgs<ExtArgs>
   _count?: boolean | Prisma.FeatureCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FeatureIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -650,7 +650,7 @@ export type $FeaturePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Feature"
   objects: {
     category: Prisma.$CategoryPayload<ExtArgs>
-    articles: Prisma.$ArticleFeaturePayload<ExtArgs>[]
+    articleFeatures: Prisma.$ArticleFeaturePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     featureId: number
@@ -1053,7 +1053,7 @@ readonly fields: FeatureFieldRefs;
 export interface Prisma__FeatureClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  articles<T extends Prisma.Feature$articlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Feature$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articleFeatures<T extends Prisma.Feature$articleFeaturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Feature$articleFeaturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1489,9 +1489,9 @@ export type FeatureDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Feature.articles
+ * Feature.articleFeatures
  */
-export type Feature$articlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Feature$articleFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ArticleFeature
    */

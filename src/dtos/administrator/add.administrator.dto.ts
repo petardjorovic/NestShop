@@ -1,6 +1,6 @@
 import { IsString, Length } from 'class-validator';
 
-export class CreateAdministratorDto {
+export class AddAdministratorDto {
   @IsString()
   @Length(3, 32)
   username: string;

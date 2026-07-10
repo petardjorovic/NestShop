@@ -12,7 +12,7 @@ import {
 // import { AdministratorDto } from './dtos/administrator.dto';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { CreateAdministratorDto } from '../../dtos/administrator/create.administrator.dto';
+import { AddAdministratorDto } from '../../dtos/administrator/add.administrator.dto';
 import { EditAdministratorDto } from '../../dtos/administrator/edit.administrator.dto';
 import { AdministratorService } from 'src/services/administrator/administrator.service';
 
@@ -38,7 +38,7 @@ export class AdministratorController {
   // POST http://localhost:3000/api/administrator
   @Post()
   add(
-    @Body() createAdministratorDto: CreateAdministratorDto,
+    @Body() createAdministratorDto: AddAdministratorDto,
   ): Promise<Administrator | ApiResponse> {
     return this.administratorService.addAdministrator(createAdministratorDto);
   }
