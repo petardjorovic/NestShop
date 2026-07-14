@@ -6,12 +6,14 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { ApiResponse } from 'src/misc/api.response.class';
 import { ArticleQueryDto } from 'src/dtos/article/article.query.dto';
 import { AddArticleDto } from 'src/dtos/article/add.article.dto';
+import { EditArticleDto } from 'src/dtos/article/edit.article.dto';
 
 @Controller('api/article')
 export class ArticleController {
@@ -32,5 +34,13 @@ export class ArticleController {
   @Post()
   add(@Body() addArticleDto: AddArticleDto) {
     return this.articleService.add(addArticleDto);
+  }
+
+  @Patch(':id')
+  edit(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() editArticleDto: EditArticleDto,
+  ): Promise<Article | ApiResponse> {
+    return this.articleService.edit(id, editArticleDto);
   }
 }
