@@ -125,6 +125,10 @@ export class ArticleService {
             ...(data.categoryId !== undefined && {
               categoryId: data.categoryId,
             }),
+            ...(data.isPromoted !== undefined && {
+              isPromoted: data.isPromoted,
+            }),
+            ...(data.status !== undefined && { status: data.status }),
           },
         });
 

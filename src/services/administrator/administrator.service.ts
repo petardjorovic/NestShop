@@ -17,15 +17,21 @@ export class AdministratorService {
   async findById(
     administratorId: number,
   ): Promise<Administrator | ApiResponse> {
-    const admin = await this.prisma.administrator.findUnique({
+    const administrator = await this.prisma.administrator.findUnique({
       where: { administratorId },
     });
 
-    if (!admin) {
+    if (!administrator) {
       return new ApiResponse('error', -1001);
     }
 
-    return admin;
+    return administrator;
+  }
+
+  findByUsername(username: string): Promise<Administrator | null> {
+    return this.prisma.administrator.findUnique({
+      where: { username },
+    });
   }
 
   async addAdministrator({
