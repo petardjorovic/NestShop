@@ -1,22 +1,29 @@
-import { AuthService } from './services/auth/auth.service';
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import envValidation from './config/env.validations';
-import appConfig from './config/app.config';
-import databaseConfig from './config/database.configuration';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma.module';
 import { AppController } from './controllers/app.controller';
-import { AdministratorController } from './controllers/api/administrator.controller';
 import { UserController } from './controllers/api/user.controller';
+import { AdministratorController } from './controllers/api/administrator.controller';
+import { CategoryController } from './controllers/api/category.controller';
+import { ArticleController } from './controllers/api/article.controller';
+import { AuthController } from './controllers/api/auth.controller';
+import { AuthService } from './services/auth/auth.service';
 import { AdministratorService } from './services/administrator/administrator.service';
 import { UserService } from './services/user/user.service';
-import { CategoryController } from './controllers/api/category.controller';
 import { CategoryService } from './services/category/category.service';
-import { ArticleController } from './controllers/api/article.controller';
 import { ArticleService } from './services/article/article.service';
-import { AuthController } from './controllers/api/auth.controller';
-import { JwtModule } from '@nestjs/jwt';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.configuration';
+import envValidation from './config/env.validations';
+import { AuthMiddleware } from './middlewares/auth.middleware';
+import { AuthModule } from './auth/auth.module';
+import { AdministratorModule } from './administrator/administrator.module';
 
 @Module({
   imports: [
@@ -27,16 +34,8 @@ import { JwtModule } from '@nestjs/jwt';
       load: [appConfig, databaseConfig],
     }),
     PrismaModule,
-    JwtModule.registerAsync({
-      global: true,
-      useFactory: (config: ConfigService) => ({
-        secret: config.getOrThrow<string>('app.jwtSecret'),
-        signOptions: {
-          expiresIn: '14d',
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    AuthModule,
+    AdministratorModule,
   ],
   controllers: [
     AppController,
@@ -62,4 +61,8 @@ import { JwtModule } from '@nestjs/jwt';
     AuthService,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).exclude('auth/*').forRoutes('api/*');
+  }
+}

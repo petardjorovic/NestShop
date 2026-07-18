@@ -7,11 +7,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { AdministratorService } from 'src/services/administrator/administrator.service';
+import { AdministratorService } from './administrator.service';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { AddAdministratorDto } from '../../dtos/administrator/add.administrator.dto';
-import { EditAdministratorDto } from '../../dtos/administrator/edit.administrator.dto';
+import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
+import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
+
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
