@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { plainToInstance } from 'class-transformer';
 import { map, Observable } from 'rxjs';
-import { SERIALIZE_DTO } from 'src/decorators/serialize.decorators';
+import { SERIALIZE_DTO } from 'src/decorators/serialize.decorator';
 
 @Injectable()
 export class SerializeInterceptor implements NestInterceptor {

@@ -1,5 +1,4 @@
 import { Article } from 'src/generated/prisma/client';
-import { ArticleService } from './../../services/article/article.service';
 import {
   Body,
   Controller,
@@ -11,9 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { ArticleQueryDto } from 'src/dtos/article/article.query.dto';
-import { AddArticleDto } from 'src/dtos/article/add.article.dto';
-import { EditArticleDto } from 'src/dtos/article/edit.article.dto';
+import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
+import { AddArticleDto } from 'src/article/dtos/add.article.dto';
+import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
+import { ArticleService } from './article.service';
 
 @Controller('api/article')
 export class ArticleController {

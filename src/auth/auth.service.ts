@@ -1,15 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
 import { AdministratorService } from 'src/administrator/administrator.service';
 import { Administrator } from 'src/generated/prisma/client';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly administratorService: AdministratorService) {}
+  constructor(
+    private readonly administratorService: AdministratorService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  validateAdministrator(
+  async validateAdministrator(
     username: string,
     password: string,
   ): Promise<Administrator> {
-    return this.administratorService.validateAdministrator(username, password);
+    const admin = await this.administratorService.findByUsername(username);
+
+    if (!admin) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await argon2.verify(admin.passwordHash, password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return admin;
+  }
+
+  async login(administrator: Administrator) {
+    const payload: JwtPayload = {
+      sub: administrator.administratorId,
+      username: administrator.username,
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      accessToken: token,
+    };
   }
 }

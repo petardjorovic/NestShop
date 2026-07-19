@@ -8,12 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CategoryQueryDto } from 'src/dtos/category/category.query.dto';
-import { AddCategoryDto } from 'src/dtos/category/add.category.dto';
-import { EditCategoryDto } from 'src/dtos/category/edit.category.dto';
+import { CategoryQueryDto } from 'src/category/dtos/category.query.dto';
+import { AddCategoryDto } from 'src/category/dtos/add.category.dto';
+import { EditCategoryDto } from 'src/category/dtos/edit.category.dto';
 import { Category } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { CategoryService } from 'src/services/category/category.service';
+import { CategoryService } from './category.service';
 
 @Controller('api/category')
 export class CategoryController {

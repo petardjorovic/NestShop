@@ -10,9 +10,8 @@ import {
 import { AdministratorService } from './administrator.service';
 import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/misc/api.response.class';
-import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
-import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
-
+import { AddAdministratorDto } from './dtos/add.administrator.dto';
+import { EditAdministratorDto } from './dtos/edit.administrator.dto';
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
@@ -29,10 +28,16 @@ export class AdministratorController {
 
   // GET http://localhost:3000/api/administrator/1
   @Get(':id')
-  getById(
+  async getById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Administrator | ApiResponse> {
-    return this.administratorService.findById(id);
+    const admin = await this.administratorService.findById(id);
+
+    if (!admin) {
+      return new ApiResponse('error', -1001);
+    }
+
+    return admin;
   }
 
   // POST http://localhost:3000/api/administrator

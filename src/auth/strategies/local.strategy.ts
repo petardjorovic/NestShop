@@ -15,6 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 }
 
+//* IF YOU USE EMAIL INSTEAD OF USERNAME
 // super({
 //   usernameField: 'email',
-// });  //* if you use email instead of username
+// });
