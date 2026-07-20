@@ -30,6 +30,8 @@ model Administrator {
   username        String @unique @db.VarChar(32)
   passwordHash    String @map("password_hash") @db.VarChar(128)
 
+  administratorSessions AdministratorSession[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -51,6 +53,26 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user")
+}
+
+model AdministratorSession {
+  administratorSessionId Int       @id @default(autoincrement()) @map("administrator_session_id")
+  refreshTokenHash       String    @map("refresh_token_hash") @db.VarChar(255)
+  expiresAt              DateTime  @map("expires_at")
+  revokedAt              DateTime? @map("revoked_at")
+  lastUsedAt             DateTime? @map("last_used_at")
+  ipAddress              String?   @map("ip_address") @db.VarChar(45)
+  userAgent              String?   @map("user_agent") @db.VarChar(255)
+
+  administratorId Int           @map("administrator_id")
+  administrator   Administrator @relation(fields: [administratorId], references: [administratorId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([administratorId])
+  @@index([expiresAt])
+  @@map("administrator_session")
 }
 
 model Category {

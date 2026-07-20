@@ -50,6 +50,11 @@ export type Administrator = Prisma.AdministratorModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model AdministratorSession
+ * 
+ */
+export type AdministratorSession = Prisma.AdministratorSessionModel
+/**
  * Model Category
  * 
  */

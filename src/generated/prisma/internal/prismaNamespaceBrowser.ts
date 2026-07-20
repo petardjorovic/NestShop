@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Administrator: 'Administrator',
   User: 'User',
+  AdministratorSession: 'AdministratorSession',
   Category: 'Category',
   Article: 'Article',
   Feature: 'Feature',
@@ -104,6 +105,22 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AdministratorSessionScalarFieldEnum = {
+  administratorSessionId: 'administratorSessionId',
+  refreshTokenHash: 'refreshTokenHash',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  lastUsedAt: 'lastUsedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  administratorId: 'administratorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdministratorSessionScalarFieldEnum = (typeof AdministratorSessionScalarFieldEnum)[keyof typeof AdministratorSessionScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {

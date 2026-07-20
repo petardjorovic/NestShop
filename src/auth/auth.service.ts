@@ -43,4 +43,15 @@ export class AuthService {
       accessToken: token,
     };
   }
+
+  //TODO
+  // refresh(refreshToken:string){}
+
+  // logout(sessionId:number){}
+
+  // logoutAll(administratorId:number){}
+
+  // generateAccessToken(...){}
+
+  // generateRefreshToken(...){}
 }

@@ -10,6 +10,7 @@
  */
 export type * from './models/Administrator.js'
 export type * from './models/User.js'
+export type * from './models/AdministratorSession.js'
 export type * from './models/Category.js'
 export type * from './models/Article.js'
 export type * from './models/Feature.js'

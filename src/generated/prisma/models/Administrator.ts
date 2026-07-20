@@ -216,6 +216,7 @@ export type AdministratorWhereInput = {
   passwordHash?: Prisma.StringFilter<"Administrator"> | string
   createdAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
+  administratorSessions?: Prisma.AdministratorSessionListRelationFilter
 }
 
 export type AdministratorOrderByWithRelationInput = {
@@ -224,6 +225,7 @@ export type AdministratorOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  administratorSessions?: Prisma.AdministratorSessionOrderByRelationAggregateInput
 }
 
 export type AdministratorWhereUniqueInput = Prisma.AtLeast<{
@@ -235,6 +237,7 @@ export type AdministratorWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"Administrator"> | string
   createdAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
+  administratorSessions?: Prisma.AdministratorSessionListRelationFilter
 }, "administratorId" | "username">
 
 export type AdministratorOrderByWithAggregationInput = {
@@ -266,6 +269,7 @@ export type AdministratorCreateInput = {
   passwordHash: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  administratorSessions?: Prisma.AdministratorSessionCreateNestedManyWithoutAdministratorInput
 }
 
 export type AdministratorUncheckedCreateInput = {
@@ -274,6 +278,7 @@ export type AdministratorUncheckedCreateInput = {
   passwordHash: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  administratorSessions?: Prisma.AdministratorSessionUncheckedCreateNestedManyWithoutAdministratorInput
 }
 
 export type AdministratorUpdateInput = {
@@ -281,6 +286,7 @@ export type AdministratorUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  administratorSessions?: Prisma.AdministratorSessionUpdateManyWithoutAdministratorNestedInput
 }
 
 export type AdministratorUncheckedUpdateInput = {
@@ -289,6 +295,7 @@ export type AdministratorUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  administratorSessions?: Prisma.AdministratorSessionUncheckedUpdateManyWithoutAdministratorNestedInput
 }
 
 export type AdministratorCreateManyInput = {
@@ -346,6 +353,11 @@ export type AdministratorSumOrderByAggregateInput = {
   administratorId?: Prisma.SortOrder
 }
 
+export type AdministratorScalarRelationFilter = {
+  is?: Prisma.AdministratorWhereInput
+  isNot?: Prisma.AdministratorWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -362,6 +374,95 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type AdministratorCreateNestedOneWithoutAdministratorSessionsInput = {
+  create?: Prisma.XOR<Prisma.AdministratorCreateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedCreateWithoutAdministratorSessionsInput>
+  connectOrCreate?: Prisma.AdministratorCreateOrConnectWithoutAdministratorSessionsInput
+  connect?: Prisma.AdministratorWhereUniqueInput
+}
+
+export type AdministratorUpdateOneRequiredWithoutAdministratorSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdministratorCreateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedCreateWithoutAdministratorSessionsInput>
+  connectOrCreate?: Prisma.AdministratorCreateOrConnectWithoutAdministratorSessionsInput
+  upsert?: Prisma.AdministratorUpsertWithoutAdministratorSessionsInput
+  connect?: Prisma.AdministratorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdministratorUpdateToOneWithWhereWithoutAdministratorSessionsInput, Prisma.AdministratorUpdateWithoutAdministratorSessionsInput>, Prisma.AdministratorUncheckedUpdateWithoutAdministratorSessionsInput>
+}
+
+export type AdministratorCreateWithoutAdministratorSessionsInput = {
+  username: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AdministratorUncheckedCreateWithoutAdministratorSessionsInput = {
+  administratorId?: number
+  username: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AdministratorCreateOrConnectWithoutAdministratorSessionsInput = {
+  where: Prisma.AdministratorWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdministratorCreateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedCreateWithoutAdministratorSessionsInput>
+}
+
+export type AdministratorUpsertWithoutAdministratorSessionsInput = {
+  update: Prisma.XOR<Prisma.AdministratorUpdateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedUpdateWithoutAdministratorSessionsInput>
+  create: Prisma.XOR<Prisma.AdministratorCreateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedCreateWithoutAdministratorSessionsInput>
+  where?: Prisma.AdministratorWhereInput
+}
+
+export type AdministratorUpdateToOneWithWhereWithoutAdministratorSessionsInput = {
+  where?: Prisma.AdministratorWhereInput
+  data: Prisma.XOR<Prisma.AdministratorUpdateWithoutAdministratorSessionsInput, Prisma.AdministratorUncheckedUpdateWithoutAdministratorSessionsInput>
+}
+
+export type AdministratorUpdateWithoutAdministratorSessionsInput = {
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AdministratorUncheckedUpdateWithoutAdministratorSessionsInput = {
+  administratorId?: Prisma.IntFieldUpdateOperationsInput | number
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type AdministratorCountOutputType
+ */
+
+export type AdministratorCountOutputType = {
+  administratorSessions: number
+}
+
+export type AdministratorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  administratorSessions?: boolean | AdministratorCountOutputTypeCountAdministratorSessionsArgs
+}
+
+/**
+ * AdministratorCountOutputType without action
+ */
+export type AdministratorCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdministratorCountOutputType
+   */
+  select?: Prisma.AdministratorCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AdministratorCountOutputType without action
+ */
+export type AdministratorCountOutputTypeCountAdministratorSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdministratorSessionWhereInput
+}
 
 
 export type AdministratorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -370,6 +471,8 @@ export type AdministratorSelect<ExtArgs extends runtime.Types.Extensions.Interna
   passwordHash?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  administratorSessions?: boolean | Prisma.Administrator$administratorSessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.AdministratorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["administrator"]>
 
 export type AdministratorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -397,10 +500,18 @@ export type AdministratorSelectScalar = {
 }
 
 export type AdministratorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"administratorId" | "username" | "passwordHash" | "createdAt" | "updatedAt", ExtArgs["result"]["administrator"]>
+export type AdministratorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  administratorSessions?: boolean | Prisma.Administrator$administratorSessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.AdministratorCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type AdministratorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AdministratorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $AdministratorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Administrator"
-  objects: {}
+  objects: {
+    administratorSessions: Prisma.$AdministratorSessionPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     administratorId: number
     username: string
@@ -801,6 +912,7 @@ readonly fields: AdministratorFieldRefs;
  */
 export interface Prisma__AdministratorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  administratorSessions<T extends Prisma.Administrator$administratorSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Administrator$administratorSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdministratorSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -852,6 +964,10 @@ export type AdministratorFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * Filter, which Administrator to fetch.
    */
   where: Prisma.AdministratorWhereUniqueInput
@@ -870,6 +986,10 @@ export type AdministratorFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * Filter, which Administrator to fetch.
    */
   where: Prisma.AdministratorWhereUniqueInput
@@ -887,6 +1007,10 @@ export type AdministratorFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the Administrator
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
   /**
    * Filter, which Administrator to fetch.
    */
@@ -936,6 +1060,10 @@ export type AdministratorFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * Filter, which Administrator to fetch.
    */
   where?: Prisma.AdministratorWhereInput
@@ -983,6 +1111,10 @@ export type AdministratorFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the Administrator
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
   /**
    * Filter, which Administrators to fetch.
    */
@@ -1032,6 +1164,10 @@ export type AdministratorCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * The data needed to create a Administrator.
    */
   data: Prisma.XOR<Prisma.AdministratorCreateInput, Prisma.AdministratorUncheckedCreateInput>
@@ -1079,6 +1215,10 @@ export type AdministratorUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the Administrator
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
   /**
    * The data needed to update a Administrator.
    */
@@ -1146,6 +1286,10 @@ export type AdministratorUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * The filter to search for the Administrator to update in case it exists.
    */
   where: Prisma.AdministratorWhereUniqueInput
@@ -1172,6 +1316,10 @@ export type AdministratorDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
+  /**
    * Filter which Administrator to delete.
    */
   where: Prisma.AdministratorWhereUniqueInput
@@ -1192,6 +1340,30 @@ export type AdministratorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * Administrator.administratorSessions
+ */
+export type Administrator$administratorSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdministratorSession
+   */
+  select?: Prisma.AdministratorSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdministratorSession
+   */
+  omit?: Prisma.AdministratorSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorSessionInclude<ExtArgs> | null
+  where?: Prisma.AdministratorSessionWhereInput
+  orderBy?: Prisma.AdministratorSessionOrderByWithRelationInput | Prisma.AdministratorSessionOrderByWithRelationInput[]
+  cursor?: Prisma.AdministratorSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdministratorSessionScalarFieldEnum | Prisma.AdministratorSessionScalarFieldEnum[]
+}
+
+/**
  * Administrator without action
  */
 export type AdministratorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1203,4 +1375,8 @@ export type AdministratorDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the Administrator
    */
   omit?: Prisma.AdministratorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdministratorInclude<ExtArgs> | null
 }
