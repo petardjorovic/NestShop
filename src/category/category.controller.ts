@@ -12,10 +12,15 @@ import { CategoryQueryDto } from 'src/category/dtos/category.query.dto';
 import { AddCategoryDto } from 'src/category/dtos/add.category.dto';
 import { EditCategoryDto } from 'src/category/dtos/edit.category.dto';
 import { Category } from 'src/generated/prisma/client';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 import { CategoryService } from './category.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('api/category')
+@ApiBearerAuth('access-token')
+@Controller({
+  path: 'category',
+  version: '1',
+})
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 

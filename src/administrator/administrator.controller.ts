@@ -9,14 +9,19 @@ import {
 } from '@nestjs/common';
 import { AdministratorService } from './administrator.service';
 import { Administrator } from 'src/generated/prisma/client';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
 // @Serialize(AdministratorDto)
-@Controller('api/administrator')
+@ApiBearerAuth('access-token')
+@Controller({
+  path: 'administrator',
+  version: '1',
+})
 export class AdministratorController {
   constructor(private readonly administratorService: AdministratorService) {}
 

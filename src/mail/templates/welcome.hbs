@@ -1,0 +1,50 @@
+{{#> layout title="Welcome"}}
+
+<tr>
+    <td
+        style="
+            color:#374151;
+            font-size:16px;
+            line-height:1.8;
+        ">
+
+        Hello <strong>{{name}}</strong>,
+
+        <br><br>
+
+        Welcome to <strong>Shop</strong>!
+
+        <br><br>
+
+        Your account has been successfully created and your email address has been verified.
+
+        <br><br>
+
+        You can now sign in and start exploring the application.
+
+    </td>
+</tr>
+
+{{> button
+    buttonText="Go to Shop"
+    buttonUrl=appUrl
+}}
+
+<tr>
+    <td
+        style="
+            color:#374151;
+            font-size:15px;
+            line-height:1.8;
+        ">
+
+        Thank you for joining us.
+
+        <br><br>
+
+        We hope you enjoy your experience!
+
+    </td>
+</tr>
+
+{{/layout}}

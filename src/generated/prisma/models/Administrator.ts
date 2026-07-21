@@ -38,6 +38,7 @@ export type AdministratorMinAggregateOutputType = {
   administratorId: number | null
   username: string | null
   passwordHash: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type AdministratorMaxAggregateOutputType = {
   administratorId: number | null
   username: string | null
   passwordHash: string | null
+  isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +56,7 @@ export type AdministratorCountAggregateOutputType = {
   administratorId: number
   username: number
   passwordHash: number
+  isActive: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -72,6 +75,7 @@ export type AdministratorMinAggregateInputType = {
   administratorId?: true
   username?: true
   passwordHash?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -80,6 +84,7 @@ export type AdministratorMaxAggregateInputType = {
   administratorId?: true
   username?: true
   passwordHash?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +93,7 @@ export type AdministratorCountAggregateInputType = {
   administratorId?: true
   username?: true
   passwordHash?: true
+  isActive?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -183,6 +189,7 @@ export type AdministratorGroupByOutputType = {
   administratorId: number
   username: string
   passwordHash: string
+  isActive: boolean
   createdAt: Date
   updatedAt: Date
   _count: AdministratorCountAggregateOutputType | null
@@ -214,6 +221,7 @@ export type AdministratorWhereInput = {
   administratorId?: Prisma.IntFilter<"Administrator"> | number
   username?: Prisma.StringFilter<"Administrator"> | string
   passwordHash?: Prisma.StringFilter<"Administrator"> | string
+  isActive?: Prisma.BoolFilter<"Administrator"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   administratorSessions?: Prisma.AdministratorSessionListRelationFilter
@@ -223,6 +231,7 @@ export type AdministratorOrderByWithRelationInput = {
   administratorId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   administratorSessions?: Prisma.AdministratorSessionOrderByRelationAggregateInput
@@ -235,6 +244,7 @@ export type AdministratorWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AdministratorWhereInput[]
   NOT?: Prisma.AdministratorWhereInput | Prisma.AdministratorWhereInput[]
   passwordHash?: Prisma.StringFilter<"Administrator"> | string
+  isActive?: Prisma.BoolFilter<"Administrator"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Administrator"> | Date | string
   administratorSessions?: Prisma.AdministratorSessionListRelationFilter
@@ -244,6 +254,7 @@ export type AdministratorOrderByWithAggregationInput = {
   administratorId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AdministratorCountOrderByAggregateInput
@@ -260,6 +271,7 @@ export type AdministratorScalarWhereWithAggregatesInput = {
   administratorId?: Prisma.IntWithAggregatesFilter<"Administrator"> | number
   username?: Prisma.StringWithAggregatesFilter<"Administrator"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"Administrator"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"Administrator"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Administrator"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Administrator"> | Date | string
 }
@@ -267,6 +279,7 @@ export type AdministratorScalarWhereWithAggregatesInput = {
 export type AdministratorCreateInput = {
   username: string
   passwordHash: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   administratorSessions?: Prisma.AdministratorSessionCreateNestedManyWithoutAdministratorInput
@@ -276,6 +289,7 @@ export type AdministratorUncheckedCreateInput = {
   administratorId?: number
   username: string
   passwordHash: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   administratorSessions?: Prisma.AdministratorSessionUncheckedCreateNestedManyWithoutAdministratorInput
@@ -284,6 +298,7 @@ export type AdministratorUncheckedCreateInput = {
 export type AdministratorUpdateInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   administratorSessions?: Prisma.AdministratorSessionUpdateManyWithoutAdministratorNestedInput
@@ -293,6 +308,7 @@ export type AdministratorUncheckedUpdateInput = {
   administratorId?: Prisma.IntFieldUpdateOperationsInput | number
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   administratorSessions?: Prisma.AdministratorSessionUncheckedUpdateManyWithoutAdministratorNestedInput
@@ -302,6 +318,7 @@ export type AdministratorCreateManyInput = {
   administratorId?: number
   username: string
   passwordHash: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -309,6 +326,7 @@ export type AdministratorCreateManyInput = {
 export type AdministratorUpdateManyMutationInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -317,6 +335,7 @@ export type AdministratorUncheckedUpdateManyInput = {
   administratorId?: Prisma.IntFieldUpdateOperationsInput | number
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -325,6 +344,7 @@ export type AdministratorCountOrderByAggregateInput = {
   administratorId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -337,6 +357,7 @@ export type AdministratorMaxOrderByAggregateInput = {
   administratorId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -345,6 +366,7 @@ export type AdministratorMinOrderByAggregateInput = {
   administratorId?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -360,6 +382,10 @@ export type AdministratorScalarRelationFilter = {
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -391,6 +417,7 @@ export type AdministratorUpdateOneRequiredWithoutAdministratorSessionsNestedInpu
 export type AdministratorCreateWithoutAdministratorSessionsInput = {
   username: string
   passwordHash: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -399,6 +426,7 @@ export type AdministratorUncheckedCreateWithoutAdministratorSessionsInput = {
   administratorId?: number
   username: string
   passwordHash: string
+  isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -422,6 +450,7 @@ export type AdministratorUpdateToOneWithWhereWithoutAdministratorSessionsInput =
 export type AdministratorUpdateWithoutAdministratorSessionsInput = {
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -430,6 +459,7 @@ export type AdministratorUncheckedUpdateWithoutAdministratorSessionsInput = {
   administratorId?: Prisma.IntFieldUpdateOperationsInput | number
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -469,6 +499,7 @@ export type AdministratorSelect<ExtArgs extends runtime.Types.Extensions.Interna
   administratorId?: boolean
   username?: boolean
   passwordHash?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   administratorSessions?: boolean | Prisma.Administrator$administratorSessionsArgs<ExtArgs>
@@ -479,6 +510,7 @@ export type AdministratorSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   administratorId?: boolean
   username?: boolean
   passwordHash?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["administrator"]>
@@ -487,6 +519,7 @@ export type AdministratorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   administratorId?: boolean
   username?: boolean
   passwordHash?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["administrator"]>
@@ -495,11 +528,12 @@ export type AdministratorSelectScalar = {
   administratorId?: boolean
   username?: boolean
   passwordHash?: boolean
+  isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AdministratorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"administratorId" | "username" | "passwordHash" | "createdAt" | "updatedAt", ExtArgs["result"]["administrator"]>
+export type AdministratorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"administratorId" | "username" | "passwordHash" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["administrator"]>
 export type AdministratorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   administratorSessions?: boolean | Prisma.Administrator$administratorSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.AdministratorCountOutputTypeDefaultArgs<ExtArgs>
@@ -516,6 +550,7 @@ export type $AdministratorPayload<ExtArgs extends runtime.Types.Extensions.Inter
     administratorId: number
     username: string
     passwordHash: string
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["administrator"]>
@@ -945,6 +980,7 @@ export interface AdministratorFieldRefs {
   readonly administratorId: Prisma.FieldRef<"Administrator", 'Int'>
   readonly username: Prisma.FieldRef<"Administrator", 'String'>
   readonly passwordHash: Prisma.FieldRef<"Administrator", 'String'>
+  readonly isActive: Prisma.FieldRef<"Administrator", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Administrator", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Administrator", 'DateTime'>
 }

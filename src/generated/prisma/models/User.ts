@@ -42,8 +42,11 @@ export type UserMinAggregateOutputType = {
   surname: string | null
   phoneNumber: string | null
   postalAddress: string | null
+  isActive: boolean | null
+  emailVerifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -54,8 +57,11 @@ export type UserMaxAggregateOutputType = {
   surname: string | null
   phoneNumber: string | null
   postalAddress: string | null
+  isActive: boolean | null
+  emailVerifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -66,8 +72,11 @@ export type UserCountAggregateOutputType = {
   surname: number
   phoneNumber: number
   postalAddress: number
+  isActive: number
+  emailVerifiedAt: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -88,8 +97,11 @@ export type UserMinAggregateInputType = {
   surname?: true
   phoneNumber?: true
   postalAddress?: true
+  isActive?: true
+  emailVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -100,8 +112,11 @@ export type UserMaxAggregateInputType = {
   surname?: true
   phoneNumber?: true
   postalAddress?: true
+  isActive?: true
+  emailVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -112,8 +127,11 @@ export type UserCountAggregateInputType = {
   surname?: true
   phoneNumber?: true
   postalAddress?: true
+  isActive?: true
+  emailVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -211,8 +229,11 @@ export type UserGroupByOutputType = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive: boolean
+  emailVerifiedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -246,9 +267,13 @@ export type UserWhereInput = {
   surname?: Prisma.StringFilter<"User"> | string
   phoneNumber?: Prisma.StringFilter<"User"> | string
   postalAddress?: Prisma.StringFilter<"User"> | string
+  isActive?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   carts?: Prisma.CartListRelationFilter
+  userSessions?: Prisma.UserSessionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -259,9 +284,13 @@ export type UserOrderByWithRelationInput = {
   surname?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   postalAddress?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   carts?: Prisma.CartOrderByRelationAggregateInput
+  userSessions?: Prisma.UserSessionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -275,9 +304,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   forename?: Prisma.StringFilter<"User"> | string
   surname?: Prisma.StringFilter<"User"> | string
   postalAddress?: Prisma.StringFilter<"User"> | string
+  isActive?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   carts?: Prisma.CartListRelationFilter
+  userSessions?: Prisma.UserSessionListRelationFilter
 }, "userId" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -288,8 +321,11 @@ export type UserOrderByWithAggregationInput = {
   surname?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   postalAddress?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -308,8 +344,11 @@ export type UserScalarWhereWithAggregatesInput = {
   surname?: Prisma.StringWithAggregatesFilter<"User"> | string
   phoneNumber?: Prisma.StringWithAggregatesFilter<"User"> | string
   postalAddress?: Prisma.StringWithAggregatesFilter<"User"> | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -319,9 +358,13 @@ export type UserCreateInput = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
+  userSessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -332,9 +375,13 @@ export type UserUncheckedCreateInput = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
+  userSessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -344,9 +391,13 @@ export type UserUpdateInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
+  userSessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -357,9 +408,13 @@ export type UserUncheckedUpdateInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
+  userSessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -370,8 +425,11 @@ export type UserCreateManyInput = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -381,8 +439,11 @@ export type UserUpdateManyMutationInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -393,8 +454,11 @@ export type UserUncheckedUpdateManyInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -405,8 +469,11 @@ export type UserCountOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   postalAddress?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -421,8 +488,11 @@ export type UserMaxOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   postalAddress?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -433,8 +503,11 @@ export type UserMinOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   postalAddress?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -444,6 +517,20 @@ export type UserSumOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserCreateNestedOneWithoutUserSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSessionsInput, Prisma.UserUncheckedCreateWithoutUserSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserSessionsInput, Prisma.UserUncheckedCreateWithoutUserSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserSessionsInput
+  upsert?: Prisma.UserUpsertWithoutUserSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSessionsInput, Prisma.UserUpdateWithoutUserSessionsInput>, Prisma.UserUncheckedUpdateWithoutUserSessionsInput>
 }
 
 export type UserCreateNestedOneWithoutCartsInput = {
@@ -460,6 +547,84 @@ export type UserUpdateOneRequiredWithoutCartsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCartsInput, Prisma.UserUpdateWithoutCartsInput>, Prisma.UserUncheckedUpdateWithoutCartsInput>
 }
 
+export type UserCreateWithoutUserSessionsInput = {
+  email: string
+  passwordHash: string
+  forename: string
+  surname: string
+  phoneNumber: string
+  postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  carts?: Prisma.CartCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserSessionsInput = {
+  userId?: number
+  email: string
+  passwordHash: string
+  forename: string
+  surname: string
+  phoneNumber: string
+  postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSessionsInput, Prisma.UserUncheckedCreateWithoutUserSessionsInput>
+}
+
+export type UserUpsertWithoutUserSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserSessionsInput, Prisma.UserUncheckedUpdateWithoutUserSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserSessionsInput, Prisma.UserUncheckedCreateWithoutUserSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserSessionsInput, Prisma.UserUncheckedUpdateWithoutUserSessionsInput>
+}
+
+export type UserUpdateWithoutUserSessionsInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  forename?: Prisma.StringFieldUpdateOperationsInput | string
+  surname?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carts?: Prisma.CartUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserSessionsInput = {
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  forename?: Prisma.StringFieldUpdateOperationsInput | string
+  surname?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutCartsInput = {
   email: string
   passwordHash: string
@@ -467,8 +632,12 @@ export type UserCreateWithoutCartsInput = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  userSessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCartsInput = {
@@ -479,8 +648,12 @@ export type UserUncheckedCreateWithoutCartsInput = {
   surname: string
   phoneNumber: string
   postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  userSessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCartsInput = {
@@ -506,8 +679,12 @@ export type UserUpdateWithoutCartsInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCartsInput = {
@@ -518,8 +695,12 @@ export type UserUncheckedUpdateWithoutCartsInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userSessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -529,10 +710,12 @@ export type UserUncheckedUpdateWithoutCartsInput = {
 
 export type UserCountOutputType = {
   carts: number
+  userSessions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   carts?: boolean | UserCountOutputTypeCountCartsArgs
+  userSessions?: boolean | UserCountOutputTypeCountUserSessionsArgs
 }
 
 /**
@@ -552,6 +735,13 @@ export type UserCountOutputTypeCountCartsArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.CartWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserSessionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
@@ -561,9 +751,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   surname?: boolean
   phoneNumber?: boolean
   postalAddress?: boolean
+  isActive?: boolean
+  emailVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
   carts?: boolean | Prisma.User$cartsArgs<ExtArgs>
+  userSessions?: boolean | Prisma.User$userSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -575,8 +769,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   surname?: boolean
   phoneNumber?: boolean
   postalAddress?: boolean
+  isActive?: boolean
+  emailVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -587,8 +784,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   surname?: boolean
   phoneNumber?: boolean
   postalAddress?: boolean
+  isActive?: boolean
+  emailVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -599,13 +799,17 @@ export type UserSelectScalar = {
   surname?: boolean
   phoneNumber?: boolean
   postalAddress?: boolean
+  isActive?: boolean
+  emailVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "email" | "passwordHash" | "forename" | "surname" | "phoneNumber" | "postalAddress" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "email" | "passwordHash" | "forename" | "surname" | "phoneNumber" | "postalAddress" | "isActive" | "emailVerifiedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   carts?: boolean | Prisma.User$cartsArgs<ExtArgs>
+  userSessions?: boolean | Prisma.User$userSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -615,6 +819,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     carts: Prisma.$CartPayload<ExtArgs>[]
+    userSessions: Prisma.$UserSessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: number
@@ -624,8 +829,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     surname: string
     phoneNumber: string
     postalAddress: string
+    isActive: boolean
+    emailVerifiedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1021,6 +1229,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   carts<T extends Prisma.User$cartsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cartsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userSessions<T extends Prisma.User$userSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1057,8 +1266,11 @@ export interface UserFieldRefs {
   readonly surname: Prisma.FieldRef<"User", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"User", 'String'>
   readonly postalAddress: Prisma.FieldRef<"User", 'String'>
+  readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
@@ -1473,6 +1685,30 @@ export type User$cartsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.CartScalarFieldEnum | Prisma.CartScalarFieldEnum[]
+}
+
+/**
+ * User.userSessions
+ */
+export type User$userSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSession
+   */
+  select?: Prisma.UserSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSession
+   */
+  omit?: Prisma.UserSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSessionInclude<ExtArgs> | null
+  where?: Prisma.UserSessionWhereInput
+  orderBy?: Prisma.UserSessionOrderByWithRelationInput | Prisma.UserSessionOrderByWithRelationInput[]
+  cursor?: Prisma.UserSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserSessionScalarFieldEnum | Prisma.UserSessionScalarFieldEnum[]
 }
 
 /**

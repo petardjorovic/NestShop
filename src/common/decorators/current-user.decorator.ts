@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Administrator } from './../generated/prisma/client';
-import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
+import { Administrator } from '../../generated/prisma/client';
+import { AuthenticatedRequest } from 'src/common/interfaces/authenticated-request.interface';
 
 export const CurrentUser = createParamDecorator(
   (data: keyof Administrator | undefined, context: ExecutionContext) => {

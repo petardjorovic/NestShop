@@ -23,15 +23,25 @@ export * from './enums.js';
  */
 export type Administrator = Prisma.AdministratorModel
 /**
+ * Model AdministratorSession
+ * 
+ */
+export type AdministratorSession = Prisma.AdministratorSessionModel
+/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
 /**
- * Model AdministratorSession
+ * Model UserSession
  * 
  */
-export type AdministratorSession = Prisma.AdministratorSessionModel
+export type UserSession = Prisma.UserSessionModel
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = Prisma.VerificationTokenModel
 /**
  * Model Category
  * 

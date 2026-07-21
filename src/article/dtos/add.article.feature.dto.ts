@@ -5,9 +5,9 @@ export class AddArticleFeatureDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  featureId: number;
+  featureId!: number;
 
   @IsString()
   @Length(1, 255)
-  value: string;
+  value!: string;
 }

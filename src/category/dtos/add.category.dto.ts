@@ -4,11 +4,11 @@ import { IsInt, IsOptional, IsString, Length } from 'class-validator';
 export class AddCategoryDto {
   @IsString()
   @Length(2, 50)
-  name: string;
+  name!: string;
 
   @IsString()
   @Length(3, 128)
-  imagePath: string;
+  imagePath!: string;
 
   @IsOptional()
   @Type(() => Number)

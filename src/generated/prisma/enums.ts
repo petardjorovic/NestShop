@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const VerificationType = {
+  EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET'
+} as const
+
+export type VerificationType = (typeof VerificationType)[keyof typeof VerificationType]
+
+
 export const ArticleStatus = {
   AVAILABLE: 'AVAILABLE',
   VISIBLE: 'VISIBLE',

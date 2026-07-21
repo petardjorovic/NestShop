@@ -1,0 +1,35 @@
+{{#> layout title="Verify email"}}
+
+<tr>
+
+<td>
+
+Hello <strong>{{name}}</strong>,
+
+<br><br>
+
+Thank you for creating your account.
+
+Please verify your email address by clicking the button below.
+
+</td>
+
+</tr>
+
+{{> button
+    buttonText="Verify Email"
+    buttonUrl=verifyUrl
+}}
+
+<tr>
+
+<td>
+
+This verification link is valid for
+<strong>{{expiresIn}}</strong>.
+
+</td>
+
+</tr>
+
+{{/layout}}

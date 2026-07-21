@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Article, Prisma } from 'src/generated/prisma/client';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
-import { PrismaService } from 'src/services/prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ArticleService {

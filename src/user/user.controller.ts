@@ -1,4 +1,9 @@
 import { Controller } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('api/user')
+@ApiBearerAuth('access-token')
+@Controller({
+  path: 'user',
+  version: '1',
+})
 export class UserController {}

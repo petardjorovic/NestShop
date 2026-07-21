@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import { Administrator } from 'src/generated/prisma/client';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 
-import { PrismaService } from 'src/services/prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
 

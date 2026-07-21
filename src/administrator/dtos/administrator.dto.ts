@@ -2,11 +2,11 @@ import { Exclude, Expose } from 'class-transformer';
 
 export class AdministratorDto {
   @Expose()
-  administratorId: number;
+  administratorId!: number;
 
   @Expose()
-  username: string;
+  username!: string;
 
   @Exclude()
-  passwordHash: string;
+  passwordHash!: string;
 }

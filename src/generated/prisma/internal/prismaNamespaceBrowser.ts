@@ -52,8 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Administrator: 'Administrator',
-  User: 'User',
   AdministratorSession: 'AdministratorSession',
+  User: 'User',
+  UserSession: 'UserSession',
+  VerificationToken: 'VerificationToken',
   Category: 'Category',
   Article: 'Article',
   Feature: 'Feature',
@@ -85,26 +87,12 @@ export const AdministratorScalarFieldEnum = {
   administratorId: 'administratorId',
   username: 'username',
   passwordHash: 'passwordHash',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type AdministratorScalarFieldEnum = (typeof AdministratorScalarFieldEnum)[keyof typeof AdministratorScalarFieldEnum]
-
-
-export const UserScalarFieldEnum = {
-  userId: 'userId',
-  email: 'email',
-  passwordHash: 'passwordHash',
-  forename: 'forename',
-  surname: 'surname',
-  phoneNumber: 'phoneNumber',
-  postalAddress: 'postalAddress',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const AdministratorSessionScalarFieldEnum = {
@@ -121,6 +109,53 @@ export const AdministratorSessionScalarFieldEnum = {
 } as const
 
 export type AdministratorSessionScalarFieldEnum = (typeof AdministratorSessionScalarFieldEnum)[keyof typeof AdministratorSessionScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  userId: 'userId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  forename: 'forename',
+  surname: 'surname',
+  phoneNumber: 'phoneNumber',
+  postalAddress: 'postalAddress',
+  isActive: 'isActive',
+  emailVerifiedAt: 'emailVerifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const UserSessionScalarFieldEnum = {
+  userSessionId: 'userSessionId',
+  refreshTokenHash: 'refreshTokenHash',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  lastUsedAt: 'lastUsedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserSessionScalarFieldEnum = (typeof UserSessionScalarFieldEnum)[keyof typeof UserSessionScalarFieldEnum]
+
+
+export const VerificationTokenScalarFieldEnum = {
+  verificationTokenId: 'verificationTokenId',
+  email: 'email',
+  tokenHash: 'tokenHash',
+  type: 'type',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {

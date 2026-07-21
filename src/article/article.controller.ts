@@ -9,13 +9,18 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
 import { ArticleService } from './article.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('api/article')
+@ApiBearerAuth('access-token')
+@Controller({
+  path: 'article',
+  version: '1',
+})
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 

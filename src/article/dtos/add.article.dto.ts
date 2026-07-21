@@ -13,27 +13,27 @@ import { AddArticleFeatureDto } from './add.article.feature.dto';
 export class AddArticleDto {
   @IsString()
   @Length(2, 128)
-  name: string;
+  name!: string;
 
   @IsString()
   @Length(2, 255)
-  excerpt: string;
+  excerpt!: string;
 
   @IsString()
-  description: string;
+  description!: string;
 
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  categoryId: number;
+  categoryId!: number;
 
   @Type(() => Number)
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  price: number;
+  price!: number;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => AddArticleFeatureDto)
-  features: AddArticleFeatureDto[];
+  features!: AddArticleFeatureDto[];
 }

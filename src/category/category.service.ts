@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ApiResponse } from 'src/misc/api.response.class';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AddCategoryDto } from 'src/category/dtos/add.category.dto';
 import { Category } from 'src/generated/prisma/client';
 import { EditCategoryDto } from 'src/category/dtos/edit.category.dto';
 import { CategoryQueryDto } from 'src/category/dtos/category.query.dto';
-import { PrismaService } from 'src/services/prisma/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CategoryService {

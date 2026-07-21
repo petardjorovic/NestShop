@@ -2,23 +2,23 @@ import { Exclude, Expose } from 'class-transformer';
 
 export class UserDto {
   @Expose()
-  userId: number;
+  userId!: number;
 
   @Expose()
-  email: string;
+  email!: string;
 
   @Exclude()
-  passwordHash: string;
+  passwordHash!: string;
 
   @Expose()
-  forename: string;
+  forename!: string;
 
   @Expose()
-  surname: string;
+  surname!: string;
 
   @Expose()
-  phoneNumber: number;
+  phoneNumber!: number;
 
   @Expose()
-  postalAddress: string;
+  postalAddress!: string;
 }
