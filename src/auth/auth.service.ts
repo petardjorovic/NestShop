@@ -4,6 +4,7 @@ import * as argon2 from 'argon2';
 import { AdministratorService } from 'src/administrator/administrator.service';
 import { Administrator } from 'src/generated/prisma/client';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { LoginAdministratorDto } from 'src/administrator/dtos/login.administartor.dto';
 
 @Injectable()
 export class AuthService {
@@ -31,10 +32,14 @@ export class AuthService {
     return admin;
   }
 
-  async login(administrator: Administrator) {
+  async login(data: LoginAdministratorDto) {
+    const administartor = await this.validateAdministrator(
+      data.username,
+      data.password,
+    );
     const payload: JwtPayload = {
-      sub: administrator.administratorId,
-      username: administrator.username,
+      sub: administartor.administratorId,
+      username: administartor.username,
     };
 
     const token = await this.jwtService.signAsync(payload);

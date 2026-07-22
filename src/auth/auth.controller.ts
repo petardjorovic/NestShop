@@ -1,9 +1,10 @@
-import { Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from 'src/common/decorators/public.decorator';
-import { type AuthenticatedRequest } from '../common/interfaces/authenticated-request.interface';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoginAdministratorDto } from 'src/administrator/dtos/login.administartor.dto';
 
+@ApiTags('Authentication')
 @Controller({
   path: 'auth',
   version: '1',
@@ -11,11 +12,13 @@ import { type AuthenticatedRequest } from '../common/interfaces/authenticated-re
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({
+    summary: 'Administrator login',
+  })
   @Public()
-  @UseGuards(LocalAuthGuard)
   @HttpCode(200)
   @Post('login')
-  login(@Request() req: AuthenticatedRequest) {
-    return this.authService.login(req.user);
+  login(@Body() loginAdministartorDto: LoginAdministratorDto) {
+    return this.authService.login(loginAdministartorDto);
   }
 }
