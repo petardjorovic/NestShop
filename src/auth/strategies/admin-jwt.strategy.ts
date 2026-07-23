@@ -1,12 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { JwtPayload } from '../interfaces/jwt-payload.interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdministratorService } from 'src/administrator/administrator.service';
+import { JwtPayload } from '../interfaces/token-payload.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class AdminJwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly config: ConfigService,
     private readonly administratorService: AdministratorService,

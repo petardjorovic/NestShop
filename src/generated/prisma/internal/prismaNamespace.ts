@@ -1506,6 +1506,7 @@ export type AdministratorScalarFieldEnum = (typeof AdministratorScalarFieldEnum)
 
 export const AdministratorSessionScalarFieldEnum = {
   administratorSessionId: 'administratorSessionId',
+  sessionUuid: 'sessionUuid',
   refreshTokenHash: 'refreshTokenHash',
   expiresAt: 'expiresAt',
   revokedAt: 'revokedAt',
@@ -1540,6 +1541,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const UserSessionScalarFieldEnum = {
   userSessionId: 'userSessionId',
+  sessionUuid: 'sessionUuid',
   refreshTokenHash: 'refreshTokenHash',
   expiresAt: 'expiresAt',
   revokedAt: 'revokedAt',
@@ -1556,12 +1558,12 @@ export type UserSessionScalarFieldEnum = (typeof UserSessionScalarFieldEnum)[key
 
 export const VerificationTokenScalarFieldEnum = {
   verificationTokenId: 'verificationTokenId',
-  email: 'email',
   tokenHash: 'tokenHash',
   type: 'type',
   expiresAt: 'expiresAt',
   usedAt: 'usedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  userId: 'userId'
 } as const
 
 export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]

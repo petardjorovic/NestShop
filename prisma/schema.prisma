@@ -41,6 +41,7 @@ model Administrator {
 
 model AdministratorSession {
   administratorSessionId Int       @id @default(autoincrement()) @map("administrator_session_id")
+  sessionUuid            String    @unique @map("session_uuid")
   refreshTokenHash       String    @map("refresh_token_hash") @db.VarChar(255)
   expiresAt              DateTime  @map("expires_at")
   revokedAt              DateTime? @map("revoked_at")
@@ -70,8 +71,9 @@ model User {
   postalAddress String  @map("postal_address") @db.Text
   isActive      Boolean @default(true) @map("is_active")
 
-  carts        Cart[]
-  userSessions UserSession[]
+  carts              Cart[]
+  userSessions       UserSession[]
+  verificationTokens VerificationToken[]
 
   emailVerifiedAt DateTime? @map("email_verified_at")
   createdAt       DateTime  @default(now()) @map("created_at")
@@ -83,6 +85,7 @@ model User {
 
 model UserSession {
   userSessionId    Int       @id @default(autoincrement()) @map("user_session_id")
+  sessionUuid      String    @unique @map("session_uuid")
   refreshTokenHash String    @map("refresh_token_hash") @db.VarChar(255)
   expiresAt        DateTime  @map("expires_at")
   revokedAt        DateTime? @map("revoked_at")
@@ -109,15 +112,17 @@ enum VerificationType {
 
 model VerificationToken {
   verificationTokenId Int              @id @default(autoincrement()) @map("verification_token_id")
-  email               String           @db.VarChar(255)
-  tokenHash           String           @map("token_hash") @db.VarChar(255)
+  tokenHash           String           @unique @map("token_hash") @db.VarChar(255)
   type                VerificationType
   expiresAt           DateTime         @map("expires_at")
   usedAt              DateTime?        @map("used_at")
   createdAt           DateTime         @default(now()) @map("created_at")
 
-  @@index([email])
-  @@index([email, type])
+  userId Int
+  user   User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, type])
   @@index([expiresAt])
   @@map("verification_token")
 }

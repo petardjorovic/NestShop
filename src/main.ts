@@ -20,6 +20,10 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+  // app.enableCors({
+  // origin: ...,  // ovde id url frontenda
+  // credentials: true,
+  // });
 
   const config = new DocumentBuilder()
     .setTitle('Shop aplikacija')
@@ -30,8 +34,10 @@ async function bootstrap() {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
+        description:
+          'Development only. Production authentication uses HttpOnly cookies.',
       },
-      'access-token',
+      'jwt',
     )
     .build();
 

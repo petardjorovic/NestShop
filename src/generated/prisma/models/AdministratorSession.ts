@@ -38,6 +38,7 @@ export type AdministratorSessionSumAggregateOutputType = {
 
 export type AdministratorSessionMinAggregateOutputType = {
   administratorSessionId: number | null
+  sessionUuid: string | null
   refreshTokenHash: string | null
   expiresAt: Date | null
   revokedAt: Date | null
@@ -51,6 +52,7 @@ export type AdministratorSessionMinAggregateOutputType = {
 
 export type AdministratorSessionMaxAggregateOutputType = {
   administratorSessionId: number | null
+  sessionUuid: string | null
   refreshTokenHash: string | null
   expiresAt: Date | null
   revokedAt: Date | null
@@ -64,6 +66,7 @@ export type AdministratorSessionMaxAggregateOutputType = {
 
 export type AdministratorSessionCountAggregateOutputType = {
   administratorSessionId: number
+  sessionUuid: number
   refreshTokenHash: number
   expiresAt: number
   revokedAt: number
@@ -89,6 +92,7 @@ export type AdministratorSessionSumAggregateInputType = {
 
 export type AdministratorSessionMinAggregateInputType = {
   administratorSessionId?: true
+  sessionUuid?: true
   refreshTokenHash?: true
   expiresAt?: true
   revokedAt?: true
@@ -102,6 +106,7 @@ export type AdministratorSessionMinAggregateInputType = {
 
 export type AdministratorSessionMaxAggregateInputType = {
   administratorSessionId?: true
+  sessionUuid?: true
   refreshTokenHash?: true
   expiresAt?: true
   revokedAt?: true
@@ -115,6 +120,7 @@ export type AdministratorSessionMaxAggregateInputType = {
 
 export type AdministratorSessionCountAggregateInputType = {
   administratorSessionId?: true
+  sessionUuid?: true
   refreshTokenHash?: true
   expiresAt?: true
   revokedAt?: true
@@ -215,6 +221,7 @@ export type AdministratorSessionGroupByArgs<ExtArgs extends runtime.Types.Extens
 
 export type AdministratorSessionGroupByOutputType = {
   administratorSessionId: number
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date
   revokedAt: Date | null
@@ -251,6 +258,7 @@ export type AdministratorSessionWhereInput = {
   OR?: Prisma.AdministratorSessionWhereInput[]
   NOT?: Prisma.AdministratorSessionWhereInput | Prisma.AdministratorSessionWhereInput[]
   administratorSessionId?: Prisma.IntFilter<"AdministratorSession"> | number
+  sessionUuid?: Prisma.StringFilter<"AdministratorSession"> | string
   refreshTokenHash?: Prisma.StringFilter<"AdministratorSession"> | string
   expiresAt?: Prisma.DateTimeFilter<"AdministratorSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"AdministratorSession"> | Date | string | null
@@ -265,6 +273,7 @@ export type AdministratorSessionWhereInput = {
 
 export type AdministratorSessionOrderByWithRelationInput = {
   administratorSessionId?: Prisma.SortOrder
+  sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -279,6 +288,7 @@ export type AdministratorSessionOrderByWithRelationInput = {
 
 export type AdministratorSessionWhereUniqueInput = Prisma.AtLeast<{
   administratorSessionId?: number
+  sessionUuid?: string
   AND?: Prisma.AdministratorSessionWhereInput | Prisma.AdministratorSessionWhereInput[]
   OR?: Prisma.AdministratorSessionWhereInput[]
   NOT?: Prisma.AdministratorSessionWhereInput | Prisma.AdministratorSessionWhereInput[]
@@ -292,10 +302,11 @@ export type AdministratorSessionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AdministratorSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AdministratorSession"> | Date | string
   administrator?: Prisma.XOR<Prisma.AdministratorScalarRelationFilter, Prisma.AdministratorWhereInput>
-}, "administratorSessionId">
+}, "administratorSessionId" | "sessionUuid">
 
 export type AdministratorSessionOrderByWithAggregationInput = {
   administratorSessionId?: Prisma.SortOrder
+  sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -317,6 +328,7 @@ export type AdministratorSessionScalarWhereWithAggregatesInput = {
   OR?: Prisma.AdministratorSessionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.AdministratorSessionScalarWhereWithAggregatesInput | Prisma.AdministratorSessionScalarWhereWithAggregatesInput[]
   administratorSessionId?: Prisma.IntWithAggregatesFilter<"AdministratorSession"> | number
+  sessionUuid?: Prisma.StringWithAggregatesFilter<"AdministratorSession"> | string
   refreshTokenHash?: Prisma.StringWithAggregatesFilter<"AdministratorSession"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"AdministratorSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AdministratorSession"> | Date | string | null
@@ -329,6 +341,7 @@ export type AdministratorSessionScalarWhereWithAggregatesInput = {
 }
 
 export type AdministratorSessionCreateInput = {
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -342,6 +355,7 @@ export type AdministratorSessionCreateInput = {
 
 export type AdministratorSessionUncheckedCreateInput = {
   administratorSessionId?: number
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -354,6 +368,7 @@ export type AdministratorSessionUncheckedCreateInput = {
 }
 
 export type AdministratorSessionUpdateInput = {
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -367,6 +382,7 @@ export type AdministratorSessionUpdateInput = {
 
 export type AdministratorSessionUncheckedUpdateInput = {
   administratorSessionId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -380,6 +396,7 @@ export type AdministratorSessionUncheckedUpdateInput = {
 
 export type AdministratorSessionCreateManyInput = {
   administratorSessionId?: number
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -392,6 +409,7 @@ export type AdministratorSessionCreateManyInput = {
 }
 
 export type AdministratorSessionUpdateManyMutationInput = {
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -404,6 +422,7 @@ export type AdministratorSessionUpdateManyMutationInput = {
 
 export type AdministratorSessionUncheckedUpdateManyInput = {
   administratorSessionId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -427,6 +446,7 @@ export type AdministratorSessionOrderByRelationAggregateInput = {
 
 export type AdministratorSessionCountOrderByAggregateInput = {
   administratorSessionId?: Prisma.SortOrder
+  sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
@@ -445,6 +465,7 @@ export type AdministratorSessionAvgOrderByAggregateInput = {
 
 export type AdministratorSessionMaxOrderByAggregateInput = {
   administratorSessionId?: Prisma.SortOrder
+  sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
@@ -458,6 +479,7 @@ export type AdministratorSessionMaxOrderByAggregateInput = {
 
 export type AdministratorSessionMinOrderByAggregateInput = {
   administratorSessionId?: Prisma.SortOrder
+  sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
@@ -525,6 +547,7 @@ export type NullableStringFieldUpdateOperationsInput = {
 }
 
 export type AdministratorSessionCreateWithoutAdministratorInput = {
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -537,6 +560,7 @@ export type AdministratorSessionCreateWithoutAdministratorInput = {
 
 export type AdministratorSessionUncheckedCreateWithoutAdministratorInput = {
   administratorSessionId?: number
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -578,6 +602,7 @@ export type AdministratorSessionScalarWhereInput = {
   OR?: Prisma.AdministratorSessionScalarWhereInput[]
   NOT?: Prisma.AdministratorSessionScalarWhereInput | Prisma.AdministratorSessionScalarWhereInput[]
   administratorSessionId?: Prisma.IntFilter<"AdministratorSession"> | number
+  sessionUuid?: Prisma.StringFilter<"AdministratorSession"> | string
   refreshTokenHash?: Prisma.StringFilter<"AdministratorSession"> | string
   expiresAt?: Prisma.DateTimeFilter<"AdministratorSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"AdministratorSession"> | Date | string | null
@@ -591,6 +616,7 @@ export type AdministratorSessionScalarWhereInput = {
 
 export type AdministratorSessionCreateManyAdministratorInput = {
   administratorSessionId?: number
+  sessionUuid: string
   refreshTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
@@ -602,6 +628,7 @@ export type AdministratorSessionCreateManyAdministratorInput = {
 }
 
 export type AdministratorSessionUpdateWithoutAdministratorInput = {
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -614,6 +641,7 @@ export type AdministratorSessionUpdateWithoutAdministratorInput = {
 
 export type AdministratorSessionUncheckedUpdateWithoutAdministratorInput = {
   administratorSessionId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -626,6 +654,7 @@ export type AdministratorSessionUncheckedUpdateWithoutAdministratorInput = {
 
 export type AdministratorSessionUncheckedUpdateManyWithoutAdministratorInput = {
   administratorSessionId?: Prisma.IntFieldUpdateOperationsInput | number
+  sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -640,6 +669,7 @@ export type AdministratorSessionUncheckedUpdateManyWithoutAdministratorInput = {
 
 export type AdministratorSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   administratorSessionId?: boolean
+  sessionUuid?: boolean
   refreshTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
@@ -654,6 +684,7 @@ export type AdministratorSessionSelect<ExtArgs extends runtime.Types.Extensions.
 
 export type AdministratorSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   administratorSessionId?: boolean
+  sessionUuid?: boolean
   refreshTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
@@ -668,6 +699,7 @@ export type AdministratorSessionSelectCreateManyAndReturn<ExtArgs extends runtim
 
 export type AdministratorSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   administratorSessionId?: boolean
+  sessionUuid?: boolean
   refreshTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
@@ -682,6 +714,7 @@ export type AdministratorSessionSelectUpdateManyAndReturn<ExtArgs extends runtim
 
 export type AdministratorSessionSelectScalar = {
   administratorSessionId?: boolean
+  sessionUuid?: boolean
   refreshTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
@@ -693,7 +726,7 @@ export type AdministratorSessionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AdministratorSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"administratorSessionId" | "refreshTokenHash" | "expiresAt" | "revokedAt" | "lastUsedAt" | "ipAddress" | "userAgent" | "administratorId" | "createdAt" | "updatedAt", ExtArgs["result"]["administratorSession"]>
+export type AdministratorSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"administratorSessionId" | "sessionUuid" | "refreshTokenHash" | "expiresAt" | "revokedAt" | "lastUsedAt" | "ipAddress" | "userAgent" | "administratorId" | "createdAt" | "updatedAt", ExtArgs["result"]["administratorSession"]>
 export type AdministratorSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   administrator?: boolean | Prisma.AdministratorDefaultArgs<ExtArgs>
 }
@@ -711,6 +744,7 @@ export type $AdministratorSessionPayload<ExtArgs extends runtime.Types.Extension
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     administratorSessionId: number
+    sessionUuid: string
     refreshTokenHash: string
     expiresAt: Date
     revokedAt: Date | null
@@ -1145,6 +1179,7 @@ export interface Prisma__AdministratorSessionClient<T, Null = never, ExtArgs ext
  */
 export interface AdministratorSessionFieldRefs {
   readonly administratorSessionId: Prisma.FieldRef<"AdministratorSession", 'Int'>
+  readonly sessionUuid: Prisma.FieldRef<"AdministratorSession", 'String'>
   readonly refreshTokenHash: Prisma.FieldRef<"AdministratorSession", 'String'>
   readonly expiresAt: Prisma.FieldRef<"AdministratorSession", 'DateTime'>
   readonly revokedAt: Prisma.FieldRef<"AdministratorSession", 'DateTime'>

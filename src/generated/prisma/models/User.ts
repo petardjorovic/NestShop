@@ -274,6 +274,7 @@ export type UserWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   carts?: Prisma.CartListRelationFilter
   userSessions?: Prisma.UserSessionListRelationFilter
+  verificationTokens?: Prisma.VerificationTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -291,6 +292,7 @@ export type UserOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   carts?: Prisma.CartOrderByRelationAggregateInput
   userSessions?: Prisma.UserSessionOrderByRelationAggregateInput
+  verificationTokens?: Prisma.VerificationTokenOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -311,6 +313,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   carts?: Prisma.CartListRelationFilter
   userSessions?: Prisma.UserSessionListRelationFilter
+  verificationTokens?: Prisma.VerificationTokenListRelationFilter
 }, "userId" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -365,6 +368,7 @@ export type UserCreateInput = {
   deletedAt?: Date | string | null
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
   userSessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -382,6 +386,7 @@ export type UserUncheckedCreateInput = {
   deletedAt?: Date | string | null
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
   userSessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -398,6 +403,7 @@ export type UserUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
   userSessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -415,6 +421,7 @@ export type UserUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
   userSessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -533,6 +540,20 @@ export type UserUpdateOneRequiredWithoutUserSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserSessionsInput, Prisma.UserUpdateWithoutUserSessionsInput>, Prisma.UserUncheckedUpdateWithoutUserSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutVerificationTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutVerificationTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutVerificationTokensInput
+  upsert?: Prisma.UserUpsertWithoutVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationTokensInput, Prisma.UserUpdateWithoutVerificationTokensInput>, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
+}
+
 export type UserCreateNestedOneWithoutCartsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutCartsInput, Prisma.UserUncheckedCreateWithoutCartsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutCartsInput
@@ -560,6 +581,7 @@ export type UserCreateWithoutUserSessionsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserSessionsInput = {
@@ -576,6 +598,7 @@ export type UserUncheckedCreateWithoutUserSessionsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserSessionsInput = {
@@ -607,6 +630,7 @@ export type UserUpdateWithoutUserSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserSessionsInput = {
@@ -623,6 +647,89 @@ export type UserUncheckedUpdateWithoutUserSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutVerificationTokensInput = {
+  email: string
+  passwordHash: string
+  forename: string
+  surname: string
+  phoneNumber: string
+  postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  carts?: Prisma.CartCreateNestedManyWithoutUserInput
+  userSessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutVerificationTokensInput = {
+  userId?: number
+  email: string
+  passwordHash: string
+  forename: string
+  surname: string
+  phoneNumber: string
+  postalAddress: string
+  isActive?: boolean
+  emailVerifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
+  userSessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutVerificationTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
+}
+
+export type UserUpsertWithoutVerificationTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutVerificationTokensInput, Prisma.UserUncheckedCreateWithoutVerificationTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutVerificationTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutVerificationTokensInput>
+}
+
+export type UserUpdateWithoutVerificationTokensInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  forename?: Prisma.StringFieldUpdateOperationsInput | string
+  surname?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carts?: Prisma.CartUpdateManyWithoutUserNestedInput
+  userSessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutVerificationTokensInput = {
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  forename?: Prisma.StringFieldUpdateOperationsInput | string
+  surname?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  postalAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
+  userSessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCartsInput = {
@@ -638,6 +745,7 @@ export type UserCreateWithoutCartsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   userSessions?: Prisma.UserSessionCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCartsInput = {
@@ -654,6 +762,7 @@ export type UserUncheckedCreateWithoutCartsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   userSessions?: Prisma.UserSessionUncheckedCreateNestedManyWithoutUserInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCartsInput = {
@@ -685,6 +794,7 @@ export type UserUpdateWithoutCartsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userSessions?: Prisma.UserSessionUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCartsInput = {
@@ -701,6 +811,7 @@ export type UserUncheckedUpdateWithoutCartsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userSessions?: Prisma.UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  verificationTokens?: Prisma.VerificationTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -711,11 +822,13 @@ export type UserUncheckedUpdateWithoutCartsInput = {
 export type UserCountOutputType = {
   carts: number
   userSessions: number
+  verificationTokens: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   carts?: boolean | UserCountOutputTypeCountCartsArgs
   userSessions?: boolean | UserCountOutputTypeCountUserSessionsArgs
+  verificationTokens?: boolean | UserCountOutputTypeCountVerificationTokensArgs
 }
 
 /**
@@ -742,6 +855,13 @@ export type UserCountOutputTypeCountUserSessionsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.UserSessionWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VerificationTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   userId?: boolean
@@ -758,6 +878,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   deletedAt?: boolean
   carts?: boolean | Prisma.User$cartsArgs<ExtArgs>
   userSessions?: boolean | Prisma.User$userSessionsArgs<ExtArgs>
+  verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -810,6 +931,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   carts?: boolean | Prisma.User$cartsArgs<ExtArgs>
   userSessions?: boolean | Prisma.User$userSessionsArgs<ExtArgs>
+  verificationTokens?: boolean | Prisma.User$verificationTokensArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -820,6 +942,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     carts: Prisma.$CartPayload<ExtArgs>[]
     userSessions: Prisma.$UserSessionPayload<ExtArgs>[]
+    verificationTokens: Prisma.$VerificationTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     userId: number
@@ -1230,6 +1353,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   carts<T extends Prisma.User$cartsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cartsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userSessions<T extends Prisma.User$userSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  verificationTokens<T extends Prisma.User$verificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1709,6 +1833,30 @@ export type User$userSessionsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.UserSessionScalarFieldEnum | Prisma.UserSessionScalarFieldEnum[]
+}
+
+/**
+ * User.verificationTokens
+ */
+export type User$verificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VerificationToken
+   */
+  select?: Prisma.VerificationTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VerificationToken
+   */
+  omit?: Prisma.VerificationTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VerificationTokenInclude<ExtArgs> | null
+  where?: Prisma.VerificationTokenWhereInput
+  orderBy?: Prisma.VerificationTokenOrderByWithRelationInput | Prisma.VerificationTokenOrderByWithRelationInput[]
+  cursor?: Prisma.VerificationTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VerificationTokenScalarFieldEnum | Prisma.VerificationTokenScalarFieldEnum[]
 }
 
 /**
