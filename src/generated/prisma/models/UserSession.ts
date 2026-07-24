@@ -40,6 +40,7 @@ export type UserSessionMinAggregateOutputType = {
   userSessionId: number | null
   sessionUuid: string | null
   refreshTokenHash: string | null
+  csrfTokenHash: string | null
   expiresAt: Date | null
   revokedAt: Date | null
   lastUsedAt: Date | null
@@ -54,6 +55,7 @@ export type UserSessionMaxAggregateOutputType = {
   userSessionId: number | null
   sessionUuid: string | null
   refreshTokenHash: string | null
+  csrfTokenHash: string | null
   expiresAt: Date | null
   revokedAt: Date | null
   lastUsedAt: Date | null
@@ -68,6 +70,7 @@ export type UserSessionCountAggregateOutputType = {
   userSessionId: number
   sessionUuid: number
   refreshTokenHash: number
+  csrfTokenHash: number
   expiresAt: number
   revokedAt: number
   lastUsedAt: number
@@ -94,6 +97,7 @@ export type UserSessionMinAggregateInputType = {
   userSessionId?: true
   sessionUuid?: true
   refreshTokenHash?: true
+  csrfTokenHash?: true
   expiresAt?: true
   revokedAt?: true
   lastUsedAt?: true
@@ -108,6 +112,7 @@ export type UserSessionMaxAggregateInputType = {
   userSessionId?: true
   sessionUuid?: true
   refreshTokenHash?: true
+  csrfTokenHash?: true
   expiresAt?: true
   revokedAt?: true
   lastUsedAt?: true
@@ -122,6 +127,7 @@ export type UserSessionCountAggregateInputType = {
   userSessionId?: true
   sessionUuid?: true
   refreshTokenHash?: true
+  csrfTokenHash?: true
   expiresAt?: true
   revokedAt?: true
   lastUsedAt?: true
@@ -223,6 +229,7 @@ export type UserSessionGroupByOutputType = {
   userSessionId: number
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date
   revokedAt: Date | null
   lastUsedAt: Date | null
@@ -260,6 +267,7 @@ export type UserSessionWhereInput = {
   userSessionId?: Prisma.IntFilter<"UserSession"> | number
   sessionUuid?: Prisma.StringFilter<"UserSession"> | string
   refreshTokenHash?: Prisma.StringFilter<"UserSession"> | string
+  csrfTokenHash?: Prisma.StringFilter<"UserSession"> | string
   expiresAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
@@ -275,6 +283,7 @@ export type UserSessionOrderByWithRelationInput = {
   userSessionId?: Prisma.SortOrder
   sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
+  csrfTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -293,6 +302,7 @@ export type UserSessionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserSessionWhereInput[]
   NOT?: Prisma.UserSessionWhereInput | Prisma.UserSessionWhereInput[]
   refreshTokenHash?: Prisma.StringFilter<"UserSession"> | string
+  csrfTokenHash?: Prisma.StringFilter<"UserSession"> | string
   expiresAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
@@ -308,6 +318,7 @@ export type UserSessionOrderByWithAggregationInput = {
   userSessionId?: Prisma.SortOrder
   sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
+  csrfTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -330,6 +341,7 @@ export type UserSessionScalarWhereWithAggregatesInput = {
   userSessionId?: Prisma.IntWithAggregatesFilter<"UserSession"> | number
   sessionUuid?: Prisma.StringWithAggregatesFilter<"UserSession"> | string
   refreshTokenHash?: Prisma.StringWithAggregatesFilter<"UserSession"> | string
+  csrfTokenHash?: Prisma.StringWithAggregatesFilter<"UserSession"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"UserSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSession"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSession"> | Date | string | null
@@ -343,6 +355,7 @@ export type UserSessionScalarWhereWithAggregatesInput = {
 export type UserSessionCreateInput = {
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -357,6 +370,7 @@ export type UserSessionUncheckedCreateInput = {
   userSessionId?: number
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -370,6 +384,7 @@ export type UserSessionUncheckedCreateInput = {
 export type UserSessionUpdateInput = {
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -384,6 +399,7 @@ export type UserSessionUncheckedUpdateInput = {
   userSessionId?: Prisma.IntFieldUpdateOperationsInput | number
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -398,6 +414,7 @@ export type UserSessionCreateManyInput = {
   userSessionId?: number
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -411,6 +428,7 @@ export type UserSessionCreateManyInput = {
 export type UserSessionUpdateManyMutationInput = {
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -424,6 +442,7 @@ export type UserSessionUncheckedUpdateManyInput = {
   userSessionId?: Prisma.IntFieldUpdateOperationsInput | number
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -448,6 +467,7 @@ export type UserSessionCountOrderByAggregateInput = {
   userSessionId?: Prisma.SortOrder
   sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
+  csrfTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
@@ -467,6 +487,7 @@ export type UserSessionMaxOrderByAggregateInput = {
   userSessionId?: Prisma.SortOrder
   sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
+  csrfTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
@@ -481,6 +502,7 @@ export type UserSessionMinOrderByAggregateInput = {
   userSessionId?: Prisma.SortOrder
   sessionUuid?: Prisma.SortOrder
   refreshTokenHash?: Prisma.SortOrder
+  csrfTokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   revokedAt?: Prisma.SortOrder
   lastUsedAt?: Prisma.SortOrder
@@ -541,6 +563,7 @@ export type UserSessionUncheckedUpdateManyWithoutUserNestedInput = {
 export type UserSessionCreateWithoutUserInput = {
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -554,6 +577,7 @@ export type UserSessionUncheckedCreateWithoutUserInput = {
   userSessionId?: number
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -596,6 +620,7 @@ export type UserSessionScalarWhereInput = {
   userSessionId?: Prisma.IntFilter<"UserSession"> | number
   sessionUuid?: Prisma.StringFilter<"UserSession"> | string
   refreshTokenHash?: Prisma.StringFilter<"UserSession"> | string
+  csrfTokenHash?: Prisma.StringFilter<"UserSession"> | string
   expiresAt?: Prisma.DateTimeFilter<"UserSession"> | Date | string
   revokedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
   lastUsedAt?: Prisma.DateTimeNullableFilter<"UserSession"> | Date | string | null
@@ -610,6 +635,7 @@ export type UserSessionCreateManyUserInput = {
   userSessionId?: number
   sessionUuid: string
   refreshTokenHash: string
+  csrfTokenHash: string
   expiresAt: Date | string
   revokedAt?: Date | string | null
   lastUsedAt?: Date | string | null
@@ -622,6 +648,7 @@ export type UserSessionCreateManyUserInput = {
 export type UserSessionUpdateWithoutUserInput = {
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -635,6 +662,7 @@ export type UserSessionUncheckedUpdateWithoutUserInput = {
   userSessionId?: Prisma.IntFieldUpdateOperationsInput | number
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -648,6 +676,7 @@ export type UserSessionUncheckedUpdateManyWithoutUserInput = {
   userSessionId?: Prisma.IntFieldUpdateOperationsInput | number
   sessionUuid?: Prisma.StringFieldUpdateOperationsInput | string
   refreshTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  csrfTokenHash?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -663,6 +692,7 @@ export type UserSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   userSessionId?: boolean
   sessionUuid?: boolean
   refreshTokenHash?: boolean
+  csrfTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
   lastUsedAt?: boolean
@@ -678,6 +708,7 @@ export type UserSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   userSessionId?: boolean
   sessionUuid?: boolean
   refreshTokenHash?: boolean
+  csrfTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
   lastUsedAt?: boolean
@@ -693,6 +724,7 @@ export type UserSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   userSessionId?: boolean
   sessionUuid?: boolean
   refreshTokenHash?: boolean
+  csrfTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
   lastUsedAt?: boolean
@@ -708,6 +740,7 @@ export type UserSessionSelectScalar = {
   userSessionId?: boolean
   sessionUuid?: boolean
   refreshTokenHash?: boolean
+  csrfTokenHash?: boolean
   expiresAt?: boolean
   revokedAt?: boolean
   lastUsedAt?: boolean
@@ -718,7 +751,7 @@ export type UserSessionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userSessionId" | "sessionUuid" | "refreshTokenHash" | "expiresAt" | "revokedAt" | "lastUsedAt" | "ipAddress" | "userAgent" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["userSession"]>
+export type UserSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userSessionId" | "sessionUuid" | "refreshTokenHash" | "csrfTokenHash" | "expiresAt" | "revokedAt" | "lastUsedAt" | "ipAddress" | "userAgent" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["userSession"]>
 export type UserSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -738,6 +771,7 @@ export type $UserSessionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     userSessionId: number
     sessionUuid: string
     refreshTokenHash: string
+    csrfTokenHash: string
     expiresAt: Date
     revokedAt: Date | null
     lastUsedAt: Date | null
@@ -1173,6 +1207,7 @@ export interface UserSessionFieldRefs {
   readonly userSessionId: Prisma.FieldRef<"UserSession", 'Int'>
   readonly sessionUuid: Prisma.FieldRef<"UserSession", 'String'>
   readonly refreshTokenHash: Prisma.FieldRef<"UserSession", 'String'>
+  readonly csrfTokenHash: Prisma.FieldRef<"UserSession", 'String'>
   readonly expiresAt: Prisma.FieldRef<"UserSession", 'DateTime'>
   readonly revokedAt: Prisma.FieldRef<"UserSession", 'DateTime'>
   readonly lastUsedAt: Prisma.FieldRef<"UserSession", 'DateTime'>

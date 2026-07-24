@@ -1,16 +1,20 @@
+import { CookieService } from './cookie.service';
 import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
 import { AdminAuthService } from './admin.auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { type Response } from 'express';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
 
-@ApiTags('Authentication')
+@ApiTags('Administrator Authentication')
 @Controller({
-  path: 'auth',
+  path: 'auth/admin',
   version: '1',
 })
 export class AdminAuthController {
-  constructor(private readonly adminAuthService: AdminAuthService) {}
+  constructor(
+    private readonly adminAuthService: AdminAuthService,
+    private readonly cookieService: CookieService,
+  ) {}
 
   @ApiOperation({
     summary: 'Administrator login',
@@ -21,8 +25,12 @@ export class AdminAuthController {
     @Body() loginAdministratorDto: AdministratorLoginDto,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const { accessToken, refreshToken } = await this.adminAuthService.login(
-      loginAdministratorDto,
-    );
+    const tokens = await this.adminAuthService.login(loginAdministratorDto);
+
+    this.cookieService.setAdminCookies(tokens, response);
+
+    return {
+      success: true,
+    };
   }
 }

@@ -5,10 +5,10 @@ import { TokenService } from './token.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Administrator } from 'src/generated/prisma/client';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { JwtPayload } from './interfaces/token-payload.interface';
 import { JwtSubjectType } from './enums/jwt-subject-type.enum';
-import { TokenPair } from './interfaces/token-pair.interface';
+import { Tokens } from './interfaces/tokens.interface';
 
 @Injectable()
 export class AdminAuthService {
@@ -18,6 +18,51 @@ export class AdminAuthService {
     private readonly tokenService: TokenService,
   ) {}
 
+  async login(data: AdministratorLoginDto): Promise<Tokens> {
+    const administrator = await this.authenticateAdministrator(
+      data.username,
+      data.password,
+    );
+
+    // Create session identifier
+    const sessionUuid = randomUUID();
+
+    // Build JWT payload
+    const payload: JwtPayload = {
+      sub: administrator.administratorId,
+      sid: sessionUuid,
+      type: JwtSubjectType.ADMIN,
+    };
+
+    // Generate tokens
+    const { accessToken, refreshToken, csrfToken } =
+      await this.issueTokens(payload);
+
+    // Hash secrets for storage
+    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
+      argon2.hash(refreshToken),
+      argon2.hash(csrfToken),
+    ]);
+
+    // Store only hashes of long-lived secrets
+    await this.prisma.administratorSession.create({
+      data: {
+        sessionUuid,
+        administratorId: administrator.administratorId,
+        refreshTokenHash,
+        csrfTokenHash,
+        expiresAt: this.tokenService.getRefreshTokenExpiresAt(),
+        lastUsedAt: new Date(),
+      },
+    });
+
+    return { accessToken, refreshToken, csrfToken };
+  }
+
+  // TODO
+  // async refresh(){}
+  // async logout(){}
+
   private async authenticateAdministrator(
     username: string,
     password: string,
@@ -25,6 +70,10 @@ export class AdminAuthService {
     const admin = await this.administratorService.findByUsername(username);
 
     if (!admin) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (!admin.isActive) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -37,39 +86,13 @@ export class AdminAuthService {
     return admin;
   }
 
-  async login(data: AdministratorLoginDto): Promise<TokenPair> {
-    const administrator = await this.authenticateAdministrator(
-      data.username,
-      data.password,
-    );
+  private async issueTokens(payload: JwtPayload): Promise<Tokens> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.tokenService.signAccessToken(payload),
+      this.tokenService.signRefreshToken(payload),
+    ]);
+    const csrfToken = randomBytes(32).toString('hex');
 
-    const sessionUuid = randomUUID();
-
-    // create payload
-    const payload: JwtPayload = {
-      sub: administrator.administratorId,
-      sid: sessionUuid,
-      type: JwtSubjectType.ADMIN,
-    };
-
-    // sign tokens
-    const accessToken = await this.tokenService.signAccessToken(payload);
-    const refreshToken = await this.tokenService.signRefreshToken(payload);
-
-    // save refresh hash
-    const refreshTokenHash = await argon2.hash(refreshToken);
-
-    // create session
-    await this.prisma.administratorSession.create({
-      data: {
-        sessionUuid,
-        administratorId: administrator.administratorId,
-        refreshTokenHash,
-        expiresAt: this.tokenService.getRefreshTokenExpiresAt(),
-        lastUsedAt: new Date(),
-      },
-    });
-
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, csrfToken };
   }
 }

@@ -9,6 +9,7 @@ import { TokenService } from './token.service';
 import { UserAuthController } from './user.auth.controller';
 import { UserAuthService } from './user.auth.service';
 import { UserJwtStrategy } from './strategies/user-jwt.strategy';
+import { CookieService } from './cookie.service';
 
 @Module({
   imports: [
@@ -21,9 +22,10 @@ import { UserJwtStrategy } from './strategies/user-jwt.strategy';
     AdminAuthService,
     UserAuthService,
     TokenService,
+    CookieService,
     AdminJwtStrategy,
     UserJwtStrategy,
   ],
-  exports: [AdminAuthService, UserAuthService, TokenService],
+  exports: [AdminAuthService, UserAuthService, TokenService, CookieService],
 })
 export class AuthModule {}
