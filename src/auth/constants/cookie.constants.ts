@@ -12,3 +12,5 @@ export const UserCookies = {
 
 export const ADMIN_REFRESH_PATH = '/api/v1/auth/admin/refresh';
 export const USER_REFRESH_PATH = '/api/v1/auth/refresh';
+
+export const CSRF_HEADER = 'x-csrf-token';

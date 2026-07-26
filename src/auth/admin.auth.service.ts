@@ -59,9 +59,82 @@ export class AdminAuthService {
     return { accessToken, refreshToken, csrfToken };
   }
 
-  // TODO
-  // async refresh(){}
-  // async logout(){}
+  async refresh(refreshToken: string, csrfToken: string): Promise<Tokens> {
+    // verify refresh JWT
+    const payload: JwtPayload =
+      await this.tokenService.verifyRefreshToken(refreshToken);
+
+    if (payload.type !== JwtSubjectType.ADMIN)
+      throw new UnauthorizedException('Invalid token');
+
+    // find administrator session
+    const session = await this.prisma.administratorSession.findUnique({
+      where: { sessionUuid: payload.sid },
+    });
+
+    if (!session) throw new UnauthorizedException('Session expired');
+
+    if (session.revokedAt) throw new UnauthorizedException('Session revoked');
+
+    if (session.expiresAt <= new Date())
+      throw new UnauthorizedException('Session expired');
+
+    if (session.administratorId !== payload.sub)
+      throw new UnauthorizedException('Invalid session');
+
+    const [isRefreshTokenValid, isCsrfTokenValid] = await Promise.all([
+      argon2.verify(session.refreshTokenHash, refreshToken),
+      argon2.verify(session.csrfTokenHash, csrfToken),
+    ]);
+
+    if (!isRefreshTokenValid)
+      throw new UnauthorizedException('Invalid refresh token');
+
+    if (!isCsrfTokenValid)
+      throw new UnauthorizedException('Invalid csrf token');
+
+    const administrator = await this.administratorService.findById(
+      session.administratorId,
+    );
+
+    if (!administrator)
+      throw new UnauthorizedException('Administrator not found');
+
+    if (!administrator.isActive)
+      throw new UnauthorizedException('Administrator inactive');
+
+    // Generate new tokens
+    const tokens = await this.issueTokens({
+      sub: administrator.administratorId,
+      sid: session.sessionUuid,
+      type: JwtSubjectType.ADMIN,
+    });
+
+    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
+      argon2.hash(tokens.refreshToken),
+      argon2.hash(tokens.csrfToken),
+    ]);
+
+    await this.prisma.administratorSession.update({
+      where: { administratorSessionId: session.administratorSessionId },
+      data: {
+        refreshTokenHash,
+        csrfTokenHash,
+        lastUsedAt: new Date(),
+      },
+    });
+
+    return tokens;
+  }
+
+  async logout(sessionUuid: string): Promise<void> {
+    await this.prisma.administratorSession.updateMany({
+      where: { sessionUuid, revokedAt: null },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+  }
 
   private async authenticateAdministrator(
     username: string,
