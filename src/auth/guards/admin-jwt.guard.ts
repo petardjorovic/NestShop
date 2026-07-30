@@ -13,9 +13,11 @@ export class AdminJwtGuard extends AuthGuard('admin-jwt') {
       IS_ADMIN_PUBLIC_KEY,
       [context.getHandler(), context.getClass()],
     );
+
     if (isPublic) {
       return true;
     }
+
     return super.canActivate(context);
   }
 }
