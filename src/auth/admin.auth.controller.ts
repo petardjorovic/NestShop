@@ -5,21 +5,18 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   Res,
-  UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
-import { AdminAuthService } from './admin.auth.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { type Response } from 'express';
-import { AdministratorLoginDto } from './dtos/administrator-login.dto';
-import { type AuthRequest } from './interfaces/auth-request.interface';
-import { AdminCookies, CSRF_HEADER } from './constants/cookie.constants';
+import { AdminAuthService } from './admin.auth.service';
 import { AdminPublic } from 'src/common/decorators/public-admin.decorator';
 import { CurrentAdmin } from 'src/common/decorators/current-admin.decorator';
+import { AdminProtected } from './decorators/admin-protected.decorator';
+import { AdminRefreshToken } from './decorators/admin-refresh-token.decorator';
+import { AdminCsrfToken } from './decorators/admin-csrf-token.decorator';
+import { AdministratorLoginDto } from './dtos/administrator-login.dto';
+import { type Response } from 'express';
 import { type AdminAuthUser } from './interfaces/admin-auth-user.interface';
-import { AdminJwtGuard } from './guards/admin-jwt.guard';
 
 @ApiTags('Administrator Authentication')
 @Controller({
@@ -35,8 +32,8 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Administrator login',
   })
-  @HttpCode(HttpStatus.OK)
   @AdminPublic()
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
     @Body() loginAdministratorDto: AdministratorLoginDto,
@@ -54,23 +51,14 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Refresh administrator tokens',
   })
-  @HttpCode(HttpStatus.OK)
   @AdminPublic()
+  @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(
-    @Req() request: AuthRequest,
+    @AdminRefreshToken() refreshToken: string,
+    @AdminCsrfToken() csrfToken: string,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const refreshToken = request.cookies[AdminCookies.REFRESH];
-    if (!refreshToken) {
-      throw new UnauthorizedException('Refresh token missing');
-    }
-    const csrfToken = request.headers[CSRF_HEADER];
-
-    if (!csrfToken || typeof csrfToken !== 'string') {
-      throw new UnauthorizedException('CSRF token missing');
-    }
-
     const tokens = await this.adminAuthService.refresh(refreshToken, csrfToken);
 
     this.cookieService.setAdminCookies(tokens, response);
@@ -80,10 +68,10 @@ export class AdminAuthController {
     };
   }
 
-  @UseGuards(AdminJwtGuard)
   @ApiOperation({
     summary: 'Administrator logout',
   })
+  @AdminProtected()
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(
