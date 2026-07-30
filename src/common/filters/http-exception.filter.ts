@@ -36,11 +36,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
             }
           : (exceptionResponse as Record<string, unknown>);
     } else {
-      this.logger.error(
-        exception instanceof Error
-          ? exception.stack
-          : JSON.stringify(exception),
-      );
+      let errorMessage: string;
+
+      if (exception instanceof Error) {
+        errorMessage = exception.stack ?? exception.message;
+      } else {
+        try {
+          errorMessage = JSON.stringify(exception) ?? String(exception);
+        } catch {
+          errorMessage = String(exception);
+        }
+      }
+      this.logger.error(errorMessage);
 
       body = {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
