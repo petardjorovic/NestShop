@@ -1,3 +1,4 @@
+import { VerificationTokenService } from 'src/verification-token/verification-token.service';
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
@@ -5,6 +6,7 @@ import { UserService } from 'src/user/user.service';
 import { MailService } from 'src/mail/mail.service';
 import { UserRegistrationDto } from './dtos/user-registration.dto';
 import { VerificationType } from 'src/generated/prisma/enums';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserAuthService {
@@ -15,6 +17,8 @@ export class UserAuthService {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly configService: ConfigService,
+    private readonly verificationTokenService: VerificationTokenService,
+    private readonly prisma: PrismaService,
   ) {
     this.frontendUrl = this.configService.getOrThrow<string>('app.frontendUrl');
   }
@@ -66,6 +70,22 @@ export class UserAuthService {
         error instanceof Error ? error.stack : undefined,
       );
     }
+  }
+
+  async verifyEmail(token: string) {
+    const verificationToken = await this.verificationTokenService.verify(
+      token,
+      VerificationType.EMAIL_VERIFICATION,
+    );
+
+    await this.prisma.$transaction(async (tx) => {
+      await this.userService.verifyEmail(verificationToken.userId, tx);
+
+      await this.verificationTokenService.markAsUsed(
+        verificationToken.verificationTokenId,
+        tx,
+      );
+    });
   }
 
   private createVerificationUrl(token: string): string {
