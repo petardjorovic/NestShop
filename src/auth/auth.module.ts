@@ -10,10 +10,16 @@ import { UserAuthController } from './user.auth.controller';
 import { UserAuthService } from './user.auth.service';
 import { UserJwtStrategy } from './strategies/user-jwt.strategy';
 import { CookieService } from './cookie.service';
+import { UserModule } from 'src/user/user.module';
+import { VerificationTokenModule } from 'src/verification-token/verification-token.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
     AdministratorModule,
+    UserModule,
+    VerificationTokenModule,
+    MailModule,
     PassportModule.register({}),
     JwtModule.register({}),
   ],
