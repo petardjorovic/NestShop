@@ -3,6 +3,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { VerificationToken } from 'src/generated/prisma/client';
 import { VerificationType } from 'src/generated/prisma/enums';
+import { PrismaTransactionClient } from 'src/prisma/types/prisma-transaction-client.type';
 
 @Injectable()
 export class VerificationTokenService {
@@ -66,8 +67,13 @@ export class VerificationTokenService {
     return verificationToken;
   }
 
-  async markAsUsed(verificationTokenId: number): Promise<void> {
-    await this.prisma.verificationToken.update({
+  async markAsUsed(
+    verificationTokenId: number,
+    tx?: PrismaTransactionClient,
+  ): Promise<void> {
+    const prisma = tx ?? this.prisma;
+
+    await prisma.verificationToken.update({
       where: { verificationTokenId },
       data: { usedAt: new Date() },
     });

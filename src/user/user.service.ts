@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserData } from './interfaces/create-user-data.interface';
 import { CreateUserWithVerificationTokenData } from './interfaces/create-user-with-verification-token-data.interface';
 import { createHash, randomBytes } from 'node:crypto';
+import { PrismaTransactionClient } from 'src/prisma/types/prisma-transaction-client.type';
 
 @Injectable()
 export class UserService {
@@ -72,6 +73,20 @@ export class UserService {
         token,
         expiresAt,
       };
+    });
+  }
+
+  async verifyEmail(
+    userId: number,
+    tx?: PrismaTransactionClient,
+  ): Promise<void> {
+    const prisma = tx ?? this.prisma;
+
+    await prisma.user.update({
+      where: { userId },
+      data: {
+        emailVerifiedAt: new Date(),
+      },
     });
   }
 
