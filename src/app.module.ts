@@ -6,11 +6,11 @@ import { AuthModule } from './auth/auth.module';
 import { AdministratorModule } from './administrator/administrator.module';
 import { CategoryModule } from './category/category.module';
 import { ArticleModule } from './article/article.module';
-import { UserModule } from './user/user.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import appConfig from './config/app.configuration';
-import databaseConfig from './config/database.configuration';
+import appConfiguration from './config/app.configuration';
+import databaseConfiguration from './config/database.configuration';
 import envValidation from './config/env.validations';
+import mailConfiguration from './config/mail.configuration';
 
 @Module({
   imports: [
@@ -18,14 +18,13 @@ import envValidation from './config/env.validations';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validationSchema: envValidation,
-      load: [appConfig, databaseConfig],
+      load: [appConfiguration, databaseConfiguration, mailConfiguration],
     }),
     PrismaModule,
     AuthModule,
     AdministratorModule,
     CategoryModule,
     ArticleModule,
-    UserModule,
   ],
   providers: [
     {

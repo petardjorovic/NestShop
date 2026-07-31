@@ -61,7 +61,8 @@ export class MailService implements OnModuleInit {
     });
   }
 
-  sendOrderConfirmationEmail() {}
+  // TODO
+  // sendOrderConfirmationEmail() {}
 
   private async renderTemplate(
     templateName: string,
@@ -108,7 +109,7 @@ export class MailService implements OnModuleInit {
 
     const { data, error } = await this.resend.emails.send({
       from: this.configService.getOrThrow<string>('mail.from'),
-      to,
+      to: 'perodjorovic@gmail.com', //! ovo sam harcodovao
       subject,
       html,
     });

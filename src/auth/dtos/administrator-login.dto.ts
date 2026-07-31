@@ -11,7 +11,7 @@ export class AdministratorLoginDto {
   username!: string;
 
   @ApiProperty({
-    description: 'User password',
+    description: 'Admin password',
     example: 'MySecurePassword123!',
   })
   @IsString()
