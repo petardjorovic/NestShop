@@ -12,14 +12,12 @@ import { Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
 // @Serialize(AdministratorDto)
 @AdminProtected()
-@ApiBearerAuth('access-token')
 @Controller({
   path: 'administrator',
   version: '1',

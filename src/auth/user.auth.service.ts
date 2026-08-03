@@ -1,6 +1,5 @@
 import { VerificationTokenService } from 'src/verification-token/verification-token.service';
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -15,16 +14,23 @@ import { UserRegistrationDto } from './dtos/user-registration.dto';
 import { VerificationType } from 'src/generated/prisma/enums';
 import { UserLoginDto } from './dtos/user-login.dto';
 import { User } from 'src/generated/prisma/client';
-import { randomBytes, randomUUID } from 'node:crypto';
+import {
+  createHmac,
+  randomBytes,
+  randomUUID,
+  timingSafeEqual,
+} from 'node:crypto';
 import { JwtPayload } from './interfaces/token-payload.interface';
 import { JwtSubjectType } from './enums/jwt-subject-type.enum';
 import { Tokens } from './interfaces/tokens.interface';
 import { TokenService } from './token.service';
+import { DUMMY_PASSWORD_HASH } from 'src/common/constants/dummy-pass-hash.constant';
 
 @Injectable()
 export class UserAuthService {
   private readonly frontendUrl: string;
   private readonly logger = new Logger(UserAuthService.name);
+  private readonly csrfSecret: string;
 
   constructor(
     private readonly userService: UserService,
@@ -35,6 +41,7 @@ export class UserAuthService {
     private readonly tokenService: TokenService,
   ) {
     this.frontendUrl = this.configService.getOrThrow<string>('app.frontendUrl');
+    this.csrfSecret = this.configService.getOrThrow<string>('app.csrfSecret');
   }
 
   async register(data: UserRegistrationDto) {
@@ -109,10 +116,8 @@ export class UserAuthService {
       await this.issueTokens(payload);
 
     // Hash secrets for storage
-    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
-      argon2.hash(refreshToken),
-      argon2.hash(csrfToken),
-    ]);
+    const refreshTokenHash = await argon2.hash(refreshToken);
+    const csrfTokenHash = this.hashToken(csrfToken);
 
     // Store only hashes of long-lived secrets
     await this.prisma.userSession.create({
@@ -160,13 +165,15 @@ export class UserAuthService {
     if (session.userId !== payload.sub)
       throw new UnauthorizedException('Invalid session');
 
-    const [isRefreshTokenValid, isCsrfTokenValid] = await Promise.all([
-      argon2.verify(session.refreshTokenHash, refreshToken),
-      argon2.verify(session.csrfTokenHash, csrfToken),
-    ]);
+    const isRefreshTokenValid = await argon2.verify(
+      session.refreshTokenHash,
+      refreshToken,
+    );
 
     if (!isRefreshTokenValid)
       throw new UnauthorizedException('Invalid refresh token');
+
+    const isCsrfTokenValid = this.verifyToken(session.csrfTokenHash, csrfToken);
 
     if (!isCsrfTokenValid)
       throw new UnauthorizedException('Invalid csrf token');
@@ -187,13 +194,17 @@ export class UserAuthService {
       type: JwtSubjectType.USER,
     });
 
-    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
-      argon2.hash(tokens.refreshToken),
-      argon2.hash(tokens.csrfToken),
-    ]);
+    const refreshTokenHash = await argon2.hash(tokens.refreshToken);
 
-    await this.prisma.userSession.update({
-      where: { userSessionId: session.userSessionId },
+    const csrfTokenHash = this.hashToken(tokens.csrfToken);
+
+    // Only rotate if the stored hash is still the one we verified.
+    const rotated = await this.prisma.userSession.updateMany({
+      where: {
+        userSessionId: session.userSessionId,
+        refreshTokenHash: session.refreshTokenHash,
+        revokedAt: null,
+      },
       data: {
         refreshTokenHash,
         csrfTokenHash,
@@ -202,6 +213,12 @@ export class UserAuthService {
         userAgent,
       },
     });
+
+    if (rotated.count === 0) {
+      // The token was already rotated. Treat this as replay.
+      await this.logout(session.sessionUuid);
+      throw new UnauthorizedException('Session invalid');
+    }
 
     return tokens;
   }
@@ -237,7 +254,10 @@ export class UserAuthService {
     }
 
     if (user.emailVerifiedAt) {
-      throw new BadRequestException('User already verified');
+      this.logger.debug(
+        `Resend verification requested for an already verified account: ${user.userId}`,
+      );
+      return;
     }
 
     const token = await this.verificationTokenService.create(
@@ -263,7 +283,12 @@ export class UserAuthService {
   ): Promise<User> {
     const user = await this.userService.findByEmail(email);
 
-    if (!user) {
+    // Always spend the same work so timing does not disclose existence.
+    const isPasswordValid = user
+      ? await argon2.verify(user.passwordHash, password)
+      : await argon2.verify(DUMMY_PASSWORD_HASH, password).catch(() => false);
+
+    if (!user || !isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -273,12 +298,6 @@ export class UserAuthService {
 
     if (!user.emailVerifiedAt) {
       throw new UnauthorizedException('User not verified');
-    }
-
-    const isPasswordValid = await argon2.verify(user.passwordHash, password);
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
     }
 
     return user;
@@ -294,12 +313,33 @@ export class UserAuthService {
       this.tokenService.signRefreshToken(payload),
     ]);
 
-    const csrfToken = randomBytes(32).toString('hex');
+    const csrfToken = this.generateToken();
 
     return { accessToken, refreshToken, csrfToken };
   }
 
   private createSessionId(): string {
     return randomUUID();
+  }
+
+  private generateToken(): string {
+    return randomBytes(32).toString('hex');
+  }
+
+  private hashToken(token: string): string {
+    return createHmac('sha256', this.csrfSecret).update(token).digest('hex');
+  }
+
+  private verifyToken(csrfTokenHash: string, csrfToken: string): boolean {
+    const candidateHash = this.hashToken(csrfToken);
+
+    const expected = Buffer.from(csrfTokenHash, 'hex');
+    const actual = Buffer.from(candidateHash, 'hex');
+
+    if (expected.length !== actual.length) {
+      return false;
+    }
+
+    return timingSafeEqual(expected, actual);
   }
 }
