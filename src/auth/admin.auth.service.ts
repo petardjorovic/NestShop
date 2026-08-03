@@ -18,7 +18,11 @@ export class AdminAuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async login(data: AdministratorLoginDto): Promise<Tokens> {
+  async login(
+    data: AdministratorLoginDto,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Tokens> {
     const administrator = await this.authenticateAdministrator(
       data.username,
       data.password,
@@ -53,13 +57,20 @@ export class AdminAuthService {
         csrfTokenHash,
         expiresAt: this.tokenService.getRefreshTokenExpiresAt(),
         lastUsedAt: new Date(),
+        ipAddress,
+        userAgent,
       },
     });
 
     return { accessToken, refreshToken, csrfToken };
   }
 
-  async refresh(refreshToken: string, csrfToken: string): Promise<Tokens> {
+  async refresh(
+    refreshToken: string,
+    csrfToken: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Tokens> {
     // verify refresh JWT
     const payload: JwtPayload =
       await this.tokenService.verifyRefreshToken(refreshToken);
@@ -121,6 +132,8 @@ export class AdminAuthService {
         refreshTokenHash,
         csrfTokenHash,
         lastUsedAt: new Date(),
+        ipAddress,
+        userAgent,
       },
     });
 
@@ -147,7 +160,7 @@ export class AdminAuthService {
     }
 
     if (!admin.isActive) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Administartor inactive');
     }
 
     const isPasswordValid = await argon2.verify(admin.passwordHash, password);
