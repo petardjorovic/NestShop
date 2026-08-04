@@ -8,6 +8,7 @@ import {
   Query,
   Req,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserAuthService } from './user.auth.service';
@@ -103,18 +104,26 @@ export class UserAuthController {
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const tokens = await this.userAuthService.refresh(
-      refreshToken,
-      csrfToken,
-      request.ip,
-      request.headers['user-agent'],
-    );
+    try {
+      const tokens = await this.userAuthService.refresh(
+        refreshToken,
+        csrfToken,
+        request.ip,
+        request.headers['user-agent'],
+      );
 
-    this.cookieService.setUserCookies(tokens, response);
+      this.cookieService.setUserCookies(tokens, response);
 
-    return {
-      success: true,
-    };
+      return {
+        success: true,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        this.cookieService.clearUserCookies(response);
+      }
+
+      throw error;
+    }
   }
 
   @ApiOperation({
