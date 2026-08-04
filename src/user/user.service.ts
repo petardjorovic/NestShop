@@ -109,7 +109,10 @@ export class UserService {
 
   getActiveSessions(userId: number): Promise<UserSession[]> {
     return this.prisma.userSession.findMany({
-      where: { userId, revokedAt: null },
+      where: { userId, revokedAt: null, expiresAt: { gt: new Date() } },
+      orderBy: {
+        lastUsedAt: 'desc',
+      },
     });
   }
 
