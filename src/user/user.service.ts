@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/generated/prisma/client';
+import { User, UserSession } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserData } from './interfaces/create-user-data.interface';
 import { CreateUserWithVerificationTokenData } from './interfaces/create-user-with-verification-token-data.interface';
@@ -90,9 +90,57 @@ export class UserService {
     });
   }
 
+  async updatePassword(
+    userId: number,
+    newPasswordHash: string,
+    tx?: PrismaTransactionClient,
+  ) {
+    const prisma = tx ?? this.prisma;
+
+    return prisma.user.update({
+      where: { userId },
+      data: { passwordHash: newPasswordHash },
+    });
+  }
+
   async updateUser() {}
 
   async deactivateUser() {}
+
+  getActiveSessions(userId: number): Promise<UserSession[]> {
+    return this.prisma.userSession.findMany({
+      where: { userId, revokedAt: null, expiresAt: { gt: new Date() } },
+      orderBy: {
+        lastUsedAt: 'desc',
+      },
+    });
+  }
+
+  async revokeAllSessions(userId: number, tx?: PrismaTransactionClient) {
+    const prisma = tx ?? this.prisma;
+
+    return prisma.userSession.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+  }
+
+  async revokeAllSessionsExceptCurrentOne(
+    userId: number,
+    currentSessionUuid: string,
+    tx?: PrismaTransactionClient,
+  ) {
+    const prisma = tx ?? this.prisma;
+
+    return prisma.userSession.updateMany({
+      where: {
+        userId,
+        revokedAt: null,
+        NOT: { sessionUuid: currentSessionUuid },
+      },
+      data: { revokedAt: new Date() },
+    });
+  }
 
   private hashToken(token: string): string {
     return createHash('sha256').update(token).digest('hex');

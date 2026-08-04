@@ -23,6 +23,9 @@ import { CsrfToken } from './decorators/csrf-token.decorator';
 import { UserProtected } from './decorators/user-protected.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { type UserAuthUser } from './interfaces/user-auth-user.interface';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
 
 @ApiTags('User Authentication')
 @Controller({
@@ -148,6 +151,80 @@ export class UserAuthController {
   @Post('resend-verification')
   async resendVerification(@Body() data: ResendVerificationDto) {
     await this.userAuthService.resendVerificationEmail(data.email);
+
+    return {
+      success: true,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Forgot password',
+  })
+  @UserPublic()
+  @HttpCode(HttpStatus.OK)
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    await this.userAuthService.forgotPassword(forgotPasswordDto.email);
+
+    return {
+      success: true,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Reset password',
+  })
+  @UserPublic()
+  @HttpCode(HttpStatus.OK)
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.userAuthService.resetPassword(resetPasswordDto);
+
+    return {
+      success: true,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Change password',
+  })
+  @UserProtected()
+  @HttpCode(HttpStatus.OK)
+  @Post('change-password')
+  async changePassword(
+    @CurrentUser() userData: UserAuthUser,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    await this.userAuthService.changePassword(userData, changePasswordDto);
+
+    return {
+      success: true,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Get all user active sessions',
+  })
+  @UserProtected()
+  @HttpCode(HttpStatus.OK)
+  @Get('sessions')
+  async getActiveSessions(@CurrentUser() userData: UserAuthUser) {
+    return this.userAuthService.listActiveSessions(userData);
+  }
+
+  @ApiOperation({
+    summary: 'Logout from all devices',
+  })
+  @UserProtected()
+  @HttpCode(HttpStatus.OK)
+  @Post('logout-all')
+  async logoutAll(
+    @CurrentUser() userData: UserAuthUser,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    await this.userAuthService.logoutAll(userData.user.userId);
+
+    this.cookieService.clearUserCookies(response);
 
     return {
       success: true,
