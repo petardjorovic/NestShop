@@ -1,5 +1,6 @@
 import { VerificationTokenService } from 'src/verification-token/verification-token.service';
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -25,6 +26,10 @@ import { JwtSubjectType } from './enums/jwt-subject-type.enum';
 import { Tokens } from './interfaces/tokens.interface';
 import { TokenService } from './token.service';
 import { DUMMY_PASSWORD_HASH } from 'src/common/constants/dummy-pass-hash.constant';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { UserAuthUser } from './interfaces/user-auth-user.interface';
+import { UserSessionDto } from './dtos/user-session.dto';
 
 @Injectable()
 export class UserAuthService {
@@ -270,12 +275,142 @@ export class UserAuthService {
 
     await this.mailService.sendVerifyEmail(user.forename, user.email, url);
   }
-  // TODO
-  // forgotPassword() {}
-  // resetPassword() {}
-  // changePassword() {}
-  // listActiveSessions() {}
-  // logoutFromallDevices() {}
+
+  async forgotPassword(email: string): Promise<void> {
+    const user = await this.userService.findByEmail(email.trim().toLowerCase());
+
+    if (!user) {
+      return;
+    }
+
+    if (!user.isActive) {
+      return;
+    }
+
+    if (!user.emailVerifiedAt) {
+      this.logger.debug(
+        `Forgot password requested for a non-verified account: ${user.userId}`,
+      );
+      return;
+    }
+
+    const token = await this.verificationTokenService.create(
+      user.userId,
+      VerificationType.PASSWORD_RESET,
+      1,
+    );
+
+    const url = this.createPasswordResetUrl(token);
+
+    try {
+      await this.mailService.sendPasswordResetEmail(
+        user.email,
+        user.forename,
+        url,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to send password reset email to ${user.email}`,
+        error instanceof Error ? error.stack : undefined,
+      );
+    }
+  }
+
+  async resetPassword(data: ResetPasswordDto) {
+    // verify token
+    const verificationToken = await this.verificationTokenService.verify(
+      data.token,
+      VerificationType.PASSWORD_RESET,
+    );
+
+    // hash new password
+    const newPasswordHash = await argon2.hash(data.password);
+
+    // transaction
+    await this.prisma.$transaction(async (tx) => {
+      // update user passwordHash
+      await this.userService.updatePassword(
+        verificationToken.userId,
+        newPasswordHash,
+        tx,
+      );
+
+      // mark token as used
+      await this.verificationTokenService.markAsUsed(
+        verificationToken.verificationTokenId,
+        tx,
+      );
+
+      // revoke all user sessions
+      await this.userService.revokeAllSessions(verificationToken.userId, tx);
+    });
+  }
+
+  async changePassword(
+    userData: UserAuthUser,
+    data: ChangePasswordDto,
+  ): Promise<void> {
+    // check current password
+    const isPasswordValid = await argon2.verify(
+      userData.user.passwordHash,
+      data.currentPassword,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('Wrong password');
+    }
+
+    const isSamePassword = await argon2.verify(
+      userData.user.passwordHash,
+      data.newPassword,
+    );
+
+    if (isSamePassword) {
+      throw new BadRequestException(
+        'New password must be different from current password',
+      );
+    }
+
+    // hash new password
+    const passwordHash = await argon2.hash(data.newPassword);
+
+    // transaction
+    await this.prisma.$transaction(async (tx) => {
+      // update user password
+      await this.userService.updatePassword(
+        userData.user.userId,
+        passwordHash,
+        tx,
+      );
+
+      // revoke all sessions except current one
+      await this.userService.revokeAllSessionsExceptCurrentOne(
+        userData.user.userId,
+        userData.session.sessionUuid,
+        tx,
+      );
+    });
+  }
+
+  async listActiveSessions(userData: UserAuthUser): Promise<UserSessionDto[]> {
+    const sessions = await this.userService.getActiveSessions(
+      userData.user.userId,
+    );
+
+    return sessions.map((session) => ({
+      sessionUuid: session.sessionUuid,
+      ipAddress: session.ipAddress,
+      userAgent: session.userAgent,
+      createdAt: session.createdAt,
+      lastUsedAt: session.lastUsedAt,
+      expiresAt: session.expiresAt,
+      current: session.sessionUuid === userData.session.sessionUuid,
+    }));
+  }
+
+  async logoutAll(userId: number): Promise<void> {
+    await this.userService.revokeAllSessions(userId);
+  }
 
   private async authenticateUser(
     email: string,
@@ -305,6 +440,10 @@ export class UserAuthService {
 
   private createVerificationUrl(token: string): string {
     return `${this.frontendUrl}/verify-email?token=${token}`;
+  }
+
+  private createPasswordResetUrl(token: string): string {
+    return `${this.frontendUrl}/reset-password?token=${token}`;
   }
 
   private async issueTokens(payload: JwtPayload): Promise<Tokens> {
