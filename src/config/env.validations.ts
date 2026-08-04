@@ -15,6 +15,7 @@ export default Joi.object({
   JWT_ACCESS_EXPIRES_IN: Joi.string().required(),
   JWT_REFRESH_SECRET: Joi.string().min(32).required(),
   JWT_REFRESH_EXPIRES_IN: Joi.string().required(),
+  CSRF_SECRET: Joi.string().min(32).required(),
   RESEND_API_KEY: Joi.string().required(),
   MAIL_FROM: Joi.string().required(),
 });

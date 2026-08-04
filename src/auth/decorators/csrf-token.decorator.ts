@@ -6,7 +6,7 @@ import {
 import { AuthRequest } from '../interfaces/auth-request.interface';
 import { CSRF_HEADER } from '../constants/cookie.constants';
 
-export const AdminCsrfToken = createParamDecorator(
+export const CsrfToken = createParamDecorator(
   (_data: unknown, context: ExecutionContext): string => {
     const request = context.switchToHttp().getRequest<AuthRequest>();
 

@@ -5,27 +5,42 @@ import { TokenService } from './token.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Administrator } from 'src/generated/prisma/client';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
-import { randomBytes, randomUUID } from 'node:crypto';
+import {
+  createHmac,
+  randomBytes,
+  randomUUID,
+  timingSafeEqual,
+} from 'node:crypto';
 import { JwtPayload } from './interfaces/token-payload.interface';
 import { JwtSubjectType } from './enums/jwt-subject-type.enum';
 import { Tokens } from './interfaces/tokens.interface';
+import { DUMMY_PASSWORD_HASH } from 'src/common/constants/dummy-pass-hash.constant';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AdminAuthService {
+  private readonly csrfSecret: string;
   constructor(
     private readonly administratorService: AdministratorService,
     private readonly prisma: PrismaService,
     private readonly tokenService: TokenService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.csrfSecret = this.configService.getOrThrow<string>('app.csrfSecret');
+  }
 
-  async login(data: AdministratorLoginDto): Promise<Tokens> {
+  async login(
+    data: AdministratorLoginDto,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Tokens> {
     const administrator = await this.authenticateAdministrator(
       data.username,
       data.password,
     );
 
     // Create session identifier
-    const sessionUuid = randomUUID();
+    const sessionUuid = this.createSessionId();
 
     // Build JWT payload
     const payload: JwtPayload = {
@@ -39,10 +54,9 @@ export class AdminAuthService {
       await this.issueTokens(payload);
 
     // Hash secrets for storage
-    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
-      argon2.hash(refreshToken),
-      argon2.hash(csrfToken),
-    ]);
+    const refreshTokenHash = await argon2.hash(refreshToken);
+
+    const csrfTokenHash = this.hashToken(csrfToken);
 
     // Store only hashes of long-lived secrets
     await this.prisma.administratorSession.create({
@@ -53,13 +67,20 @@ export class AdminAuthService {
         csrfTokenHash,
         expiresAt: this.tokenService.getRefreshTokenExpiresAt(),
         lastUsedAt: new Date(),
+        ipAddress,
+        userAgent: this.normalizeUserAgent(userAgent),
       },
     });
 
     return { accessToken, refreshToken, csrfToken };
   }
 
-  async refresh(refreshToken: string, csrfToken: string): Promise<Tokens> {
+  async refresh(
+    refreshToken: string,
+    csrfToken: string,
+    ipAddress?: string,
+    userAgent?: string,
+  ): Promise<Tokens> {
     // verify refresh JWT
     const payload: JwtPayload =
       await this.tokenService.verifyRefreshToken(refreshToken);
@@ -82,13 +103,15 @@ export class AdminAuthService {
     if (session.administratorId !== payload.sub)
       throw new UnauthorizedException('Invalid session');
 
-    const [isRefreshTokenValid, isCsrfTokenValid] = await Promise.all([
-      argon2.verify(session.refreshTokenHash, refreshToken),
-      argon2.verify(session.csrfTokenHash, csrfToken),
-    ]);
+    const isRefreshTokenValid = await argon2.verify(
+      session.refreshTokenHash,
+      refreshToken,
+    );
 
     if (!isRefreshTokenValid)
       throw new UnauthorizedException('Invalid refresh token');
+
+    const isCsrfTokenValid = this.verifyToken(session.csrfTokenHash, csrfToken);
 
     if (!isCsrfTokenValid)
       throw new UnauthorizedException('Invalid csrf token');
@@ -110,19 +133,31 @@ export class AdminAuthService {
       type: JwtSubjectType.ADMIN,
     });
 
-    const [refreshTokenHash, csrfTokenHash] = await Promise.all([
-      argon2.hash(tokens.refreshToken),
-      argon2.hash(tokens.csrfToken),
-    ]);
+    const refreshTokenHash = await argon2.hash(tokens.refreshToken);
 
-    await this.prisma.administratorSession.update({
-      where: { administratorSessionId: session.administratorSessionId },
+    const csrfTokenHash = this.hashToken(tokens.csrfToken);
+
+    // Only rotate if the stored hash is still the one we verified.
+    const rotated = await this.prisma.administratorSession.updateMany({
+      where: {
+        administratorSessionId: session.administratorSessionId,
+        refreshTokenHash: session.refreshTokenHash,
+        revokedAt: null,
+      },
       data: {
         refreshTokenHash,
         csrfTokenHash,
         lastUsedAt: new Date(),
+        ipAddress,
+        userAgent,
       },
     });
+
+    if (rotated.count === 0) {
+      // The token was already rotated. Treat this as replay.
+      await this.logout(session.sessionUuid);
+      throw new UnauthorizedException('Session invalid');
+    }
 
     return tokens;
   }
@@ -142,17 +177,15 @@ export class AdminAuthService {
   ): Promise<Administrator> {
     const admin = await this.administratorService.findByUsername(username);
 
-    if (!admin) {
+    const isPasswordValid = admin
+      ? await argon2.verify(admin.passwordHash, password)
+      : await argon2.verify(DUMMY_PASSWORD_HASH, password).catch(() => false);
+
+    if (!admin || !isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     if (!admin.isActive) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const isPasswordValid = await argon2.verify(admin.passwordHash, password);
-
-    if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -164,8 +197,37 @@ export class AdminAuthService {
       this.tokenService.signAccessToken(payload),
       this.tokenService.signRefreshToken(payload),
     ]);
-    const csrfToken = randomBytes(32).toString('hex');
+    const csrfToken = this.generateToken();
 
     return { accessToken, refreshToken, csrfToken };
+  }
+
+  private normalizeUserAgent(value?: string): string | undefined {
+    return value?.slice(0, 255);
+  }
+
+  private createSessionId(): string {
+    return randomUUID();
+  }
+
+  private generateToken(): string {
+    return randomBytes(32).toString('hex');
+  }
+
+  private hashToken(token: string): string {
+    return createHmac('sha256', this.csrfSecret).update(token).digest('hex');
+  }
+
+  private verifyToken(csrfTokenHash: string, csrfToken: string): boolean {
+    const candidateHash = this.hashToken(csrfToken);
+
+    const expected = Buffer.from(csrfTokenHash, 'hex');
+    const actual = Buffer.from(candidateHash, 'hex');
+
+    if (expected.length !== actual.length) {
+      return false;
+    }
+
+    return timingSafeEqual(expected, actual);
   }
 }

@@ -5,7 +5,9 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminAuthService } from './admin.auth.service';
@@ -13,9 +15,9 @@ import { AdminPublic } from 'src/common/decorators/public-admin.decorator';
 import { CurrentAdmin } from 'src/common/decorators/current-admin.decorator';
 import { AdminProtected } from './decorators/admin-protected.decorator';
 import { AdminRefreshToken } from './decorators/admin-refresh-token.decorator';
-import { AdminCsrfToken } from './decorators/admin-csrf-token.decorator';
+import { CsrfToken } from './decorators/csrf-token.decorator';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
-import { type Response } from 'express';
+import { type Request, type Response } from 'express';
 import { type AdminAuthUser } from './interfaces/admin-auth-user.interface';
 
 @ApiTags('Administrator Authentication')
@@ -37,9 +39,14 @@ export class AdminAuthController {
   @Post('login')
   async login(
     @Body() loginAdministratorDto: AdministratorLoginDto,
+    @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const tokens = await this.adminAuthService.login(loginAdministratorDto);
+    const tokens = await this.adminAuthService.login(
+      loginAdministratorDto,
+      request.ip,
+      request.headers['user-agent'],
+    );
 
     this.cookieService.setAdminCookies(tokens, response);
 
@@ -56,16 +63,30 @@ export class AdminAuthController {
   @Post('refresh')
   async refresh(
     @AdminRefreshToken() refreshToken: string,
-    @AdminCsrfToken() csrfToken: string,
+    @CsrfToken() csrfToken: string,
+    @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const tokens = await this.adminAuthService.refresh(refreshToken, csrfToken);
+    try {
+      const tokens = await this.adminAuthService.refresh(
+        refreshToken,
+        csrfToken,
+        request.ip,
+        request.headers['user-agent'],
+      );
 
-    this.cookieService.setAdminCookies(tokens, response);
+      this.cookieService.setAdminCookies(tokens, response);
 
-    return {
-      success: true,
-    };
+      return {
+        success: true,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        this.cookieService.clearAdminCookies(response);
+      }
+
+      throw error;
+    }
   }
 
   @ApiOperation({

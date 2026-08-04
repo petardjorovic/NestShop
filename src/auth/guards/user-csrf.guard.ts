@@ -5,21 +5,22 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthenticatedRequest } from 'src/common/types/authenticated-request.type';
-import { AdminAuthUser } from '../interfaces/admin-auth-user.interface';
 import { CSRF_HEADER } from '../constants/cookie.constants';
-import { ConfigService } from '@nestjs/config';
+import { UserAuthUser } from '../interfaces/user-auth-user.interface';
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class AdminCsrfGuard implements CanActivate {
+export class UserCsrfGuard implements CanActivate {
   private readonly csrfSecret: string;
   constructor(private readonly configService: ConfigService) {
     this.csrfSecret = configService.getOrThrow<string>('app.csrfSecret');
   }
+
   canActivate(context: ExecutionContext): boolean {
     const request = context
       .switchToHttp()
-      .getRequest<AuthenticatedRequest<AdminAuthUser>>();
+      .getRequest<AuthenticatedRequest<UserAuthUser>>();
 
     const csrfToken = request.headers[CSRF_HEADER];
 
