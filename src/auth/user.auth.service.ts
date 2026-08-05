@@ -360,6 +360,7 @@ export class UserAuthService {
       throw new BadRequestException('Wrong password');
     }
 
+    // check if passwords are same
     const isSamePassword = await argon2.verify(
       userData.user.passwordHash,
       data.newPassword,

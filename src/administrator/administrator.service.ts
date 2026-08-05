@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import * as argon2 from 'argon2';
-import { Administrator } from 'src/generated/prisma/client';
-import { ApiResponse } from 'src/common/responses/api.response.class';
-
 import { PrismaService } from 'src/prisma/prisma.service';
+import {
+  Administrator,
+  AdministratorSession,
+} from 'src/generated/prisma/client';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
+import { PrismaTransactionClient } from 'src/prisma/types/prisma-transaction-client.type';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 
 @Injectable()
 export class AdministratorService {
@@ -83,5 +86,60 @@ export class AdministratorService {
       console.error(error);
       return new ApiResponse('error', -1001);
     }
+  }
+
+  async updatePassword(
+    administratorId: number,
+    newPasswordHash: string,
+    tx?: PrismaTransactionClient,
+  ) {
+    const prisma = tx ?? this.prisma;
+
+    return prisma.administrator.update({
+      where: { administratorId },
+      data: { passwordHash: newPasswordHash },
+    });
+  }
+
+  getActiveSessions(administratorId: number): Promise<AdministratorSession[]> {
+    return this.prisma.administratorSession.findMany({
+      where: {
+        administratorId,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: {
+        lastUsedAt: 'desc',
+      },
+    });
+  }
+
+  async revokeAllSessions(
+    administratorId: number,
+    tx?: PrismaTransactionClient,
+  ): Promise<void> {
+    const prisma = tx ?? this.prisma;
+
+    await prisma.administratorSession.updateMany({
+      where: { administratorId, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+  }
+
+  async revokeAllSessionsExceptCurrentOne(
+    administratorId: number,
+    currentSessionUuid: string,
+    tx?: PrismaTransactionClient,
+  ): Promise<void> {
+    const prisma = tx ?? this.prisma;
+
+    await prisma.administratorSession.updateMany({
+      where: {
+        administratorId,
+        revokedAt: null,
+        NOT: { sessionUuid: currentSessionUuid },
+      },
+      data: { revokedAt: new Date() },
+    });
   }
 }
