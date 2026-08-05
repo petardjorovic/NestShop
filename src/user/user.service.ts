@@ -103,6 +103,22 @@ export class UserService {
     });
   }
 
+  async updatePasswordIfCurrentMatches(
+    userId: number,
+    currentPasswordHash: string,
+    newPasswordHash: string,
+    tx?: PrismaTransactionClient,
+  ): Promise<boolean> {
+    const prisma = tx ?? this.prisma;
+
+    const result = await prisma.user.updateMany({
+      where: { userId, passwordHash: currentPasswordHash },
+      data: { passwordHash: newPasswordHash },
+    });
+
+    return result.count === 1;
+  }
+
   async updateUser() {}
 
   async deactivateUser() {}

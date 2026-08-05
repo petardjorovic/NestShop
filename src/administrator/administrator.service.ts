@@ -101,6 +101,22 @@ export class AdministratorService {
     });
   }
 
+  async updatePasswordIfCurrentMatches(
+    administratorId: number,
+    currentPasswordHash: string,
+    newPasswordHash: string,
+    tx?: PrismaTransactionClient,
+  ): Promise<boolean> {
+    const prisma = tx ?? this.prisma;
+
+    const result = await prisma.administrator.updateMany({
+      where: { administratorId, passwordHash: currentPasswordHash },
+      data: { passwordHash: newPasswordHash },
+    });
+
+    return result.count === 1;
+  }
+
   getActiveSessions(administratorId: number): Promise<AdministratorSession[]> {
     return this.prisma.administratorSession.findMany({
       where: {

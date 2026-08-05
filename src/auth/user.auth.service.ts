@@ -378,11 +378,16 @@ export class UserAuthService {
     // transaction
     await this.prisma.$transaction(async (tx) => {
       // update user password
-      await this.userService.updatePassword(
+      const updated = await this.userService.updatePasswordIfCurrentMatches(
         userData.user.userId,
+        userData.user.passwordHash,
         passwordHash,
         tx,
       );
+
+      if (!updated) {
+        throw new ConflictException('Password was changed by another request');
+      }
 
       // revoke all sessions except current one
       await this.userService.revokeAllSessionsExceptCurrentOne(

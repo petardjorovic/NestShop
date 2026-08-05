@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -214,11 +215,17 @@ export class AdminAuthService {
     // transaction
     await this.prisma.$transaction(async (tx) => {
       // update user password
-      await this.administratorService.updatePassword(
-        administrator.administratorId,
-        passwordHash,
-        tx,
-      );
+      const updated =
+        await this.administratorService.updatePasswordIfCurrentMatches(
+          administrator.administratorId,
+          administrator.passwordHash,
+          passwordHash,
+          tx,
+        );
+
+      if (!updated) {
+        throw new ConflictException('Password was changed by another request');
+      }
 
       // revoke all sessions except current one
       await this.administratorService.revokeAllSessionsExceptCurrentOne(
