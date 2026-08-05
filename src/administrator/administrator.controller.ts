@@ -8,11 +8,13 @@ import {
   Post,
 } from '@nestjs/common';
 import { AdministratorService } from './administrator.service';
-import { Administrator } from 'src/generated/prisma/client';
+import { type Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
 import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
+import { CurrentAdmin } from 'src/common/decorators/current-admin.decorator';
+import { type AdminAuthUser } from 'src/auth/interfaces/admin-auth-user.interface';
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
@@ -29,6 +31,13 @@ export class AdministratorController {
   @Get()
   getAll(): Promise<Administrator[]> {
     return this.administratorService.findAll();
+  }
+
+  // GET http://localhost:3000/api/administrator/me
+  @AdminProtected()
+  @Get('me')
+  me(@CurrentAdmin() adminData: AdminAuthUser): Administrator {
+    return adminData.administrator;
   }
 
   // GET http://localhost:3000/api/administrator/1

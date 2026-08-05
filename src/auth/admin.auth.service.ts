@@ -1,21 +1,29 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as argon2 from 'argon2';
-import { AdministratorService } from 'src/administrator/administrator.service';
-import { TokenService } from './token.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Administrator } from 'src/generated/prisma/client';
-import { AdministratorLoginDto } from './dtos/administrator-login.dto';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   createHmac,
   randomBytes,
   randomUUID,
   timingSafeEqual,
 } from 'node:crypto';
-import { JwtPayload } from './interfaces/token-payload.interface';
+import * as argon2 from 'argon2';
+import { AdministratorService } from 'src/administrator/administrator.service';
+import { TokenService } from './token.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Administrator } from 'src/generated/prisma/client';
+import { AdministratorLoginDto } from './dtos/administrator-login.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { AdministratorSessionDto } from './dtos/administrator-session.dto';
 import { JwtSubjectType } from './enums/jwt-subject-type.enum';
 import { Tokens } from './interfaces/tokens.interface';
+import { JwtPayload } from './interfaces/token-payload.interface';
+import { AdminAuthUser } from './interfaces/admin-auth-user.interface';
 import { DUMMY_PASSWORD_HASH } from 'src/common/constants/dummy-pass-hash.constant';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AdminAuthService {
@@ -169,6 +177,81 @@ export class AdminAuthService {
         revokedAt: new Date(),
       },
     });
+  }
+
+  async logoutAll(administratorId: number): Promise<void> {
+    await this.administratorService.revokeAllSessions(administratorId);
+  }
+
+  async changePassword(
+    { administrator, session }: AdminAuthUser,
+    data: ChangePasswordDto,
+  ): Promise<void> {
+    // check current password
+    const isPasswordValid = await argon2.verify(
+      administrator.passwordHash,
+      data.currentPassword,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('Wrong password');
+    }
+
+    // check if passwords are same
+    const isSamePassword = await argon2.verify(
+      administrator.passwordHash,
+      data.newPassword,
+    );
+
+    if (isSamePassword) {
+      throw new BadRequestException(
+        'New password must be different from current password',
+      );
+    }
+
+    // hash new password
+    const passwordHash = await argon2.hash(data.newPassword);
+
+    // transaction
+    await this.prisma.$transaction(async (tx) => {
+      // update user password
+      const updated =
+        await this.administratorService.updatePasswordIfCurrentMatches(
+          administrator.administratorId,
+          administrator.passwordHash,
+          passwordHash,
+          tx,
+        );
+
+      if (!updated) {
+        throw new ConflictException('Password was changed by another request');
+      }
+
+      // revoke all sessions except current one
+      await this.administratorService.revokeAllSessionsExceptCurrentOne(
+        administrator.administratorId,
+        session.sessionUuid,
+        tx,
+      );
+    });
+  }
+
+  async listActiveSessions(
+    administratorData: AdminAuthUser,
+  ): Promise<AdministratorSessionDto[]> {
+    const sessions = await this.administratorService.getActiveSessions(
+      administratorData.administrator.administratorId,
+    );
+
+    return sessions.map((session) => ({
+      sessionUuid: session.sessionUuid,
+      ipAddress: session.ipAddress,
+      userAgent: session.userAgent,
+      createdAt: session.createdAt,
+      lastUsedAt: session.lastUsedAt,
+      expiresAt: session.expiresAt,
+      current: session.sessionUuid === administratorData.session.sessionUuid,
+    }));
   }
 
   private async authenticateAdministrator(
