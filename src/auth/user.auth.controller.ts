@@ -11,21 +11,23 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
+import { type Request, type Response } from 'express';
 import { UserAuthService } from './user.auth.service';
+import { CookieService } from './cookie.service';
 import { UserPublic } from 'src/common/decorators/public-user.decorator';
+import { UserRefreshToken } from './decorators/user-refresh-token.decorator';
+import { UserProtected } from './decorators/user-protected.decorator';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CsrfToken } from './decorators/csrf-token.decorator';
 import { UserRegistrationDto } from './dtos/user-registration.dto';
 import { ResendVerificationDto } from './dtos/resend-verification.dto';
 import { UserLoginDto } from './dtos/user-login.dto';
-import { type Request, type Response } from 'express';
-import { CookieService } from './cookie.service';
-import { UserRefreshToken } from './decorators/user-refresh-token.decorator';
-import { CsrfToken } from './decorators/csrf-token.decorator';
-import { UserProtected } from './decorators/user-protected.decorator';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { type UserAuthUser } from './interfaces/user-auth-user.interface';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { ThrottleProfiles } from 'src/common/constants/throttle-profiles.constant';
+import { type UserAuthUser } from './interfaces/user-auth-user.interface';
 
 @ApiTags('User Authentication')
 @Controller({
@@ -42,6 +44,9 @@ export class UserAuthController {
     summary: 'User registration',
   })
   @UserPublic()
+  @Throttle({
+    default: ThrottleProfiles.REGISTER,
+  })
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(@Body() userRegistrationDto: UserRegistrationDto) {
@@ -56,6 +61,9 @@ export class UserAuthController {
     summary: 'User login',
   })
   @UserPublic()
+  @Throttle({
+    default: ThrottleProfiles.USER_LOGIN,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -99,6 +107,9 @@ export class UserAuthController {
     summary: 'Refresh user tokens',
   })
   @UserPublic()
+  @Throttle({
+    default: ThrottleProfiles.REFRESH,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(
@@ -147,6 +158,9 @@ export class UserAuthController {
     summary: 'Resend verification email',
   })
   @UserPublic()
+  @Throttle({
+    default: ThrottleProfiles.EMAIL,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('resend-verification')
   async resendVerification(@Body() data: ResendVerificationDto) {
@@ -161,6 +175,9 @@ export class UserAuthController {
     summary: 'Forgot password',
   })
   @UserPublic()
+  @Throttle({
+    default: ThrottleProfiles.EMAIL,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('forgot-password')
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
@@ -176,6 +193,9 @@ export class UserAuthController {
   })
   @UserPublic()
   @HttpCode(HttpStatus.OK)
+  @Throttle({
+    default: ThrottleProfiles.PASSWORD_RESET,
+  })
   @Post('reset-password')
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     await this.userAuthService.resetPassword(resetPasswordDto);

@@ -11,6 +11,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { type Request, type Response } from 'express';
 import { AdminAuthService } from './admin.auth.service';
 import { AdminPublic } from 'src/common/decorators/public-admin.decorator';
@@ -21,6 +22,7 @@ import { CsrfToken } from './decorators/csrf-token.decorator';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { AdministratorSessionDto } from './dtos/administrator-session.dto';
+import { ThrottleProfiles } from 'src/common/constants/throttle-profiles.constant';
 import { type AdminAuthUser } from './interfaces/admin-auth-user.interface';
 
 @ApiTags('Administrator Authentication')
@@ -38,6 +40,9 @@ export class AdminAuthController {
     summary: 'Administrator login',
   })
   @AdminPublic()
+  @Throttle({
+    default: ThrottleProfiles.ADMIN_LOGIN,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(
@@ -62,6 +67,9 @@ export class AdminAuthController {
     summary: 'Refresh administrator tokens',
   })
   @AdminPublic()
+  @Throttle({
+    default: ThrottleProfiles.REFRESH,
+  })
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   async refresh(
