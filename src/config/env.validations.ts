@@ -18,4 +18,5 @@ export default Joi.object({
   CSRF_SECRET: Joi.string().min(32).required(),
   RESEND_API_KEY: Joi.string().required(),
   MAIL_FROM: Joi.string().required(),
+  TRUST_PROXY: Joi.number().integer().min(0).required(),
 });
