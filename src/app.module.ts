@@ -1,6 +1,7 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { AdministratorModule } from './administrator/administrator.module';
@@ -11,6 +12,7 @@ import appConfiguration from './config/app.configuration';
 import databaseConfiguration from './config/database.configuration';
 import envValidation from './config/env.validations';
 import mailConfiguration from './config/mail.configuration';
+import { ThrottleProfiles } from './common/constants/throttle-profiles.constant';
 
 @Module({
   imports: [
@@ -20,6 +22,12 @@ import mailConfiguration from './config/mail.configuration';
       validationSchema: envValidation,
       load: [appConfiguration, databaseConfiguration, mailConfiguration],
     }),
+    ThrottlerModule.forRoot([
+      {
+        name: 'default',
+        ...ThrottleProfiles.DEFAULT,
+      },
+    ]),
     PrismaModule,
     AuthModule,
     AdministratorModule,
@@ -38,6 +46,10 @@ import mailConfiguration from './config/mail.configuration';
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })
