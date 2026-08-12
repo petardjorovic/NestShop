@@ -1,10 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,6 +18,7 @@ async function bootstrap() {
   const appVersion = configService.getOrThrow<number>('app.appVersion');
   const trustProxy = configService.get<string>('app.trustProxy');
 
+  app.use(helmet());
   app.set('trust proxy', trustProxy);
   app.use(cookieParser());
   app.setGlobalPrefix('api');
