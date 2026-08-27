@@ -2,6 +2,7 @@ import { Article } from 'src/generated/prisma/client';
 import {
   Body,
   Controller,
+  // Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -14,9 +15,8 @@ import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
 import { ArticleService } from './article.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
 
-@ApiBearerAuth('access-token')
 @Controller({
   path: 'article',
   version: '1',
@@ -36,11 +36,13 @@ export class ArticleController {
     return this.articleService.getById(id);
   }
 
+  @AdminProtected()
   @Post()
   add(@Body() addArticleDto: AddArticleDto) {
     return this.articleService.add(addArticleDto);
   }
 
+  @AdminProtected()
   @Patch(':id')
   edit(
     @Param('id', ParseIntPipe) id: number,
@@ -48,4 +50,7 @@ export class ArticleController {
   ): Promise<Article | ApiResponse> {
     return this.articleService.edit(id, editArticleDto);
   }
+
+  // @Delete(':id')
+  // delete(@Param('id', ParseIntPipe) id: number) {}
 }

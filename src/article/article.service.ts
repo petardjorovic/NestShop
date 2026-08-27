@@ -133,12 +133,20 @@ export class ArticleService {
         });
 
         if (data.price !== undefined) {
-          await tx.articlePrice.create({
-            data: {
-              articleId,
-              price: data.price,
-            },
+          const currentPrice = await tx.articlePrice.findFirst({
+            where: { articleId },
+            orderBy: [{ createdAt: 'desc' }, { articlePriceId: 'desc' }],
+            select: { price: true },
           });
+
+          if (currentPrice && !currentPrice.price.equals(data.price)) {
+            await tx.articlePrice.create({
+              data: {
+                articleId,
+                price: data.price,
+              },
+            });
+          }
         }
 
         if (data.features !== undefined) {
@@ -188,4 +196,6 @@ export class ArticleService {
       return new ApiResponse('error', -4010);
     }
   }
+
+  delete() {}
 }
