@@ -233,7 +233,8 @@ model Photo {
   articleId Int     @map("article_id")
   article   Article @relation(fields: [articleId], references: [articleId], onDelete: Restrict, onUpdate: Cascade) //* Think of onDelete Cascade
 
-  imagePath String @unique @map("image_path") @db.VarChar(128)
+  publicId String @unique @map("public_id") @db.VarChar(255)
+  imageUrl String @unique @map("image_url") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

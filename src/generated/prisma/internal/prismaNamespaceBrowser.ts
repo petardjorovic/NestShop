@@ -226,7 +226,8 @@ export type ArticlePriceScalarFieldEnum = (typeof ArticlePriceScalarFieldEnum)[k
 export const PhotoScalarFieldEnum = {
   photoId: 'photoId',
   articleId: 'articleId',
-  imagePath: 'imagePath',
+  publicId: 'publicId',
+  imageUrl: 'imageUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
