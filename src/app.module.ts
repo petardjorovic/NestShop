@@ -7,11 +7,14 @@ import { AuthModule } from './auth/auth.module';
 import { AdministratorModule } from './administrator/administrator.module';
 import { CategoryModule } from './category/category.module';
 import { ArticleModule } from './article/article.module';
+import { PhotoModule } from './photo/photo.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import appConfiguration from './config/app.configuration';
 import databaseConfiguration from './config/database.configuration';
-import envValidation from './config/env.validations';
+import cloudinaryConfiguration from './config/cloudinary.configuration';
 import mailConfiguration from './config/mail.configuration';
+import envValidation from './config/env.validations';
 import { ThrottleProfiles } from './common/constants/throttle-profiles.constant';
 
 @Module({
@@ -20,7 +23,12 @@ import { ThrottleProfiles } from './common/constants/throttle-profiles.constant'
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validationSchema: envValidation,
-      load: [appConfiguration, databaseConfiguration, mailConfiguration],
+      load: [
+        appConfiguration,
+        databaseConfiguration,
+        mailConfiguration,
+        cloudinaryConfiguration,
+      ],
     }),
     ThrottlerModule.forRoot([
       {
@@ -33,6 +41,8 @@ import { ThrottleProfiles } from './common/constants/throttle-profiles.constant'
     AdministratorModule,
     CategoryModule,
     ArticleModule,
+    CloudinaryModule,
+    PhotoModule,
   ],
   providers: [
     {

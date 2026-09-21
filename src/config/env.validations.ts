@@ -19,4 +19,7 @@ export default Joi.object({
   RESEND_API_KEY: Joi.string().required(),
   MAIL_FROM: Joi.string().required(),
   TRUST_PROXY: Joi.number().integer().min(0).required(),
+  CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+  CLOUDINARY_API_KEY: Joi.string().required(),
+  CLOUDINARY_API_SECRET: Joi.string().required(),
 });

@@ -1,23 +1,28 @@
-import { Article } from 'src/generated/prisma/client';
 import {
   Body,
   Controller,
+  Delete,
+  FileTypeValidator,
   // Delete,
   Get,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
   Query,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiResponse } from 'src/common/responses/api.response.class';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Article } from 'src/generated/prisma/client';
+import { ArticleService } from './article.service';
+import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
 import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
-import { ArticleService } from './article.service';
-import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiResponse } from 'src/common/responses/api.response.class';
 
 @Controller({
   path: 'article',
@@ -26,12 +31,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Get()
+  @Get() // GET http://localhost:3000/api/v1/article
   getAll(@Query() query: ArticleQueryDto): Promise<Article[]> {
     return this.articleService.getAll(query);
   }
 
-  @Get(':id')
+  @Get(':id') // GET http://localhost:3000/api/v1/article/1
   getById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Article | ApiResponse> {
@@ -39,13 +44,13 @@ export class ArticleController {
   }
 
   @AdminProtected()
-  @Post()
+  @Post() // POST http://localhost:3000/api/v1/article
   add(@Body() addArticleDto: AddArticleDto) {
     return this.articleService.add(addArticleDto);
   }
 
   @AdminProtected()
-  @Patch(':id')
+  @Patch(':id') // PATCH http://localhost:3000/api/v1/article/55
   edit(
     @Param('id', ParseIntPipe) id: number,
     @Body() editArticleDto: EditArticleDto,
@@ -53,10 +58,38 @@ export class ArticleController {
     return this.articleService.edit(id, editArticleDto);
   }
 
-  @Post(':id/uploadPhoto')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadPhoto(@Param('id', ParseIntPipe) id: number) {}
-
   // @Delete(':id')
   // delete(@Param('id', ParseIntPipe) id: number) {}
+
+  @AdminProtected()
+  @Post(':id/uploadPhoto') // POST http://localhost:3000/api/v1/article/24/uploadPhoto
+  @UseInterceptors(FileInterceptor('photo'))
+  uploadPhoto(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: true,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 3 * 1024 * 1024 }),
+          new FileTypeValidator({
+            fileType: /^image\/(jpeg|png|webp)$/,
+            errorMessage: (ctx) =>
+              `Validation failed (current file type is '${ctx.file?.mimetype}', expected type is jpeg, png or webp)`,
+          }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.articleService.uploadPhoto(id, file);
+  }
+
+  @AdminProtected()
+  @Delete(':articleId/deletePhoto/:photoId') // POST http://localhost:3000/api/v1/article/24/deletePhoto/1
+  deletePhoto(
+    @Param('articleId', ParseIntPipe) articleId: number,
+    @Param('photoId', ParseIntPipe) photoId: number,
+  ) {
+    return this.articleService.deletePhoto(articleId, photoId);
+  }
 }

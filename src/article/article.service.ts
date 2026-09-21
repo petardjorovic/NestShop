@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { Article, Prisma } from 'src/generated/prisma/client';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Article, Photo, Prisma } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/common/responses/api.response.class';
 import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PhotoService } from 'src/photo/photo.service';
 
 @Injectable()
 export class ArticleService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly photoService: PhotoService,
+  ) {}
 
   getAll(query: ArticleQueryDto): Promise<Article[]> {
     return this.prisma.article.findMany({
@@ -198,4 +202,38 @@ export class ArticleService {
   }
 
   delete() {}
+
+  async uploadPhoto(
+    articleId: number,
+    file: Express.Multer.File,
+  ): Promise<Photo> {
+    const article = await this.prisma.article.findUnique({
+      where: { articleId },
+      select: { articleId: true },
+    });
+
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    return this.photoService.add(articleId, file);
+  }
+
+  async deletePhoto(
+    articleId: number,
+    photoId: number,
+  ): Promise<{
+    message: string;
+  }> {
+    const article = await this.prisma.article.findUnique({
+      where: { articleId },
+      select: { articleId: true },
+    });
+
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    return this.photoService.delete(articleId, photoId);
+  }
 }
