@@ -16,6 +16,7 @@ import cloudinaryConfiguration from './config/cloudinary.configuration';
 import mailConfiguration from './config/mail.configuration';
 import envValidation from './config/env.validations';
 import { ThrottleProfiles } from './common/constants/throttle-profiles.constant';
+import { FeatureModule } from './feature/feature.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ThrottleProfiles } from './common/constants/throttle-profiles.constant'
     ArticleModule,
     CloudinaryModule,
     PhotoModule,
+    FeatureModule,
   ],
   providers: [
     {
