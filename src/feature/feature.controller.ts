@@ -1,5 +1,19 @@
-import { Controller, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { FeatureService } from './feature.service';
+import { FeatureQueryDto } from './dtos/feature.query.dto';
+import { Feature } from 'src/generated/prisma/client';
+import { AddFeatureDto } from './dtos/add.feature.dto';
+import { EditFeatureDto } from './dtos/edit.feature.dto';
+import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
 
 @Controller({
   path: 'feature',
@@ -9,15 +23,31 @@ import { FeatureService } from './feature.service';
 export class FeatureController {
   constructor(private readonly featureService: FeatureService) {}
 
-  @Get()
-  getAll() {}
+  @Get() // GET http://localhost:3000/api/v1/feature
+  getAll(@Query() query: FeatureQueryDto): Promise<Feature[]> {
+    return this.featureService.getAll(query);
+  }
 
-  @Get(':id')
-  getById() {}
+  @Get(':id') // GET http://localhost:3000/api/v1/feature/2
+  getById(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() query: FeatureQueryDto,
+  ): Promise<Feature | null> {
+    return this.featureService.getById(id, query);
+  }
 
-  @Post()
-  add() {}
+  @AdminProtected()
+  @Post() // POST http://localhost:3000/api/v1/feature
+  add(@Body() data: AddFeatureDto): Promise<Feature> {
+    return this.featureService.add(data);
+  }
 
-  @Patch(':id')
-  edit() {}
+  @AdminProtected()
+  @Patch(':id') // PATCH http://localhost:3000/api/v1/feature/2
+  edit(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: EditFeatureDto,
+  ): Promise<Feature> {
+    return this.featureService.edit(id, data);
+  }
 }
