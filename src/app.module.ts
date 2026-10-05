@@ -17,6 +17,7 @@ import mailConfiguration from './config/mail.configuration';
 import envValidation from './config/env.validations';
 import { ThrottleProfiles } from './common/constants/throttle-profiles.constant';
 import { FeatureModule } from './feature/feature.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { FeatureModule } from './feature/feature.module';
     CloudinaryModule,
     PhotoModule,
     FeatureModule,
+    CartModule,
   ],
   providers: [
     {
