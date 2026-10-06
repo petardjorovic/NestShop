@@ -8,7 +8,7 @@ export class OrderLogService {
   constructor(private readonly prisma: PrismaService) {}
 
   async add(cartId: number): Promise<OrderLog | ApiResponse> {
-    const orderLog = await this.prisma.orderLog.findFirst({
+    const orderLog = await this.prisma.orderLog.findUnique({
       where: { cartId },
     });
 
@@ -43,7 +43,7 @@ export class OrderLogService {
                 article: {
                   include: {
                     category: true,
-                    articlePrices: { orderBy: { createdAt: 'desc' }, take: 1 },
+                    articlePrices: true,
                   },
                 },
               },
