@@ -56,7 +56,16 @@ export class CartService {
     return this.prisma.cart.findUnique({
       where: { cartId },
       include: {
-        articles: { include: { article: { include: { category: true } } } },
+        articles: {
+          include: {
+            article: {
+              include: {
+                category: true,
+                articlePrices: { orderBy: { createdAt: 'desc' }, take: 1 },
+              },
+            },
+          },
+        },
         user: { omit: { passwordHash: true, deletedAt: true, isActive: true } },
       },
     });
