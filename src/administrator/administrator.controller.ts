@@ -12,14 +12,15 @@ import { type Administrator } from 'src/generated/prisma/client';
 import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AddAdministratorDto } from './dtos/add.administrator.dto';
 import { EditAdministratorDto } from './dtos/edit.administrator.dto';
-import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
-import { CurrentAdmin } from 'src/common/decorators/current-admin.decorator';
 import { type AdminAuthUser } from 'src/auth/interfaces/admin-auth-user.interface';
+import { AllowToUsers } from 'src/auth/decorators/allow-to-users.decorator';
+import { JwtSubjectType } from 'src/auth/enums/jwt-subject-type.enum';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 // import { Serialize } from 'src/decorators/serialize.decorators';
 // import { AdministratorDto } from './dtos/administrator.dto';
 
 // @Serialize(AdministratorDto)
-@AdminProtected()
+@AllowToUsers(JwtSubjectType.ADMIN)
 @Controller({
   path: 'administrator',
   version: '1',
@@ -34,9 +35,9 @@ export class AdministratorController {
   }
 
   // GET http://localhost:3000/api/administrator/me
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Get('me')
-  me(@CurrentAdmin() adminData: AdminAuthUser): Administrator {
+  me(@CurrentUser() adminData: AdminAuthUser): Administrator {
     return adminData.administrator;
   }
 

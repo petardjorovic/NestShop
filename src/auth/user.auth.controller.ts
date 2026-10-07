@@ -15,9 +15,8 @@ import { Throttle } from '@nestjs/throttler';
 import { type Request, type Response } from 'express';
 import { UserAuthService } from './user.auth.service';
 import { CookieService } from './cookie.service';
-import { UserPublic } from 'src/common/decorators/public-user.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
 import { UserRefreshToken } from './decorators/user-refresh-token.decorator';
-import { UserProtected } from './decorators/user-protected.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CsrfToken } from './decorators/csrf-token.decorator';
 import { UserRegistrationDto } from './dtos/user-registration.dto';
@@ -28,6 +27,8 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { ThrottleProfiles } from 'src/common/constants/throttle-profiles.constant';
 import { type UserAuthUser } from './interfaces/user-auth-user.interface';
+import { AllowToUsers } from './decorators/allow-to-users.decorator';
+import { JwtSubjectType } from './enums/jwt-subject-type.enum';
 
 @ApiTags('User Authentication')
 @Controller({
@@ -43,7 +44,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'User registration',
   })
-  @UserPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.REGISTER,
   })
@@ -60,7 +61,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'User login',
   })
-  @UserPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.USER_LOGIN,
   })
@@ -87,7 +88,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'User logout',
   })
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(
@@ -106,7 +107,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Refresh user tokens',
   })
-  @UserPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.REFRESH,
   })
@@ -143,7 +144,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Verify user email',
   })
-  @UserPublic()
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Get('verify-email')
   async verifyEmail(@Query('token') token: string) {
@@ -157,7 +158,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Resend verification email',
   })
-  @UserPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.EMAIL,
   })
@@ -174,7 +175,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Forgot password',
   })
-  @UserPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.EMAIL,
   })
@@ -191,7 +192,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Reset password',
   })
-  @UserPublic()
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Throttle({
     default: ThrottleProfiles.PASSWORD_RESET,
@@ -208,7 +209,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Change password',
   })
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @HttpCode(HttpStatus.OK)
   @Post('change-password')
   async changePassword(
@@ -225,7 +226,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Get all user active sessions',
   })
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @HttpCode(HttpStatus.OK)
   @Get('sessions')
   async getActiveSessions(@CurrentUser() userData: UserAuthUser) {
@@ -235,7 +236,7 @@ export class UserAuthController {
   @ApiOperation({
     summary: 'Logout from all devices',
   })
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @HttpCode(HttpStatus.OK)
   @Post('logout-all')
   async logoutAll(
