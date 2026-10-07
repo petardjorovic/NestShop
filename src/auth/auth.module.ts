@@ -11,10 +11,9 @@ import { AdminAuthService } from './admin.auth.service';
 import { UserAuthService } from './user.auth.service';
 import { TokenService } from './token.service';
 import { CookieService } from './cookie.service';
-import { AdminJwtStrategy } from './strategies/admin-jwt.strategy';
-import { UserJwtStrategy } from './strategies/user-jwt.strategy';
-import { AdminCsrfGuard } from './guards/admin-csrf.guard';
-import { UserCsrfGuard } from './guards/user-csrf.guard';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { AllowToUsersGuard } from './guards/allow.to.users.guard';
+import { CsrfGuard } from './guards/csrf.guard';
 
 @Module({
   imports: [
@@ -31,18 +30,17 @@ import { UserCsrfGuard } from './guards/user-csrf.guard';
     UserAuthService,
     TokenService,
     CookieService,
-    AdminJwtStrategy,
-    UserJwtStrategy,
-    AdminCsrfGuard,
-    UserCsrfGuard,
+    JwtStrategy,
+    AllowToUsersGuard,
+    CsrfGuard,
   ],
   exports: [
     AdminAuthService,
     UserAuthService,
     TokenService,
     CookieService,
-    AdminCsrfGuard,
-    UserCsrfGuard,
+    AllowToUsersGuard,
+    CsrfGuard,
   ],
 })
 export class AuthModule {}

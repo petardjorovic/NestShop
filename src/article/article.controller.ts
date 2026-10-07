@@ -18,11 +18,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Article } from 'src/generated/prisma/client';
 import { ArticleService } from './article.service';
-import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
 import { ArticleQueryDto } from 'src/article/dtos/article.query.dto';
 import { AddArticleDto } from 'src/article/dtos/add.article.dto';
 import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
 import { ApiResponse } from 'src/common/responses/api.response.class';
+import { AllowToUsers } from 'src/auth/decorators/allow-to-users.decorator';
+import { JwtSubjectType } from 'src/auth/enums/jwt-subject-type.enum';
 
 @Controller({
   path: 'article',
@@ -43,13 +44,13 @@ export class ArticleController {
     return this.articleService.getById(id);
   }
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Post() // POST http://localhost:3000/api/v1/article
   add(@Body() addArticleDto: AddArticleDto) {
     return this.articleService.add(addArticleDto);
   }
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Patch(':id') // PATCH http://localhost:3000/api/v1/article/55
   edit(
     @Param('id', ParseIntPipe) id: number,
@@ -61,7 +62,7 @@ export class ArticleController {
   // @Delete(':id')
   // delete(@Param('id', ParseIntPipe) id: number) {}
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Post(':id/uploadPhoto') // POST http://localhost:3000/api/v1/article/24/uploadPhoto
   @UseInterceptors(FileInterceptor('photo'))
   uploadPhoto(
@@ -84,7 +85,7 @@ export class ArticleController {
     return this.articleService.uploadPhoto(id, file);
   }
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Delete(':articleId/deletePhoto/:photoId') // POST http://localhost:3000/api/v1/article/24/deletePhoto/1
   deletePhoto(
     @Param('articleId', ParseIntPipe) articleId: number,

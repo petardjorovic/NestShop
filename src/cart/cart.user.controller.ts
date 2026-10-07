@@ -1,4 +1,3 @@
-import { UserProtected } from 'src/auth/decorators/user-protected.decorator';
 import { CartService } from './cart.service';
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -8,6 +7,8 @@ import { AddArticleToCartDto } from './dtos/add.article.to.cart.dto';
 import { EditArticleInCartDto } from './dtos/edit.article.in.cart.dto';
 import { OrderLogService } from './orderLog.service';
 import { ApiResponse } from 'src/common/responses/api.response.class';
+import { AllowToUsers } from 'src/auth/decorators/allow-to-users.decorator';
+import { JwtSubjectType } from 'src/auth/enums/jwt-subject-type.enum';
 
 @Controller({
   path: 'cart/user',
@@ -19,12 +20,13 @@ export class CartUserController {
     private readonly orderLogService: OrderLogService,
   ) {}
 
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @Get() // GET http://localhost:3000/api/v1/cart/user
   async getCurrentCart(@CurrentUser() userData: UserAuthUser): Promise<Cart> {
     return this.getCurrentCartForUserId(userData.user.userId);
   }
-  @UserProtected()
+
+  @AllowToUsers(JwtSubjectType.USER)
   @Post('addToCart') // POST http://localhost:3000/api/v1/cart/user/addToCart
   async addToCart(
     @CurrentUser() userData: UserAuthUser,
@@ -39,7 +41,7 @@ export class CartUserController {
     );
   }
 
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @Patch() // PATCH http://localhost:3000/api/v1/cart/user
   async changeQuantity(
     @CurrentUser() userData: UserAuthUser,
@@ -54,7 +56,7 @@ export class CartUserController {
     );
   }
 
-  @UserProtected()
+  @AllowToUsers(JwtSubjectType.USER)
   @Post('makeOrder') // POST http://localhost:3000/api/v1/cart/user/makeOrder
   async makeOrder(
     @CurrentUser() userData: UserAuthUser,

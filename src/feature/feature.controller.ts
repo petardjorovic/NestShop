@@ -13,7 +13,8 @@ import { FeatureQueryDto } from './dtos/feature.query.dto';
 import { Feature } from 'src/generated/prisma/client';
 import { AddFeatureDto } from './dtos/add.feature.dto';
 import { EditFeatureDto } from './dtos/edit.feature.dto';
-import { AdminProtected } from 'src/auth/decorators/admin-protected.decorator';
+import { JwtSubjectType } from 'src/auth/enums/jwt-subject-type.enum';
+import { AllowToUsers } from 'src/auth/decorators/allow-to-users.decorator';
 
 @Controller({
   path: 'feature',
@@ -36,13 +37,13 @@ export class FeatureController {
     return this.featureService.getById(id, query);
   }
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Post() // POST http://localhost:3000/api/v1/feature
   add(@Body() data: AddFeatureDto): Promise<Feature> {
     return this.featureService.add(data);
   }
 
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @Patch(':id') // PATCH http://localhost:3000/api/v1/feature/2
   edit(
     @Param('id', ParseIntPipe) id: number,

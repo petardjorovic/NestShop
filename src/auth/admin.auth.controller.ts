@@ -14,9 +14,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { type Request, type Response } from 'express';
 import { AdminAuthService } from './admin.auth.service';
-import { AdminPublic } from 'src/common/decorators/public-admin.decorator';
-import { CurrentAdmin } from 'src/common/decorators/current-admin.decorator';
-import { AdminProtected } from './decorators/admin-protected.decorator';
 import { AdminRefreshToken } from './decorators/admin-refresh-token.decorator';
 import { CsrfToken } from './decorators/csrf-token.decorator';
 import { AdministratorLoginDto } from './dtos/administrator-login.dto';
@@ -24,6 +21,10 @@ import { ChangePasswordDto } from './dtos/change-password.dto';
 import { AdministratorSessionDto } from './dtos/administrator-session.dto';
 import { ThrottleProfiles } from 'src/common/constants/throttle-profiles.constant';
 import { type AdminAuthUser } from './interfaces/admin-auth-user.interface';
+import { Public } from 'src/common/decorators/public.decorator';
+import { JwtSubjectType } from './enums/jwt-subject-type.enum';
+import { AllowToUsers } from './decorators/allow-to-users.decorator';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @ApiTags('Administrator Authentication')
 @Controller({
@@ -39,7 +40,7 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Administrator login',
   })
-  @AdminPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.ADMIN_LOGIN,
   })
@@ -66,7 +67,7 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Refresh administrator tokens',
   })
-  @AdminPublic()
+  @Public()
   @Throttle({
     default: ThrottleProfiles.REFRESH,
   })
@@ -103,11 +104,11 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Administrator logout',
   })
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(
-    @CurrentAdmin() admin: AdminAuthUser,
+    @CurrentUser() admin: AdminAuthUser,
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.adminAuthService.logout(admin.session.sessionUuid);
@@ -122,11 +123,11 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Logout from all devices',
   })
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Post('logout-all')
   async logoutAll(
-    @CurrentAdmin() adminData: AdminAuthUser,
+    @CurrentUser() adminData: AdminAuthUser,
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.adminAuthService.logoutAll(
@@ -143,11 +144,11 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Change password',
   })
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Post('change-password')
   async changePassword(
-    @CurrentAdmin() adminData: AdminAuthUser,
+    @CurrentUser() adminData: AdminAuthUser,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
     await this.adminAuthService.changePassword(adminData, changePasswordDto);
@@ -160,11 +161,11 @@ export class AdminAuthController {
   @ApiOperation({
     summary: 'Get all administrator active sessions',
   })
-  @AdminProtected()
+  @AllowToUsers(JwtSubjectType.ADMIN)
   @HttpCode(HttpStatus.OK)
   @Get('sessions')
   getActiveSessions(
-    @CurrentAdmin() adminData: AdminAuthUser,
+    @CurrentUser() adminData: AdminAuthUser,
   ): Promise<AdministratorSessionDto[]> {
     return this.adminAuthService.listActiveSessions(adminData);
   }
