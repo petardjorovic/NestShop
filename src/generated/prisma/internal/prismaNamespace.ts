@@ -397,7 +397,8 @@ export const ModelName = {
   Photo: 'Photo',
   Cart: 'Cart',
   CartArticle: 'CartArticle',
-  OrderLog: 'OrderLog'
+  OrderLog: 'OrderLog',
+  ArticleCurrentPrice: 'ArticleCurrentPrice'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -413,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "administrator" | "administratorSession" | "user" | "userSession" | "verificationToken" | "category" | "article" | "feature" | "articleFeature" | "articlePrice" | "photo" | "cart" | "cartArticle" | "orderLog"
+    modelProps: "administrator" | "administratorSession" | "user" | "userSession" | "verificationToken" | "category" | "article" | "feature" | "articleFeature" | "articlePrice" | "photo" | "cart" | "cartArticle" | "orderLog" | "articleCurrentPrice"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1453,6 +1454,36 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ArticleCurrentPrice: {
+      payload: Prisma.$ArticleCurrentPricePayload<ExtArgs>
+      fields: Prisma.ArticleCurrentPriceFieldRefs
+      operations: {
+        findFirst: {
+          args: Prisma.ArticleCurrentPriceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ArticleCurrentPricePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ArticleCurrentPriceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ArticleCurrentPricePayload>
+        }
+        findMany: {
+          args: Prisma.ArticleCurrentPriceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ArticleCurrentPricePayload>[]
+        }
+        aggregate: {
+          args: Prisma.ArticleCurrentPriceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateArticleCurrentPrice>
+        }
+        groupBy: {
+          args: Prisma.ArticleCurrentPriceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ArticleCurrentPriceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ArticleCurrentPriceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ArticleCurrentPriceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1675,6 +1706,16 @@ export const OrderLogScalarFieldEnum = {
 } as const
 
 export type OrderLogScalarFieldEnum = (typeof OrderLogScalarFieldEnum)[keyof typeof OrderLogScalarFieldEnum]
+
+
+export const ArticleCurrentPriceScalarFieldEnum = {
+  articleId: 'articleId',
+  articlePriceId: 'articlePriceId',
+  price: 'price',
+  createdAt: 'createdAt'
+} as const
+
+export type ArticleCurrentPriceScalarFieldEnum = (typeof ArticleCurrentPriceScalarFieldEnum)[keyof typeof ArticleCurrentPriceScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1949,6 +1990,7 @@ export type GlobalOmitConfig = {
   cart?: Prisma.CartOmit
   cartArticle?: Prisma.CartArticleOmit
   orderLog?: Prisma.OrderLogOmit
+  articleCurrentPrice?: Prisma.ArticleCurrentPriceOmit
 }
 
 /* Types for Logging */
