@@ -64,7 +64,8 @@ export const ModelName = {
   Photo: 'Photo',
   Cart: 'Cart',
   CartArticle: 'CartArticle',
-  OrderLog: 'OrderLog'
+  OrderLog: 'OrderLog',
+  ArticleCurrentPrice: 'ArticleCurrentPrice'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -266,6 +267,16 @@ export const OrderLogScalarFieldEnum = {
 } as const
 
 export type OrderLogScalarFieldEnum = (typeof OrderLogScalarFieldEnum)[keyof typeof OrderLogScalarFieldEnum]
+
+
+export const ArticleCurrentPriceScalarFieldEnum = {
+  articleId: 'articleId',
+  articlePriceId: 'articlePriceId',
+  price: 'price',
+  createdAt: 'createdAt'
+} as const
+
+export type ArticleCurrentPriceScalarFieldEnum = (typeof ArticleCurrentPriceScalarFieldEnum)[keyof typeof ArticleCurrentPriceScalarFieldEnum]
 
 
 export const SortOrder = {

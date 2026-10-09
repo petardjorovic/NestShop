@@ -19,6 +19,7 @@ generator client {
   provider     = "prisma-client"
   output       = "../src/generated/prisma"
   moduleFormat = "cjs"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -298,4 +299,13 @@ model OrderLog {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("order_log")
+}
+
+view ArticleCurrentPrice {
+  articleId      Int      @map("article_id")
+  articlePriceId Int      @map("article_price_id")
+  price          Decimal  @db.Decimal(10, 2)
+  createdAt      DateTime @map("created_at")
+
+  @@map("article_current_price")
 }

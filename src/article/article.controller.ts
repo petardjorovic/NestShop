@@ -24,6 +24,7 @@ import { EditArticleDto } from 'src/article/dtos/edit.article.dto';
 import { ApiResponse } from 'src/common/responses/api.response.class';
 import { AllowToUsers } from 'src/auth/decorators/allow-to-users.decorator';
 import { JwtSubjectType } from 'src/auth/enums/jwt-subject-type.enum';
+import { ArticleSearchDto } from './dtos/article.search.dto';
 
 @Controller({
   path: 'article',
@@ -35,6 +36,12 @@ export class ArticleController {
   @Get() // GET http://localhost:3000/api/v1/article
   getAll(@Query() query: ArticleQueryDto): Promise<Article[]> {
     return this.articleService.getAll(query);
+  }
+
+  @AllowToUsers(JwtSubjectType.ADMIN, JwtSubjectType.USER)
+  @Get('search') // GET http://localhost:3000/api/v1/article/search
+  search(@Body() data: ArticleSearchDto) {
+    return this.articleService.search(data);
   }
 
   @Get(':id') // GET http://localhost:3000/api/v1/article/1

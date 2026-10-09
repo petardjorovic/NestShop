@@ -87,3 +87,8 @@ export type CartArticle = Prisma.CartArticleModel
  * 
  */
 export type OrderLog = Prisma.OrderLogModel
+/**
+ * Model ArticleCurrentPrice
+ * 
+ */
+export type ArticleCurrentPrice = Prisma.ArticleCurrentPriceModel
