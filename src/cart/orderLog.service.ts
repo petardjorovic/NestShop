@@ -1,13 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ApiResponse } from 'src/common/responses/api.response.class';
-import { OrderLog } from 'src/generated/prisma/client';
+import { OrderWithDetails } from 'src/common/types/OrderWithDetails.type';
+import { OrderStatus } from 'src/generated/prisma/client';
+import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class OrderLogService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(OrderLogService.name);
 
-  async add(cartId: number): Promise<OrderLog | ApiResponse> {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
+
+  async add(cartId: number): Promise<OrderWithDetails | ApiResponse> {
     const orderLog = await this.prisma.orderLog.findUnique({
       where: { cartId },
     });
@@ -33,8 +40,67 @@ export class OrderLogService {
       return new ApiResponse('error', -7003, 'This cart is empty');
     }
 
-    return this.prisma.orderLog.create({
+    const createdOrder = await this.prisma.orderLog.create({
       data: { cartId },
+    });
+
+    const order: OrderWithDetails | null =
+      await this.findOrderWithHistoricalPrices(createdOrder.orderLogId);
+
+    if (!order) {
+      return new ApiResponse(
+        'error',
+        -7004,
+        'Created order could not be retrieved',
+      );
+    }
+
+    try {
+      await this.mailService.sendOrderConfirmationEmail(order);
+    } catch (error) {
+      this.logger.error(
+        `Failed to send order confirmation email for order ${order.orderLogId}`,
+        error instanceof Error ? error.stack : String(error),
+      );
+    }
+
+    return order;
+  }
+
+  async getById(orderId: number): Promise<OrderWithDetails | ApiResponse> {
+    const order = await this.findOrderWithHistoricalPrices(orderId);
+
+    if (!order) {
+      return new ApiResponse('error', -9001, 'No such order found');
+    }
+
+    return order;
+  }
+
+  async changeStatus(
+    orderId: number,
+    newStatus: OrderStatus,
+  ): Promise<OrderWithDetails | ApiResponse> {
+    await this.prisma.orderLog.update({
+      where: { orderLogId: orderId },
+      data: { status: newStatus },
+    });
+
+    return this.getById(orderId);
+  }
+
+  private async findOrderWithHistoricalPrices(
+    orderId: number,
+  ): Promise<OrderWithDetails | null> {
+    const order = await this.prisma.orderLog.findUnique({
+      where: { orderLogId: orderId },
+      select: { createdAt: true },
+    });
+
+    if (!order) return null;
+
+    return this.prisma.orderLog.findUnique({
+      where: { orderLogId: orderId },
       include: {
         cart: {
           include: {
@@ -43,13 +109,24 @@ export class OrderLogService {
                 article: {
                   include: {
                     category: true,
-                    articlePrices: true,
+                    articlePrices: {
+                      where: { createdAt: { lte: order.createdAt } },
+                      orderBy: [
+                        { createdAt: 'desc' },
+                        { articlePriceId: 'desc' },
+                      ],
+                      take: 1,
+                    },
                   },
                 },
               },
             },
             user: {
-              omit: { isActive: true, passwordHash: true, deletedAt: true },
+              omit: {
+                isActive: true,
+                passwordHash: true,
+                deletedAt: true,
+              },
             },
           },
         },

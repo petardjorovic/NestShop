@@ -1,0 +1,94 @@
+{{#> layout title="Order confirmation"}}
+<tr>
+  <td style="color:#374151;font-size:15px;line-height:1.7;">
+
+    <h2 style="margin:0 0 20px;color:#111827;font-size:24px;">
+      Thank You for Your Order!
+    </h2>
+
+    <p>Dear {{name}},</p>
+
+    <p>
+      Your order has been successfully placed.
+      Thank you for shopping with us!
+    </p>
+
+    <table
+      role="presentation"
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      style="margin:25px 0;background:#f9fafb;border-radius:8px;"
+    >
+      <tr>
+        <td style="padding:20px;">
+          <p style="margin:0 0 8px;">
+            <strong>Order Number:</strong> #{{orderId}}
+          </p>
+
+          <p style="margin:0;">
+            <strong>Order Date:</strong> {{orderDate}}
+          </p>
+        </td>
+      </tr>
+    </table>
+
+    <h3 style="margin:25px 0 15px;color:#111827;">
+      Order Details
+    </h3>
+
+    <table
+      role="presentation"
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      style="border-collapse:collapse;font-size:14px;"
+    >
+      <thead>
+        <tr>
+          <th align="left" style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            Item
+          </th>
+          <th align="center" style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            Qty
+          </th>
+          <th align="right" style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            Subtotal
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each articles}}
+        <tr>
+          <td style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            {{this.name}}
+          </td>
+          <td align="center" style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            {{this.quantity}}
+          </td>
+          <td align="right" style="padding:12px 5px;border-bottom:1px solid #e5e7eb;">
+            {{this.subtotal}} RSD
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <p style="margin:20px 0;text-align:right;font-size:18px;color:#111827;">
+      <strong>Total: {{totalPrice}} RSD</strong>
+    </p>
+
+    <p>
+      We will process your order as soon as possible.
+      You will receive further updates if necessary.
+    </p>
+
+    <p style="margin-bottom:0;">
+      Best regards,<br />
+      <strong>The Shop Team</strong>
+    </p>
+
+  </td>
+</tr>
+{{/layout}}

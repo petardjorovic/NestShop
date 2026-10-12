@@ -11,6 +11,7 @@ import * as path from 'node:path';
 import Handlebars from 'handlebars';
 import { EmailSubject } from './enums/email-subject.enum';
 import { EmailTemplate } from './enums/email-template.enum';
+import { OrderWithDetails } from 'src/common/types/OrderWithDetails.type';
 
 @Injectable()
 export class MailService implements OnModuleInit {
@@ -61,8 +62,33 @@ export class MailService implements OnModuleInit {
     });
   }
 
-  // TODO
-  // sendOrderConfirmationEmail() {}
+  sendOrderConfirmationEmail(
+    order: OrderWithDetails,
+  ): Promise<CreateEmailResponseSuccess> {
+    const articles = order.cart.articles.map((article) => ({
+      name: article.article.name,
+      quantity: article.quantity,
+      subtotal:
+        article.quantity * Number(article.article.articlePrices[0].price),
+    }));
+    const total = articles.reduce(
+      (total, current) => total + current.subtotal,
+      0,
+    );
+
+    return this.sendEmail(
+      EmailTemplate.ORDER,
+      EmailSubject.ORDER_CONFIRMATION,
+      order.cart.user.email,
+      {
+        name: order.cart.user.forename,
+        orderId: order.orderLogId,
+        orderDate: this.getOrderDate(order.createdAt),
+        articles,
+        totalPrice: total,
+      },
+    );
+  }
 
   private async renderTemplate(
     templateName: string,
@@ -123,5 +149,17 @@ export class MailService implements OnModuleInit {
     }
 
     return data;
+  }
+
+  private getOrderDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'Europe/Belgrade',
+    }).format(date);
   }
 }
